@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "853280509993",
+    "project_id": "medqr-3e1ce",
+    "storage_bucket": "medqr-3e1ce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:853280509993:android:96f3d367e428e4baab8c38",
+        "android_client_info": {
+          "package_name": "com.example.aap_dev_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApsJyDK-ssUQ90SAljOXOM2QP0SXAagfA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

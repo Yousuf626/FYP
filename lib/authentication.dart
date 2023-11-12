@@ -1,10 +1,14 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/services.dart';
-import 'firebase_options.dart';
+import 'firebase_options.dart'; 
+import 'package:aap_dev_project/Register.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -12,8 +16,6 @@ void main() async {
   );
   runApp(const MyApp());
 }
-
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -101,6 +103,26 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController passwordController = TextEditingController();
   bool _isHidden = true;
   String signInStatus = '';
+  Future<UserCredential?> signInWithGoogle() async {
+  // Trigger the authentication flow
+  final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+  // Return null if user cancels the Google Sign-In
+  if (googleUser == null) return null;
+
+  // Obtain the auth details from the request
+  final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+  // Create a new credential
+  final credential = GoogleAuthProvider.credential(
+    accessToken: googleAuth.accessToken,
+    idToken: googleAuth.idToken,
+  );
+
+  // Once signed in, return the UserCredential
+  return await FirebaseAuth.instance.signInWithCredential(credential);
+}
+
 
   void _toggleVisibility() {
     setState(() {
@@ -119,21 +141,14 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-              Align(
-  alignment: Alignment.topLeft,
-  child: Padding(
-    padding: EdgeInsets.only(top: 40.0, left: 10.0),
-    child: IconButton(
-      icon: Icon(Icons.arrow_back_ios), 
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Authentication()),
-        );
-      },
-    ),
-  ),
-),
+        Row(
+              children: [
+                IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),]),
                 Text(
                   'Welcome back',
                   textAlign: TextAlign.center,
@@ -261,11 +276,21 @@ controller: passwordController,
                           border: Border.all(color: Colors.grey, width: 0.2),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: IconButton(
-                          // Dummy placeholder for Google icon
-                          icon: FaIcon(FontAwesomeIcons.google),
-                          onPressed: () {},
-                        ),
+                        child:IconButton(
+  icon: FaIcon(FontAwesomeIcons.google),
+  onPressed: () async {
+    try {
+      final UserCredential? userCredential = await signInWithGoogle();
+      if (userCredential != null) {
+        // User signed in with Google. You can navigate to another screen here.
+        print('Successfully signed in with Google');
+      }
+    } catch (e) {
+      // Handle error here
+      print('Error signing in with Google: $e');
+    }
+  },
+),
                       ),
                     ),
                     SizedBox(width: 10), // Add this
@@ -301,6 +326,12 @@ controller: passwordController,
                             color: Colors.teal,
                             fontFamily: 'Urbanist',
                           ),
+                        recognizer: TapGestureRecognizer() ..onTap =() {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => RegistrationScreen()),
+                          );
+                        },
                         ),
                       ],
                     ),
@@ -309,136 +340,6 @@ controller: passwordController,
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-class RegistrationScreen extends StatefulWidget {
-  @override
-  _RegistrationScreenState createState() => _RegistrationScreenState();
-}
-
-class _RegistrationScreenState extends State<RegistrationScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final _usernameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
-          children: <Widget>[
-            TextFormField(
-              controller: _usernameController,
-              decoration: InputDecoration(labelText: 'Username'),
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
-              },
-            ),
-            TextFormField(
-              controller: _emailController,
-              decoration: InputDecoration(labelText: 'Email'),
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
-              },
-            ),
-            TextFormField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: InputDecoration(labelText: 'Password'),
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
-              },
-            ),
-            TextFormField(
-              controller: _confirmPasswordController,
-              obscureText: true,
-              decoration: InputDecoration(labelText: 'Confirm Password'),
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'Please confirm your password';
-                }
-                if (value != _passwordController.text) {
-                  return 'Passwords do not match';
-                }
-                return null;
-              },
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: ElevatedButton(
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    // If the form is valid, display a Snackbar.
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text('Processing Data')));
-                    // Here you can write the code to submit the data to Firebase
-                    try {
-                      final User? user = (await _auth.createUserWithEmailAndPassword(
-                        email: _emailController.text,
-                        password: _passwordController.text,
-                      )).user;
-                      if (user != null) {
-                        // Registration successful
-                      }
-                    } catch (e) {
-                      // Handle the error
-                    }
-                  }
-                },
-                child: Text('Register'),
-              ),
-            ),
-            // Social media buttons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                IconButton(
-                  icon: Image.asset('assets/google.png'), // Replace with your asset
-                  onPressed: () {
-                    // Google sign in process
-                  },
-                ),
-                IconButton(
-                  icon: Image.asset('assets/facebook.png'), // Replace with your asset
-                  onPressed: () {
-                    // Facebook sign in process
-                  },
-                ),
-                IconButton(
-                  icon: Image.asset('assets/apple.png'), // Replace with your asset
-                  onPressed: () {
-                    // Apple sign in process
-                  },
-                ),
-              ],
-            ),
-            TextButton(
-              onPressed: () {
-                // Navigate to login screen
-              },
-              child: Text(
-                'Already have an account? Login Now',
-                style: TextStyle(color: Theme.of(context).primaryColor),
-              ),
-            ),
-          ],
         ),
       ),
     );

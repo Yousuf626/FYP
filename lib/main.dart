@@ -2,6 +2,7 @@ import 'package:aap_dev_project/authentication.dart';
 import 'package:aap_dev_project/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'updateProfile.dart';
+import 'aboutUs.dart';
+import 'help.dart';
 
 class CustomDrawer extends StatefulWidget {
   const CustomDrawer({Key? key}) : super(key: key);
@@ -80,12 +82,24 @@ class _CustomDrawerState extends State<CustomDrawer> {
           ListTile(
             leading: const Icon(Icons.info),
             title: const Text('About Us'),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AboutUsPage()),
+              );
+            },
           ),
           ListTile(
             leading: const Icon(Icons.help),
             title: const Text('Help'),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        HelpPage(emailAdress: _emailController.text)),
+              );
+            },
           ),
           ListTile(
             leading: const Icon(Icons.exit_to_app),

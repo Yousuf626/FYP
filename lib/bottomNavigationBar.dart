@@ -1,7 +1,12 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
+import 'dashboard.dart';
 
 class BaseMenuBar extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+  BaseMenuBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +63,10 @@ class BaseMenuBar extends StatelessWidget {
         Scaffold.of(context).openDrawer();
         break;
       case 1:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const DashboardApp()),
+        );
         break;
       case 2:
         break;

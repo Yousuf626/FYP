@@ -1,4 +1,5 @@
 
+import 'package:aap_dev_project/forgotpassword.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
@@ -146,7 +147,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 IconButton(
                   icon: Icon(Icons.arrow_back),
                   onPressed: () {
-                    Navigator.pop(context);
+                   Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => Authentication()),
+    );
                   },
                 ),]),
                 Text(
@@ -192,18 +196,23 @@ controller: passwordController,
                   ),
                 ),
                 TextButton(
-                  onPressed: () {},
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      'Forgot Password?', 
-                      style: TextStyle(
-                        color: Color(0xFF6A707C),
-                        fontFamily: 'Urbanist',
-                      ),
-                    ),
-                  ),
-                ),
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ForgotPasswordScreen()),
+    );
+  },
+  child: Align(
+    alignment: Alignment.centerRight,
+    child: Text(
+      'Forgot Password?', 
+      style: TextStyle(
+        color: Color(0xFF6A707C),
+        fontFamily: 'Urbanist',
+      ),
+    ),
+  ),
+),
                 SizedBox(height: 16),
                  Padding(
                 padding: EdgeInsets.symmetric(vertical: 8.0),

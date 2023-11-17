@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 // import 'login_screen.dart'; // Make sure to import your login screen
 
@@ -63,6 +64,8 @@ Future<UserCredential?> signInWithFacebook() async {
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.0),
+            child:Form(
+              key:_formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -181,6 +184,7 @@ SizedBox(height: 24),
               ],
             ),
           ),
+          ),
         ),
       ),
     );
@@ -228,35 +232,23 @@ SizedBox(height: 24),
   if (_formKey.currentState!.validate()) {
     try {
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
+        email: _emailController.text,
+        password: _passwordController.text,
       );
-      User? user = userCredential.user;
 
-      // Update the display name
-      if (_usernameController.text.trim().isNotEmpty) {
-        await user!.updateDisplayName(_usernameController.text.trim());
-      }
-
-      // Show success message
+      // Registration successful
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Registered Successfully!")),
+        SnackBar(content: Text("User successfully registered!")),
       );
 
-      // Optional: Navigate to a different screen after successful registration
+      // You might want to navigate the user to a different screen after successful registration
 
     } on FirebaseAuthException catch (e) {
-      // Display error message
+      // Handle registration errors
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.message ?? 'An error occurred during registration')),
+        SnackBar(content: Text("Failed to register: ${e.message}")),
       );
     }
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Please fill in all fields')),
-    );
   }
 }
-
-
 }

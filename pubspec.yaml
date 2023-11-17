@@ -40,8 +40,8 @@ dependencies:
   firebase_storage: ^11.2.2
   image_picker: ^0.8.7+5
   provider: ^6.0.5
-
-
+  flutter_typeahead: ^4.8.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

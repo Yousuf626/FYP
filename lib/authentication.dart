@@ -1,4 +1,5 @@
 
+import 'package:aap_dev_project/Medicine.dart';
 import 'package:aap_dev_project/forgotpassword.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -9,31 +10,6 @@ import 'package:flutter/services.dart';
 import 'firebase_options.dart'; 
 import 'package:aap_dev_project/Register.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: const Authentication(),
-    );
-  }
-}
-
 class Authentication extends StatelessWidget {
   const Authentication({super.key});
 
@@ -235,7 +211,11 @@ controller: passwordController,
       setState(() {
         signInStatus = 'Successfully signed in';
       });
-      // Optional: Navigate to a different screen
+      // Navigate to MedicineScreen
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => MedicineScreen()),
+      );
     } on FirebaseAuthException catch (e) {
       // Update status message on error
       setState(() {
@@ -247,20 +227,20 @@ controller: passwordController,
       });
     }
   },
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.green,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    padding: EdgeInsets.all(14),
-                  ),
-                  child: Text(
-                    'Login',
-                    style: TextStyle(
-                      fontFamily: 'Urbanist',
-                    ),
-                  ),
-                ),
+  style: ElevatedButton.styleFrom(
+    primary: Colors.green,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(8),
+    ),
+    padding: EdgeInsets.all(14),
+  ),
+  child: Text(
+    'Login',
+    style: TextStyle(
+      fontFamily: 'Urbanist',
+    ),
+  ),
+),
                 SizedBox(height: 30),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -285,7 +265,7 @@ controller: passwordController,
                           border: Border.all(color: Colors.grey, width: 0.2),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child:IconButton(
+                        child: IconButton(
   icon: FaIcon(FontAwesomeIcons.google),
   onPressed: () async {
     try {
@@ -293,6 +273,10 @@ controller: passwordController,
       if (userCredential != null) {
         // User signed in with Google. You can navigate to another screen here.
         print('Successfully signed in with Google');
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MedicineScreen()),
+        );
       }
     } catch (e) {
       // Handle error here

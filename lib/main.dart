@@ -1,3 +1,5 @@
+// ignore_for_file: duplicate_import, unused_import
+
 import 'package:aap_dev_project/authentication.dart';
 import 'package:aap_dev_project/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';

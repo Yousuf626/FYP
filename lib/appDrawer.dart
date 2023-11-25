@@ -1,21 +1,21 @@
-// ignore_for_file: file_names, library_private_types_in_public_api, avoid_print
+// ignore_for_file: file_names, library_private_types_in_public_api, avoid_print, unnecessary_cast
 
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'updateProfile.dart';
 import 'aboutUs.dart';
 import 'help.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:aap_dev_project/authentication.dart';
 
 class CustomDrawer extends StatefulWidget {
-  const CustomDrawer({Key? key}) : super(key: key);
+  final dynamic user;
+
+  const CustomDrawer({Key? key, this.user}) : super(key: key);
   @override
   _CustomDrawerState createState() => _CustomDrawerState();
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _imageController = TextEditingController();
@@ -26,27 +26,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
     _getUserProfile();
   }
 
-  Future<void> _getUserProfile() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: "auroobaparker@gmail.com", password: "aaaaiibbaa");
-    User? user = _auth.currentUser;
-    if (user != null) {
-      print(user.uid);
-      try {
-        DocumentSnapshot snapshot =
-            await _firestore.collection('users').doc(user.uid).get();
-
-        print(snapshot.data());
-        if (snapshot.exists) {
-          setState(() {
-            _nameController.text = snapshot['name'] ?? '';
-            _emailController.text = snapshot['email'] ?? '';
-            _imageController.text = snapshot['image'] ?? '';
-          });
-        }
-      } catch (e) {
-        print("Error fetching user profile: $e");
-      }
+  _getUserProfile() {
+    var snapshot = widget.user;
+    print(snapshot.data());
+    if (snapshot.exists) {
+      setState(() {
+        _nameController.text = snapshot['name'] ?? '';
+        _emailController.text = snapshot['email'] ?? '';
+        _imageController.text = snapshot['image'] ?? '';
+      });
     }
   }
 
@@ -63,7 +51,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
             decoration: BoxDecoration(
               color: const Color(0xFF01888B),
               image: DecorationImage(
-                image: NetworkImage(_imageController.text),
+                image: _imageController.text.isEmpty
+                    ? const AssetImage("assets/profile.png")
+                        as ImageProvider<Object>
+                    : NetworkImage(_imageController.text)
+                        as ImageProvider<Object>,
                 fit: BoxFit.cover,
               ),
             ),
@@ -75,7 +67,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const UpdateProfilePage()),
+                    builder: (context) => UpdateProfilePage(user: widget.user)),
               );
             },
           ),
@@ -85,7 +77,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const AboutUsPage()),
+                MaterialPageRoute(
+                    builder: (context) => AboutUsPage(user: widget.user)),
               );
             },
           ),
@@ -96,18 +89,33 @@ class _CustomDrawerState extends State<CustomDrawer> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        HelpPage(emailAdress: _emailController.text)),
+                    builder: (context) => HelpPage(
+                        emailAdress: _emailController.text, user: widget.user)),
               );
             },
           ),
           ListTile(
             leading: const Icon(Icons.exit_to_app),
             title: const Text('Logout'),
-            onTap: () {},
+            onTap: () {
+              signOut().then((_) {
+                // After signing out, navigate the user back to the login screen or wherever appropriate
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                      builder: (context) => const Authentication()),
+                );
+              }).catchError((error) {
+                // Handle error, if any
+                print("Error signing out: $error");
+              });
+            },
           ),
         ],
       ),
     );
+  }
+
+  Future<void> signOut() async {
+    await FirebaseAuth.instance.signOut();
   }
 }

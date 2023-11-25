@@ -1,24 +1,32 @@
-// ignore_for_file: file_names, sized_box_for_whitespace
+// ignore_for_file: file_names, library_private_types_in_public_api, sized_box_for_whitespace
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'bottomNavigationBar.dart';
 import 'appDrawer.dart';
 
-class AboutUsPage extends StatelessWidget {
-  const AboutUsPage({super.key});
+class AboutUsPage extends StatefulWidget {
+  final DocumentSnapshot user;
 
+  const AboutUsPage({Key? key, required this.user}) : super(key: key);
+
+  @override
+  _AboutUsPageState createState() => _AboutUsPageState();
+}
+
+class _AboutUsPageState extends State<AboutUsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: const AboutUsContent(),
-      drawer: const CustomDrawer(),
+      drawer: CustomDrawer(user: widget.user),
       bottomNavigationBar: BaseMenuBar(),
     );
   }
 }
 
 class AboutUsContent extends StatelessWidget {
-  const AboutUsContent({super.key});
+  const AboutUsContent({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,42 +44,48 @@ class AboutUsContent extends StatelessWidget {
             color: Color(0xFF01888B),
           ),
           child: const Center(
-              child: Text(
-            'MedQR Provides',
-            style: TextStyle(
-              fontSize: 36.0,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+            child: Text(
+              'MedQR Provides',
+              style: TextStyle(
+                fontSize: 36.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
-          )),
+          ),
         ),
         const SizedBox(height: 20.0),
         Container(
-            width: MediaQuery.of(context).size.width * 0.9,
-            height: MediaQuery.of(context).size.height * 0.53,
-            child: const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                FeatureLine(
-                    icon: 'assets/lock.png',
-                    feature:
-                        'Secure storage of medical history, test reports and prescriptions.'),
-                SizedBox(height: 20.0),
-                FeatureLine(
-                    icon: 'assets/profile.png',
-                    feature:
-                        'Patients can register themselves easily and make their profile.'),
-                SizedBox(height: 20.0),
-                FeatureLine(
-                    icon: 'assets/calendar.png',
-                    feature: 'Customizable medication reminders'),
-                SizedBox(height: 20.0),
-                FeatureLine(
-                    icon: 'assets/code.png',
-                    feature: 'Streamlined doctor access to patient records'),
-              ],
-            )),
+          width: MediaQuery.of(context).size.width * 0.9,
+          height: MediaQuery.of(context).size.height * 0.53,
+          child: const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              FeatureLine(
+                icon: 'assets/lock.png',
+                feature:
+                    'Secure storage of medical history, test reports and prescriptions.',
+              ),
+              SizedBox(height: 20.0),
+              FeatureLine(
+                icon: 'assets/profile.png',
+                feature:
+                    'Patients can register themselves easily and make their profile.',
+              ),
+              SizedBox(height: 20.0),
+              FeatureLine(
+                icon: 'assets/calendar.png',
+                feature: 'Customizable medication reminders',
+              ),
+              SizedBox(height: 20.0),
+              FeatureLine(
+                icon: 'assets/code.png',
+                feature: 'Streamlined doctor access to patient records',
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }

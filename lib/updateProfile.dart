@@ -1,18 +1,24 @@
-// ignore_for_file: avoid_print, file_names, library_private_types_in_public_api
+// ignore_for_file: avoid_print, file_names, library_private_types_in_public_api, prefer_typing_uninitialized_variables
+
+import 'dart:io';
 
 import 'package:aap_dev_project/bottomNavigationBar.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
 import 'appDrawer.dart';
 
 class UpdateProfilePage extends StatefulWidget {
-  const UpdateProfilePage({Key? key}) : super(key: key);
+  final DocumentSnapshot user;
+  const UpdateProfilePage({Key? key, required this.user}) : super(key: key);
   @override
   _UpdateProfilePageState createState() => _UpdateProfilePageState();
 }
 
 class _UpdateProfilePageState extends State<UpdateProfilePage> {
+  final ImagePicker _picker = ImagePicker();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final TextEditingController _nameController = TextEditingController();
@@ -24,6 +30,24 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
   final TextEditingController _medicalHistoryController =
       TextEditingController();
   final TextEditingController _imageController = TextEditingController();
+  var snap;
+
+  Future<void> _pickImage(user) async {
+    final XFile? pickedFile =
+        await _picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      Reference storageReference =
+          FirebaseStorage.instance.ref().child('user_images/${user.uid}');
+      TaskSnapshot uploadTask =
+          await storageReference.putFile(File(pickedFile.path));
+      String imageUrl = await uploadTask.ref.getDownloadURL();
+      // Update the image controller text and setState to rebuild UI
+      setState(() {
+        _imageController.text = imageUrl;
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -32,8 +56,6 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
   }
 
   Future<void> _getUserProfile() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: "auroobaparker@gmail.com", password: "aaaaiibbaa");
     print("Signed in");
     User? user = _auth.currentUser;
     if (user != null) {
@@ -41,7 +63,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
       try {
         DocumentSnapshot snapshot =
             await _firestore.collection('users').doc(user.uid).get();
-
+        snap = snapshot;
         print(snapshot.data());
         if (snapshot.exists) {
           setState(() {
@@ -84,6 +106,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
         print("Error updating user profile: $e");
       }
     }
+    _getUserProfile();
   }
 
   @override
@@ -113,15 +136,38 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                                 color: Colors.white,
                               ),
                               child: ClipOval(
-                                child: Image.network(
-                                  _imageController.text,
-                                  fit: BoxFit.cover,
-                                  width: 100,
-                                  height: 100,
-                                ),
+                                  child: Container(
+                                decoration: _imageController.text.isEmpty
+                                    ? const BoxDecoration(
+                                        image: DecorationImage(
+                                          image:
+                                              AssetImage("assets/profile.png"),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      )
+                                    : null, // Set to null if there's no decoration
+                                child: _imageController.text.isEmpty
+                                    ? null // No child if using decoration
+                                    : Image.network(
+                                        _imageController.text,
+                                        fit: BoxFit.cover,
+                                        width: 100,
+                                        height: 100,
+                                      ),
+                              )),
+                            ),
+                            GestureDetector(
+                              onTap: () async {
+                                await _pickImage(_auth.currentUser);
+                              },
+                              child: const Stack(
+                                alignment: Alignment.bottomRight,
+                                children: [
+                                  // ... (your existing container and image code)
+                                  Icon(Icons.camera_alt),
+                                ],
                               ),
                             ),
-                            const Icon(Icons.camera_alt),
                           ],
                         ),
                       ],
@@ -288,6 +334,6 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
         extendBody: true,
         backgroundColor: Colors.transparent,
         bottomNavigationBar: BaseMenuBar(),
-        drawer: const CustomDrawer());
+        drawer: CustomDrawer(user: snap));
   }
 }

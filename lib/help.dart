@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print, prefer_interpolation_to_compose_strings, library_private_types_in_public_api, use_build_context_synchronously
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
@@ -28,8 +29,9 @@ Future<void> sendEmail(String userEmail, String userRequest) async {
 
 class HelpPage extends StatefulWidget {
   final String emailAdress;
+  final DocumentSnapshot user;
 
-  const HelpPage({super.key, required this.emailAdress});
+  const HelpPage({super.key, required this.emailAdress, required this.user});
   @override
   _HelpPageState createState() => _HelpPageState();
 }
@@ -49,7 +51,7 @@ class _HelpPageState extends State<HelpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         bottomNavigationBar: BaseMenuBar(),
-        drawer: const CustomDrawer(),
+        drawer: CustomDrawer(user: widget.user),
         body: SingleChildScrollView(
             child: Column(
           children: [

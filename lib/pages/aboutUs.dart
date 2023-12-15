@@ -1,12 +1,12 @@
 // ignore_for_file: file_names, library_private_types_in_public_api, sized_box_for_whitespace
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:aap_dev_project/models/user.dart';
 import 'package:flutter/material.dart';
 import 'bottomNavigationBar.dart';
 import 'appDrawer.dart';
 
 class AboutUsPage extends StatefulWidget {
-  final DocumentSnapshot user;
+  final UserProfile user;
 
   const AboutUsPage({Key? key, required this.user}) : super(key: key);
 
@@ -19,7 +19,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: const AboutUsContent(),
-      drawer: CustomDrawer(user: widget.user),
+      drawer: const CustomDrawer(),
       bottomNavigationBar: BaseMenuBar(),
     );
   }

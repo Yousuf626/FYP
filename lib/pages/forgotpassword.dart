@@ -1,6 +1,6 @@
 // ignore_for_file: unused_import, unused_catch_clause, library_private_types_in_public_api, sort_child_properties_last
 
-import 'package:aap_dev_project/authentication.dart';
+import 'package:aap_dev_project/pages/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -20,10 +20,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   Future<void> resetPassword(String email) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);
-      // Show a message that the email has been sent
-    } on FirebaseAuthException catch (e) {
-      // Handle errors, show a message to the user
-    }
+    } on FirebaseAuthException catch (e) {}
   }
 
   @override
@@ -32,7 +29,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       appBar: AppBar(
         leading: const BackButton(color: Colors.black), // Back button
         backgroundColor: Colors.white,
-        elevation: 0, // Remove shadow
+        elevation: 0,
       ),
       backgroundColor: Colors.white,
       body: Padding(
@@ -90,10 +87,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 const Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    // ... rest of your widgets ...
-                    // Remove the button from here
-                  ],
+                  children: <Widget>[],
                 ),
                 Align(
                   alignment: Alignment.bottomCenter,

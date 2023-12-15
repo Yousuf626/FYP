@@ -1,6 +1,6 @@
 // ignore_for_file: file_names, unused_import, use_key_in_widget_constructors, library_private_types_in_public_api, use_build_context_synchronously, avoid_print, sized_box_for_whitespace, sort_child_properties_last, deprecated_member_use
 
-import 'package:aap_dev_project/authentication.dart';
+import 'package:aap_dev_project/pages/authentication.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +9,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:aap_dev_project/dashboard.dart';
-
-// import 'login_screen.dart'; // Make sure to import your login screen
+import 'package:aap_dev_project/pages/dashboard.dart';
 
 class RegistrationScreen extends StatefulWidget {
   @override
@@ -52,8 +50,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   void _registerGoogleUser(userCredential) async {
     try {
-      // Registration successful
-      print("byeeeeeeeeeeeeeee");
       print(userCredential.user!.uid);
       await FirebaseFirestore.instance
           .collection('users')
@@ -71,7 +67,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const DashboardApp()),
+        MaterialPageRoute(builder: (context) => DashboardApp()),
       );
 
       // You might want to navigate the user to a different screen after successful registration
@@ -174,7 +170,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         child: socialButton(FontAwesomeIcons.google, () async {
                           try {
                             final userCredential = await signInWithGoogle();
-                            print("hiiiiiiiiiiiiiiiiiiiiiiiii");
                             print(userCredential?.user?.uid);
                             if (userCredential != null) {
                               _registerGoogleUser(userCredential);
@@ -319,7 +314,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const DashboardApp()),
+        MaterialPageRoute(builder: (context) => DashboardApp()),
       );
 
       // You might want to navigate the user to a different screen after successful registration

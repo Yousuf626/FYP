@@ -65,7 +65,7 @@ class BaseMenuBar extends StatelessWidget {
       case 1:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const DashboardApp()),
+          MaterialPageRoute(builder: (context) => DashboardApp()),
         );
         break;
       case 2:

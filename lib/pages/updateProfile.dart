@@ -2,7 +2,8 @@
 
 import 'dart:io';
 
-import 'package:aap_dev_project/bottomNavigationBar.dart';
+import 'package:aap_dev_project/models/user.dart';
+import 'package:aap_dev_project/pages/bottomNavigationBar.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,7 +12,7 @@ import 'package:image_picker/image_picker.dart';
 import 'appDrawer.dart';
 
 class UpdateProfilePage extends StatefulWidget {
-  final DocumentSnapshot user;
+  final UserProfile user;
   const UpdateProfilePage({Key? key, required this.user}) : super(key: key);
   @override
   _UpdateProfilePageState createState() => _UpdateProfilePageState();

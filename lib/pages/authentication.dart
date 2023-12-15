@@ -1,15 +1,15 @@
 // ignore_for_file: unused_import, unused_local_variable, unnecessary_import, deprecated_member_use, library_private_types_in_public_api, avoid_unnecessary_containers, use_build_context_synchronously, avoid_print
 
-import 'package:aap_dev_project/Medicine.dart';
-import 'package:aap_dev_project/forgotpassword.dart';
+import 'package:aap_dev_project/pages/Medicine.dart';
+import 'package:aap_dev_project/pages/forgotpassword.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/services.dart';
-import 'firebase_options.dart';
-import 'package:aap_dev_project/Register.dart';
+import '../firebase/firebase_options.dart';
+import 'package:aap_dev_project/pages/Register.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'dashboard.dart';
 
@@ -19,7 +19,7 @@ class Authentication extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (FirebaseAuth.instance.currentUser != null) {
-      return const DashboardApp();
+      return DashboardApp();
     }
 
     return Scaffold(
@@ -228,8 +228,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       // Navigate to MedicineScreen
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => const DashboardApp()),
+                        MaterialPageRoute(builder: (context) => DashboardApp()),
                       );
                     } on FirebaseAuthException catch (e) {
                       // Update status message on error
@@ -295,8 +294,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          const DashboardApp()),
+                                      builder: (context) => DashboardApp()),
                                 );
                               }
                             } catch (e) {

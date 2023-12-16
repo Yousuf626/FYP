@@ -1,3 +1,4 @@
+import 'package:aap_dev_project/models/report.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class RecordEvent extends Equatable {
@@ -9,4 +10,13 @@ class FetchRecord extends RecordEvent {
 
   @override
   List<Object?> get props => throw UnimplementedError();
+}
+
+class SetRecord extends RecordEvent {
+  final UserReport report;
+
+  SetRecord({required this.report});
+
+  @override
+  List<Object> get props => [report];
 }

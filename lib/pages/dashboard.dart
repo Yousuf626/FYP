@@ -5,6 +5,7 @@ import 'package:aap_dev_project/bloc/user/user_event.dart';
 import 'package:aap_dev_project/bloc/user/user_states.dart';
 import 'package:aap_dev_project/core/repository/user_repo.dart';
 import 'package:aap_dev_project/pages/Medicine.dart';
+import 'package:aap_dev_project/pages/addMedicalRecord.dart';
 import 'package:aap_dev_project/pages/viewMedicalRecords.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,6 +26,11 @@ class DashboardApp extends StatelessWidget {
     return MaterialApp(
       title: 'Dashboard Example',
       home: DashboardScreen(userRepository: userRepository),
+      theme: ThemeData(
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: Colors.transparent,
+        ),
+      ),
     );
   }
 }
@@ -140,7 +146,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             height: 80,
                             width: double.infinity,
                             child: ElevatedButton.icon(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const AddReport()));
+                              },
                               label: const Text(
                                 'Add Medical Records',
                                 style: TextStyle(fontSize: 22),
@@ -167,7 +179,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => MedqrPage()));
+                                          builder: (context) =>
+                                              const MedqrPage()));
                                 },
                                 style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
@@ -196,7 +209,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => ViewRecords()),
+                                        builder: (context) =>
+                                            const ViewRecords()),
                                   );
                                 },
                                 label: const Text('View Medical Records',

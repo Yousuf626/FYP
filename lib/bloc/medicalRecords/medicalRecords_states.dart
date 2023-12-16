@@ -18,3 +18,13 @@ class RecordError extends RecordState {
   final String? errorMsg;
   RecordError({this.errorMsg});
 }
+
+class RecordSetting extends RecordState {} // New state for setting a record
+
+class RecordSetSuccess
+    extends RecordState {} // New state for successful record setting
+
+class RecordSetError extends RecordState {
+  final String? errorMsg;
+  RecordSetError({this.errorMsg});
+}

@@ -26,4 +26,24 @@ class MedicalRecordsRepository {
     }
     return [];
   }
+
+  Future<List<UserReport>> uploadUserRecords(UserReport uploadedReport) async {
+    User? user = _auth.currentUser;
+
+    DocumentSnapshot snapshot =
+        await _firestore.collection('medicalRecords').doc(user?.uid).get();
+    if (snapshot.exists) {
+      List<dynamic>? reportData =
+          (snapshot.data() as Map<String, dynamic>?)?['records'];
+      List<UserReport> userReports = reportData!
+          .map((report) => UserReport.fromJson(report as Map<String, dynamic>))
+          .toList();
+      userReports.add(uploadedReport);
+      await _firestore
+          .collection('medicalRecords')
+          .doc(user?.uid)
+          .update({'records': userReports.map((e) => e.toJson()).toList()});
+    }
+    return [];
+  }
 }

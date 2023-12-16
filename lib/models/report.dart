@@ -10,11 +10,10 @@ class UserReport {
   });
 
   factory UserReport.fromJson(Map<String, dynamic> json) {
-    DateTime dateTime = json['time'].toDate();
     return UserReport(
         type: json['type'] ?? '',
         image: json['image'] ?? '',
-        createdAt: '${dateTime.year}/${dateTime.month}/${dateTime.day}');
+        createdAt: json['createdAt'] ?? '');
   }
 
   Map<String, dynamic> toJson() {

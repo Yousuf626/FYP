@@ -3,6 +3,7 @@ import 'package:aap_dev_project/bloc/medicalRecords/medicalRecords_block.dart';
 import 'package:aap_dev_project/bloc/medicalRecords/medicalRecords_event.dart';
 import 'package:aap_dev_project/bloc/medicalRecords/medicalRecords_states.dart';
 import 'package:aap_dev_project/core/repository/medicalRecords_repo.dart';
+import 'package:aap_dev_project/pages/reportDisplay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'bottomNavigationBar.dart';
@@ -41,8 +42,6 @@ class _ViewRecordsState extends State<ViewRecords> {
                 return const Center(child: CircularProgressIndicator());
               }
               if (state is RecordLoaded) {
-                print(state.records.length);
-                print(state.records[0].type);
                 return Column(children: [
                   Container(
                     padding: const EdgeInsets.all(16.0),
@@ -66,56 +65,62 @@ class _ViewRecordsState extends State<ViewRecords> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20.0),
                   Expanded(
-                    child: ListView.builder(
-                      itemCount: state.records.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final record = state.records[index];
-                        return GestureDetector(
-                          onTap: () {
-                            // Handle opening the medical record on a new page
-                            // You can navigate or perform an action here
+                    child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 30),
+                        child: ListView.builder(
+                          itemCount: state.records.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final record = state.records[index];
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ViewReport(
+                                          report: state.records[index])),
+                                );
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(
+                                    vertical: 8.0, horizontal: 16.0),
+                                padding: const EdgeInsets.all(12.0),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFCCE7E8),
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Colors.black12,
+                                      offset: Offset(0, 4),
+                                      blurRadius: 1.0,
+                                    )
+                                  ],
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      record.type,
+                                      style: const TextStyle(
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFF01888B),
+                                      ),
+                                    ),
+                                    Text(
+                                      record.createdAt.toString(),
+                                      style: const TextStyle(
+                                        fontSize: 14.0,
+                                        color: Color(0xFF01888B),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
                           },
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(
-                                vertical: 8.0, horizontal: 16.0),
-                            padding: const EdgeInsets.all(12.0),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFCCE7E8),
-                              borderRadius: BorderRadius.circular(20.0),
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Colors.black12,
-                                  offset: Offset(0, 4),
-                                  blurRadius: 1.0,
-                                )
-                              ],
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  record.type,
-                                  style: const TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFF01888B),
-                                  ),
-                                ),
-                                Text(
-                                  record.createdAt.toString(),
-                                  style: const TextStyle(
-                                    fontSize: 14.0,
-                                    color: Color(0xFF01888B),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
+                        )),
                   )
                 ]);
               }
@@ -130,46 +135,5 @@ class _ViewRecordsState extends State<ViewRecords> {
   void dispose() {
     _recordsBloc.close();
     super.dispose();
-  }
-}
-
-class FeatureLine extends StatelessWidget {
-  final String icon;
-  final String feature;
-
-  const FeatureLine({
-    Key? key,
-    required this.icon,
-    required this.feature,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Image.asset(icon, height: 50.0, width: 50.0),
-          const SizedBox(width: 10.0),
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15.0),
-                border: Border.all(color: Colors.grey),
-              ),
-              child: Text(
-                feature,
-                style: const TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }

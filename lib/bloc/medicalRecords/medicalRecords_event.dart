@@ -6,10 +6,11 @@ abstract class RecordEvent extends Equatable {
 }
 
 class FetchRecord extends RecordEvent {
-  const FetchRecord() : super();
+  final String userid;
+  const FetchRecord({required this.userid});
 
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [userid];
 }
 
 class SetRecord extends RecordEvent {

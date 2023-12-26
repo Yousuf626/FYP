@@ -72,7 +72,7 @@ class BaseMenuBar extends StatelessWidget {
       case 2:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ShareRecords()),
+          MaterialPageRoute(builder: (context) => const ShareRecords()),
         );
         break;
     }

@@ -11,8 +11,11 @@ class RecordShareBloc extends Bloc<RecordEvent, RecordState> {
     on<FetchRecord>((event, emit) async {
       await _getRecord(emit);
     });
-    on<SetRecord>((event, emit) async {
-      await _setRecord(emit);
+    on<AddRecord>((event, emit) async {
+      await _addRecord(emit, event.code);
+    });
+    on<RemoveRecord>((event, emit) async {
+      await _removeRecord(emit);
     });
   }
 
@@ -27,11 +30,22 @@ class RecordShareBloc extends Bloc<RecordEvent, RecordState> {
     }
   }
 
-  Future<void> _setRecord(Emitter<RecordState> emit) async {
+  Future<void> _removeRecord(Emitter<RecordState> emit) async {
     emit(RecordSetting());
 
     try {
       await recordsRepository.removerUserFromShared();
+      emit(RecordSetSuccess());
+    } catch (e) {
+      emit(RecordSetError(errorMsg: e.toString()));
+    }
+  }
+
+  Future<void> _addRecord(Emitter<RecordState> emit, String code) async {
+    emit(RecordSetting());
+
+    try {
+      await recordsRepository.addUserToShared(code);
       emit(RecordSetSuccess());
     } catch (e) {
       emit(RecordSetError(errorMsg: e.toString()));

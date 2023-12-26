@@ -10,14 +10,14 @@ class ExampleAlarmRingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF01888B),
+      backgroundColor: const Color(0xFF01888B),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(20.0),
               child: Text(
                 "It's time to take ${alarmSettings.notificationBody}!",
                 textAlign: TextAlign.center,
@@ -51,10 +51,10 @@ class ExampleAlarmRingScreen extends StatelessWidget {
                   },
                   style: ElevatedButton.styleFrom(
                     primary: Colors.white,
-                    onPrimary: Color(0xFF01888B),
+                    onPrimary: const Color(0xFF01888B),
                   ),
-                  icon: Icon(Icons.snooze, color: Color(0xFF01888B)),
-                  label: Text(
+                  icon: const Icon(Icons.snooze, color: Color(0xFF01888B)),
+                  label: const Text(
                     "Snooze",
                     style: TextStyle(
                       color: Color(0xFF01888B),
@@ -69,10 +69,10 @@ class ExampleAlarmRingScreen extends StatelessWidget {
                   },
                   style: ElevatedButton.styleFrom(
                     primary: Colors.white,
-                    onPrimary: Color(0xFF01888B),
+                    onPrimary: const Color(0xFF01888B),
                   ),
-                  icon: Icon(Icons.stop, color: Color(0xFF01888B)),
-                  label: Text(
+                  icon: const Icon(Icons.stop, color: Color(0xFF01888B)),
+                  label: const Text(
                     "Stop",
                     style: TextStyle(
                       color: Color(0xFF01888B),

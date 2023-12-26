@@ -210,8 +210,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            const ViewRecords()),
+                                        builder: (context) => ViewRecords(
+                                              userid: '',
+                                            )),
                                   );
                                 },
                                 label: const Text('View Medical Records',

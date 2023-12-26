@@ -204,8 +204,12 @@ class DisplaySelectedImage extends StatelessWidget {
               }
               if (state is RecordSetSuccess) {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (_) => const ViewRecords()));
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => ViewRecords(
+                                userid: '',
+                              )));
                 });
               }
               return SingleChildScrollView(

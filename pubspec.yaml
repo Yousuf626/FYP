@@ -50,6 +50,7 @@ dependencies:
   timezone: ^0.8.0
   alarm: ^3.0.2
   permission_handler: ^10.4.0
+  firebase_app_check: ^0.2.1+8
   
 dev_dependencies:
   flutter_test:

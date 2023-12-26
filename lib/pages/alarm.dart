@@ -302,10 +302,10 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
               ),
             ),
           ),
-          CircleAvatar(
+          const CircleAvatar(
             radius: 30.0,
             backgroundColor: Color(0xFF01888B),
-            child: const Icon(
+            child: Icon(
               size: 30.0,
               Icons.alarm_add,
               color: Colors.white,

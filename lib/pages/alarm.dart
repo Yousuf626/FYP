@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:aap_dev_project/pages/Medicine.dart';
 import 'package:aap_dev_project/pages/alarmScreen.dart';
 import 'package:aap_dev_project/pages/appDrawer.dart';
 import 'package:aap_dev_project/pages/bottomNavigationBar.dart';
@@ -33,7 +34,7 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
     );
   }
 
-  TimeOfDay showNextRingTime(AlarmInfo alarm) {
+  TimeOfDay showNextRingTime(AlarmInfoR alarm) {
     final currentTime = TimeOfDay.now();
     const minutesInDay = 24 * 60;
     final currentMinutes = currentTime.hour * 60 + currentTime.minute;
@@ -77,25 +78,25 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
     }
   }
 
-  List<AlarmInfo> alarmsList = [
-    AlarmInfo(
+  List<AlarmInfoR> alarmsList = [
+    AlarmInfoR(
       name: 'Risek',
       ringCount: 3,
       isActive: true,
     ),
-    AlarmInfo(
+    AlarmInfoR(
       name: 'Panadol',
       ringCount: 450,
       isActive: true,
     ),
-    AlarmInfo(
+    AlarmInfoR(
       name: 'Risek',
       ringCount: 3,
       isActive: true,
     ),
   ];
 
-  DateTime calculateNextRingTime(AlarmInfo alarm) {
+  DateTime calculateNextRingTime(AlarmInfoR alarm) {
     final currentTime = DateTime.now();
     const minutesInDay = 24 * 60;
     final currentMinutes = currentTime.hour * 60 + currentTime.minute;
@@ -156,7 +157,7 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
     }
   }
 
-  Widget buildAlarmCard(AlarmInfo alarm) {
+  Widget buildAlarmCard(AlarmInfoR alarm) {
     return Card(
       color: const Color(0xFF01888B),
       elevation: 4.0,
@@ -303,26 +304,34 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
             ),
           ),
           CircleAvatar(
-            radius: 30.0,
-            backgroundColor: Color(0xFF01888B),
-            child: const Icon(
-              size: 30.0,
-              Icons.alarm_add,
-              color: Colors.white,
-            ),
-          ),
+  radius: 30.0,
+  backgroundColor: Color(0xFF01888B),
+  child: IconButton(
+    icon: const Icon(
+      Icons.alarm_add,
+      size: 30.0,
+      color: Colors.white,
+    ),
+     onPressed: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => MedqrPage()), // Replace MedQrPage with your destination widget
+      );
+    },
+  ),
+),
         ],
       ),
     );
   }
 }
 
-class AlarmInfo {
+class AlarmInfoR {
   String name;
   int ringCount;
   bool isActive;
 
-  AlarmInfo({
+  AlarmInfoR({
     required this.name,
     required this.ringCount,
     required this.isActive,

@@ -1,4 +1,5 @@
 // ignore_for_file: duplicate_import, unused_import
+import 'package:aap_dev_project/pages/Medicine.dart';
 import 'package:aap_dev_project/pages/authentication.dart';
 import 'package:aap_dev_project/firebase/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -19,12 +20,15 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+  
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      //  routes: {
+      //  '/medqrpage': (context) => MedqrPage(),},
       theme: ThemeData(
         // This is the theme of your application.
         //

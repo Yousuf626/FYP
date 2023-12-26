@@ -4,7 +4,6 @@ import 'package:aap_dev_project/bloc/user/user_block.dart';
 import 'package:aap_dev_project/bloc/user/user_event.dart';
 import 'package:aap_dev_project/bloc/user/user_states.dart';
 import 'package:aap_dev_project/core/repository/user_repo.dart';
-import 'package:aap_dev_project/pages/Medicine.dart';
 import 'package:aap_dev_project/pages/addMedicalRecord.dart';
 import 'package:aap_dev_project/pages/alarm.dart';
 import 'package:aap_dev_project/pages/viewMedicalRecords.dart';

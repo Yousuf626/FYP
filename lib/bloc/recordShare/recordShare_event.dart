@@ -13,11 +13,18 @@ class FetchRecord extends RecordEvent {
   List<Object?> get props => throw UnimplementedError();
 }
 
-class SetRecord extends RecordEvent {
-  final UserSharing shared;
+class AddRecord extends RecordEvent {
+  final String code;
 
-  SetRecord({required this.shared});
+  AddRecord({required this.code});
 
   @override
-  List<Object> get props => [shared];
+  List<Object> get props => [code];
+}
+
+class RemoveRecord extends RecordEvent {
+  RemoveRecord();
+
+  @override
+  List<Object> get props => [];
 }

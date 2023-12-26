@@ -1,4 +1,5 @@
 import 'package:aap_dev_project/models/userSharing.dart';
+import 'package:aap_dev_project/pages/shareRecords.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -37,6 +38,37 @@ class RecordsSharingRepository {
               UserSharing.fromJson(records as Map<String, dynamic>))
           .toList();
       userRecords.removeWhere((users) => users.userid == user?.uid);
+      await _firestore.collection('recordSharing').doc('efg').update(
+          {'currentlySharing': userRecords.map((e) => e.toJson()).toList()});
+    }
+    return [];
+  }
+
+  Future<List<UserSharing>> addUserToShared(String code) async {
+    print("hi");
+    print(code);
+    User? user = _auth.currentUser;
+
+    DocumentSnapshot snapshot =
+        await _firestore.collection('recordSharing').doc('efg').get();
+    if (snapshot.exists) {
+      List<dynamic>? sharedData =
+          (snapshot.data() as Map<String, dynamic>?)?['currentlySharing'];
+      List<UserSharing> userRecords = sharedData!
+          .map((records) =>
+              UserSharing.fromJson(records as Map<String, dynamic>))
+          .toList();
+      int existingIndex =
+          userRecords.indexWhere((users) => users.userid == user!.uid);
+      if (existingIndex != -1) {
+        // Replace the existing item with the new one
+        userRecords[existingIndex] = UserSharing(code: code, userid: user!.uid);
+      } else {
+        // If no matching userid found, add the new item
+        userRecords.add(UserSharing(code: code, userid: user!.uid));
+      }
+      print(userRecords.length);
+
       await _firestore.collection('recordSharing').doc('efg').update(
           {'currentlySharing': userRecords.map((e) => e.toJson()).toList()});
     }

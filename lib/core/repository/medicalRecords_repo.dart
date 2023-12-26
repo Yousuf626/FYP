@@ -6,11 +6,13 @@ class MedicalRecordsRepository {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<List<UserReport>> getUserRecords() async {
+  Future<List<UserReport>> getUserRecords(String userid) async {
     User? user = _auth.currentUser;
 
-    DocumentSnapshot snapshot =
-        await _firestore.collection('medicalRecords').doc(user?.uid).get();
+    DocumentSnapshot snapshot = await _firestore
+        .collection('medicalRecords')
+        .doc(userid != '' ? userid : user?.uid)
+        .get();
     if (snapshot.exists) {
       // Assuming 'reports' is the field containing a list of reports in your document
       List<dynamic>? reportData =
@@ -35,14 +37,20 @@ class MedicalRecordsRepository {
     if (snapshot.exists) {
       List<dynamic>? reportData =
           (snapshot.data() as Map<String, dynamic>?)?['records'];
+      print(reportData?.length);
       List<UserReport> userReports = reportData!
           .map((report) => UserReport.fromJson(report as Map<String, dynamic>))
           .toList();
       userReports.add(uploadedReport);
+      print(userReports?.length);
       await _firestore
           .collection('medicalRecords')
           .doc(user?.uid)
           .update({'records': userReports.map((e) => e.toJson()).toList()});
+    } else {
+      await _firestore.collection('medicalRecords').doc(user?.uid).set({
+        'records': [uploadedReport.toJson()]
+      });
     }
     return [];
   }

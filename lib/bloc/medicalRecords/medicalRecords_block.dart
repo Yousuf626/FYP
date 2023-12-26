@@ -10,17 +10,18 @@ class MedicalRecordsBloc extends Bloc<RecordEvent, RecordState> {
   MedicalRecordsBloc({required this.recordsRepository})
       : super(RecordLoading()) {
     on<FetchRecord>((event, emit) async {
-      await _getRecord(emit);
+      await _getRecord(event.userid, emit);
     });
     on<SetRecord>((event, emit) async {
       await _setRecord(event.report, emit);
     });
   }
 
-  Future<void> _getRecord(Emitter<RecordState> emit) async {
+  Future<void> _getRecord(String userid, Emitter<RecordState> emit) async {
     emit(RecordLoading());
     try {
-      final List<UserReport> records = await recordsRepository.getUserRecords();
+      final List<UserReport> records =
+          await recordsRepository.getUserRecords(userid);
       emit(RecordLoaded(records: records));
     } catch (e) {
       emit(RecordError(errorMsg: e.toString()));

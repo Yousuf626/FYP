@@ -303,23 +303,15 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
               ),
             ),
           ),
-          CircleAvatar(
-  radius: 30.0,
-  backgroundColor: Color(0xFF01888B),
-  child: IconButton(
-    icon: const Icon(
-      Icons.alarm_add,
-      size: 30.0,
-      color: Colors.white,
-    ),
-     onPressed: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => MedqrPage()), // Replace MedQrPage with your destination widget
-      );
-    },
-  ),
-),
+          const CircleAvatar(
+            radius: 30.0,
+            backgroundColor: Color(0xFF01888B),
+            child: Icon(
+              size: 30.0,
+              Icons.alarm_add,
+              color: Colors.white,
+            ),
+          ),
         ],
       ),
     );

@@ -10,7 +10,8 @@ import 'bottomNavigationBar.dart';
 import 'appDrawer.dart';
 
 class ViewRecords extends StatefulWidget {
-  const ViewRecords({Key? key}) : super(key: key);
+  const ViewRecords({Key? key, required this.userid}) : super(key: key);
+  final String userid;
 
   @override
   _ViewRecordsState createState() => _ViewRecordsState();
@@ -24,7 +25,7 @@ class _ViewRecordsState extends State<ViewRecords> {
   void initState() {
     super.initState();
     _recordsBloc = MedicalRecordsBloc(recordsRepository: recordsRepository);
-    _recordsBloc.add(const FetchRecord());
+    _recordsBloc.add(FetchRecord(userid: widget.userid));
   }
 
   @override

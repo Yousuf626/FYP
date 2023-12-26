@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 
+import 'package:aap_dev_project/pages/shareRecords.dart';
 import 'package:flutter/material.dart';
 import 'dashboard.dart';
 
@@ -69,6 +70,10 @@ class BaseMenuBar extends StatelessWidget {
         );
         break;
       case 2:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ShareRecords()),
+        );
         break;
     }
   }

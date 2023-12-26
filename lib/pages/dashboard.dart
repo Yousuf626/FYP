@@ -6,6 +6,7 @@ import 'package:aap_dev_project/bloc/user/user_states.dart';
 import 'package:aap_dev_project/core/repository/user_repo.dart';
 import 'package:aap_dev_project/pages/Medicine.dart';
 import 'package:aap_dev_project/pages/addMedicalRecord.dart';
+import 'package:aap_dev_project/pages/alarm.dart';
 import 'package:aap_dev_project/pages/viewMedicalRecords.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,7 +28,7 @@ class DashboardApp extends StatelessWidget {
       title: 'Dashboard Example',
       home: DashboardScreen(userRepository: userRepository),
       theme: ThemeData(
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           backgroundColor: Colors.transparent,
         ),
       ),
@@ -180,7 +181,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              const MedqrPage()));
+                                              const AlarmHomeScreen()));
                                 },
                                 style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(

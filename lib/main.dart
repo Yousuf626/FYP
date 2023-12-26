@@ -1,5 +1,4 @@
 // ignore_for_file: duplicate_import, unused_import
-
 import 'package:aap_dev_project/pages/authentication.dart';
 import 'package:aap_dev_project/firebase/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -7,12 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase/firebase_options.dart';
 import 'pages/dashboard.dart';
+import 'package:alarm/alarm.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await Alarm.init(showDebugLogs: true);
   runApp(const MyApp());
 }
 
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           backgroundColor: Colors.transparent,
         ),
       ),

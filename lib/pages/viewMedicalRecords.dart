@@ -67,7 +67,7 @@ class _ViewRecordsState extends State<ViewRecords> {
                   ),
                   Expanded(
                     child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 30),
+                        padding: const EdgeInsets.symmetric(vertical: 30),
                         child: ListView.builder(
                           itemCount: state.records.length,
                           itemBuilder: (BuildContext context, int index) {

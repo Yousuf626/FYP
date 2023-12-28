@@ -2,6 +2,7 @@
 
 import 'package:aap_dev_project/bloc/alarm/alarm_bloc.dart';
 import 'package:aap_dev_project/bloc/alarm/alarm_event.dart';
+import 'package:aap_dev_project/bloc/alarm/alarm_state.dart';
 import 'package:aap_dev_project/core/repository/alarm_repo.dart';
 import 'package:aap_dev_project/pages/alarm.dart';
 import 'package:aap_dev_project/pages/appDrawer.dart';
@@ -173,8 +174,8 @@ class _MedicineScreenState extends State<MedicineScreen> {
 
     print('lol');
 
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (_) => AlarmHomeScreen()));
+    // Navigator.pushReplacement(
+    //     context, MaterialPageRoute(builder: (_) => AlarmHomeScreen()));
   }
 
   Future<void> _selectTime(BuildContext context) async {
@@ -283,6 +284,30 @@ class _MedicineScreenState extends State<MedicineScreen> {
                             Text('Select First Dosage Time')
                           ]))),
               SizedBox(height: 20),
+              BlocBuilder<AlarmBloc, AlarmState>(
+                builder: (context, state) {
+                  if (state is AlarmLoading) {
+                    return CircularProgressIndicator();
+                  } else if (state is AlarmSetSuccess) {
+                    // If the alarm is set successfully, navigate to the AlarmScreen
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              const AlarmHomeScreen(), // Remove BlocProvider here
+                        ),
+                      );
+                    });
+                    // Return a container to avoid returning null
+                    return Container();
+                  } else if (state is AlarmSetError) {
+                    return Text('Error: ${state.errorMsg}');
+                  }
+                  // By default, show an empty container
+                  return Container();
+                },
+              ),
               ElevatedButton(
                 onPressed: () {
                   setAlarm();

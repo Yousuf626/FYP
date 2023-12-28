@@ -1,10 +1,13 @@
 // ignore_for_file: duplicate_import, unused_import
+import 'package:aap_dev_project/bloc/alarm/alarm_bloc.dart';
+import 'package:aap_dev_project/core/repository/alarm_repo.dart';
 import 'package:aap_dev_project/pages/Medicine.dart';
 import 'package:aap_dev_project/pages/authentication.dart';
 import 'package:aap_dev_project/firebase/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'firebase/firebase_options.dart';
 import 'pages/dashboard.dart';
 import 'package:alarm/alarm.dart';
@@ -15,12 +18,16 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await Alarm.init(showDebugLogs: true);
-  runApp(const MyApp());
+  runApp(
+    BlocProvider<AlarmBloc>(
+      create: (context) => AlarmBloc(alarmRepository: AlarmRepository()),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-  
 
   // This widget is the root of your application.
   @override

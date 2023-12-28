@@ -26,7 +26,6 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
   final AlarmRepository alarmRepository = AlarmRepository();
   late AlarmBloc _alarmBloc;
   static StreamSubscription<AlarmSettings>? subscription;
-  StreamSubscription? _alarmSubscription;
 
   @override
   void initState() {
@@ -37,11 +36,12 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
       checkAndroidNotificationPermission();
       checkAndroidExternalStoragePermission();
     }
+    _alarmBloc.stream.listen((state) {
+      if (state is AlarmLoaded) {
+        scheduleNextRingTime(state.alarms);
+      }
+    });
     loadAlarms();
-    scheduleNextRingTime(alarms);
-    subscription ??= Alarm.ringStream.stream.listen(
-      (alarmSettings) => navigateToRingScreen(alarmSettings),
-    );
   }
 
   String getNextClosestAlarmTime(AlarmInformation alarmItem) {
@@ -81,6 +81,7 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
             notificationBody: '${alarmItem.name} ',
             enableNotificationOnKill: true,
           );
+          print(alarmSettings.dateTime);
           await Alarm.set(alarmSettings: alarmSettings);
         }
       }
@@ -96,7 +97,6 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
       alarmTimes.add(nextAlarmTime);
     }
 
-    print(alarmTimes);
     return alarmTimes;
   }
 
@@ -108,6 +108,7 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
   }
 
   Future<void> navigateToRingScreen(AlarmSettings alarmSettings) async {
+    print("Alarm Settings");
     await Navigator.push(
         context,
         MaterialPageRoute(
@@ -309,11 +310,7 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
             return Center(
                 child: Text(state.errorMsg ?? 'No error message available'));
           } else if (state is AlarmDeletedSuccess) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AlarmHomeScreen(),
-                ));
+            _alarmBloc.add(FetchAlarm());
           } else if (state is AlarmSetting) {
             print("JOKLKLK");
             const Center();

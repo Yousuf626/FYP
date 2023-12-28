@@ -39,12 +39,21 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
     _alarmBloc.stream.listen((state) {
       if (state is AlarmLoaded) {
         scheduleNextRingTime(state.alarms);
+        loadAlarms();
+        Alarm.ringStream.stream.listen(
+          (alarmSettings) => {
+            print("hi"),
+            print(alarmSettings.dateTime),
+            print("bye"),
+            print(DateTime.now()),
+            DateTime.now().difference(alarmSettings.dateTime).abs() <=
+                    Duration(seconds: 30)
+                ? navigateToRingScreen(alarmSettings)
+                : Alarm.stop(alarmSettings.id)
+          },
+        );
       }
     });
-    loadAlarms();
-    subscription ??= Alarm.ringStream.stream.listen(
-      (alarmSettings) => navigateToRingScreen(alarmSettings),
-    );
   }
 
   String getNextClosestAlarmTime(AlarmInformation alarmItem) {
@@ -75,15 +84,15 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
           final alarmSettings = AlarmSettings(
             id: index + i + 1,
             dateTime: alarmTimes[i],
+            vibrate: false,
             assetAudioPath: 'assets/tune.mp3',
             loopAudio: true,
-            vibrate: true,
-            volume: 0.8,
             fadeDuration: 3.0,
             notificationTitle: 'Its Time to take your Medicine',
             notificationBody: '${alarmItem.name} ',
             enableNotificationOnKill: true,
           );
+          print("Alarm Settings");
           print(alarmSettings.dateTime);
           await Alarm.set(alarmSettings: alarmSettings);
         }

@@ -12,45 +12,60 @@ class AlarmRepository {
       return [];
     }
 
-    DocumentSnapshot snapshot = await _firestore.collection('alarms').doc(user.uid).get();
+    DocumentSnapshot snapshot =
+        await _firestore.collection('alarms').doc(user.uid).get();
     if (snapshot.exists) {
-      List<dynamic>? alarmData = (snapshot.data() as Map<String, dynamic>?)?['alarmsz'];
+      List<dynamic>? alarmData =
+          (snapshot.data() as Map<String, dynamic>?)?['alarmsz'];
       if (alarmData != null) {
-        return alarmData.map((alarm) => AlarmInformation.fromJson(alarm as Map<String, dynamic>)).toList();
+        return alarmData
+            .map((alarm) =>
+                AlarmInformation.fromJson(alarm as Map<String, dynamic>))
+            .toList();
       }
     }
     return [];
   }
 
-Future<void> uploadUserAlarm(AlarmInformation uploadedAlarm) async {
-  User? user = _auth.currentUser;
-  if (user == null) throw Exception('User not authenticated');
-  print('lollll');
-  DocumentReference docRef = _firestore.collection('alarms').doc(user.uid);
-  await _firestore.runTransaction((transaction) async {
-    DocumentSnapshot snapshot = await transaction.get(docRef);
+  Future<void> uploadUserAlarm(AlarmInformation uploadedAlarm) async {
+    User? user = _auth.currentUser;
+    if (user == null) throw Exception('User not authenticated');
+    print('lollll');
+    DocumentReference docRef = _firestore.collection('alarms').doc(user.uid);
+    await _firestore.runTransaction((transaction) async {
+      DocumentSnapshot snapshot = await transaction.get(docRef);
 
-    if (!snapshot.exists) {
-      transaction.set(docRef, {'alarmsz': [uploadedAlarm.toJson()]});
-      print("asfasfsfa");
-    } else {
-      List<dynamic> existingAlarms = snapshot.get('alarmsz');
-      transaction.update(docRef, {'alarmsz': [...existingAlarms, uploadedAlarm.toJson()]});
-    }
-  });
-}
-
-
+      if (!snapshot.exists) {
+        transaction.set(docRef, {
+          'alarmsz': [uploadedAlarm.toJson()]
+        });
+        print("asfasfsfa");
+      } else {
+        List<dynamic> existingAlarms = snapshot.get('alarmsz');
+        transaction.update(docRef, {
+          'alarmsz': [...existingAlarms, uploadedAlarm.toJson()]
+        });
+      }
+    });
+  }
 
   Future<void> deleteUserAlarm(String alarmId) async {
     User? user = _auth.currentUser;
-    DocumentSnapshot snapshot = await _firestore.collection('alarms').doc(user?.uid).get();
+    DocumentSnapshot snapshot =
+        await _firestore.collection('alarms').doc(user?.uid).get();
     if (snapshot.exists) {
-      List<dynamic>? alarmData = (snapshot.data() as Map<String, dynamic>?)?['alarmsz'];
+      List<dynamic>? alarmData =
+          (snapshot.data() as Map<String, dynamic>?)?['alarmsz'];
       if (alarmData != null) {
-        List<AlarmInformation> userAlarms = alarmData.map((alarm) => AlarmInformation.fromJson(alarm as Map<String, dynamic>)).toList();
+        List<AlarmInformation> userAlarms = alarmData
+            .map((alarm) =>
+                AlarmInformation.fromJson(alarm as Map<String, dynamic>))
+            .toList();
         userAlarms.removeWhere((alarm) => alarm.id == alarmId);
-        await _firestore.collection('alarms').doc(user?.uid).update({'alarmsz': userAlarms.map((e) => e.toJson()).toList()});
+        await _firestore
+            .collection('alarms')
+            .doc(user?.uid)
+            .update({'alarmsz': userAlarms.map((e) => e.toJson()).toList()});
       }
     }
   }

@@ -211,6 +211,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     MaterialPageRoute(
                                         builder: (context) => ViewRecords(
                                               userid: '',
+                                              name: '',
                                             )),
                                   );
                                 },

@@ -21,7 +21,11 @@ class AlarmError extends AlarmState {
 
 class AlarmSetting extends AlarmState {}
 
-class AlarmSetSuccess extends AlarmState {}
+class AlarmSetSuccess extends AlarmState {
+  final List<AlarmInformation> alarms;
+
+  AlarmSetSuccess({required this.alarms}) : super([alarms]);
+}
 
 class AlarmSetError extends AlarmState {
   final String? errorMsg;
@@ -30,7 +34,11 @@ class AlarmSetError extends AlarmState {
 
 class AlarmDeleting extends AlarmState {}
 
-class AlarmDeletedSuccess extends AlarmState {}
+class AlarmDeletedSuccess extends AlarmState {
+  final List<AlarmInformation> alarms;
+
+  AlarmDeletedSuccess({required this.alarms}) : super([alarms]);
+}
 
 class AlarmDeleteError extends AlarmState {
   final String? errorMsg;

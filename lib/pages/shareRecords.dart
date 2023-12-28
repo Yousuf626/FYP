@@ -57,7 +57,10 @@ class _ShareRecordsState extends State<ShareRecords> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ViewRecords(userid: user.userid),
+            builder: (context) => ViewRecords(
+              userid: user.userid,
+              name: user.name,
+            ),
           ),
         );
       }

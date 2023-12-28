@@ -10,8 +10,10 @@ import 'bottomNavigationBar.dart';
 import 'appDrawer.dart';
 
 class ViewRecords extends StatefulWidget {
-  const ViewRecords({Key? key, required this.userid}) : super(key: key);
+  const ViewRecords({Key? key, required this.userid, required this.name})
+      : super(key: key);
   final String userid;
+  final String name;
 
   @override
   _ViewRecordsState createState() => _ViewRecordsState();
@@ -55,9 +57,12 @@ class _ViewRecordsState extends State<ViewRecords> {
                       ),
                       color: Color(0xFF01888B),
                     ),
-                    child: const Center(
+                    child: Center(
                       child: Text(
-                        'Your Medical Records',
+                        textAlign: TextAlign.center,
+                        widget.name != ''
+                            ? 'Medical Records of ${widget.name}'
+                            : 'Your Medical Records',
                         style: TextStyle(
                           fontSize: 36.0,
                           fontWeight: FontWeight.bold,

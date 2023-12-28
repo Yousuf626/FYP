@@ -16,7 +16,8 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
   Future<void> _onFetchAlarm(FetchAlarm event, Emitter<AlarmState> emit) async {
     emit(AlarmLoading());
     try {
-      final List<AlarmInformation> alarms = await alarmRepository.getUserAlarms();
+      final List<AlarmInformation> alarms =
+          await alarmRepository.getUserAlarms();
       emit(AlarmLoaded(alarms: alarms));
     } catch (e) {
       emit(AlarmError(errorMsg: e.toString()));
@@ -27,17 +28,22 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
     emit(AlarmSetting());
     try {
       await alarmRepository.uploadUserAlarm(event.alarmInfo);
-      emit(AlarmSetSuccess());
+      final List<AlarmInformation> alarms =
+          await alarmRepository.getUserAlarms();
+      emit(AlarmSetSuccess(alarms: alarms));
     } catch (e) {
       emit(AlarmSetError(errorMsg: e.toString()));
     }
   }
 
-  Future<void> _onDeleteAlarm(DeleteAlarm event, Emitter<AlarmState> emit) async {
+  Future<void> _onDeleteAlarm(
+      DeleteAlarm event, Emitter<AlarmState> emit) async {
     emit(AlarmDeleting());
     try {
       await alarmRepository.deleteUserAlarm(event.alarmId);
-      emit(AlarmDeletedSuccess());
+      final List<AlarmInformation> alarms =
+          await alarmRepository.getUserAlarms();
+      emit(AlarmDeletedSuccess(alarms: alarms));
     } catch (e) {
       emit(AlarmDeleteError(errorMsg: e.toString()));
     }

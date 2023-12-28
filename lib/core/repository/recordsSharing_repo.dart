@@ -1,3 +1,4 @@
+import 'package:aap_dev_project/models/user.dart';
 import 'package:aap_dev_project/models/userSharing.dart';
 import 'package:aap_dev_project/pages/shareRecords.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -49,9 +50,15 @@ class RecordsSharingRepository {
     print(code);
     User? user = _auth.currentUser;
 
+    DocumentSnapshot snapshot1 =
+        await _firestore.collection('users').doc(user!.uid).get();
     DocumentSnapshot snapshot =
         await _firestore.collection('recordSharing').doc('efg').get();
     if (snapshot.exists) {
+      var profiles = (snapshot1.data() as Map<String, dynamic>?);
+      UserProfile profile =
+          UserProfile.fromJson(profiles as Map<String, dynamic>);
+      print(profile.name);
       List<dynamic>? sharedData =
           (snapshot.data() as Map<String, dynamic>?)?['currentlySharing'];
       List<UserSharing> userRecords = sharedData!
@@ -62,10 +69,12 @@ class RecordsSharingRepository {
           userRecords.indexWhere((users) => users.userid == user!.uid);
       if (existingIndex != -1) {
         // Replace the existing item with the new one
-        userRecords[existingIndex] = UserSharing(code: code, userid: user!.uid);
+        userRecords[existingIndex] =
+            UserSharing(code: code, userid: user!.uid, name: profile.name);
       } else {
         // If no matching userid found, add the new item
-        userRecords.add(UserSharing(code: code, userid: user!.uid));
+        userRecords.add(
+            UserSharing(code: code, userid: user!.uid, name: profile.name));
       }
       print(userRecords.length);
 

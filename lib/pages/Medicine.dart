@@ -13,6 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter/widgets.dart';
 import 'package:aap_dev_project/models/alarmz.dart';
+
 class MedqrPage extends StatelessWidget {
   const MedqrPage({super.key});
 
@@ -34,12 +35,14 @@ class MedqrPage extends StatelessWidget {
           const SizedBox(height: 40),
           ElevatedButton(
             onPressed: () {
-            Navigator.push(
+              Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => BlocProvider<AlarmBloc>(
-                  create: (context) => AlarmBloc(alarmRepository: AlarmRepository()),
-                  child: const MedicineScreen(),
-                )),
+                MaterialPageRoute(
+                    builder: (context) => BlocProvider<AlarmBloc>(
+                          create: (context) =>
+                              AlarmBloc(alarmRepository: AlarmRepository()),
+                          child: const MedicineScreen(),
+                        )),
               );
             },
             child: const Text('Add your Medicine'),
@@ -57,6 +60,7 @@ class MedqrPage extends StatelessWidget {
     );
   }
 }
+
 class MedicineScreen extends StatefulWidget {
   const MedicineScreen({Key? key}) : super(key: key);
 
@@ -66,11 +70,15 @@ class MedicineScreen extends StatefulWidget {
 
 class _MedicineScreenState extends State<MedicineScreen> {
   final TextEditingController _controller = TextEditingController();
-  List<String> allMedicines = ['Panadol', 'Ibuprofen', 'Ciprofloxacin', 'Acetaminophen'];
+  List<String> allMedicines = [
+    'Panadol',
+    'Ibuprofen',
+    'Ciprofloxacin',
+    'Acetaminophen'
+  ];
   String? selectedMedicine;
   OverlayEntry? _overlayEntry;
   final LayerLink _layerLink = LayerLink();
-  DateTime? selectedDate;
   TimeOfDay? selectedTime;
   int? frequencyPerDay; // New variable for frequency
   List<int> frequencyOptions = List.generate(12, (index) => index + 1);
@@ -90,7 +98,8 @@ class _MedicineScreenState extends State<MedicineScreen> {
     }
 
     List<String> matchingResults = allMedicines
-        .where((medicine) => medicine.toLowerCase().contains(_controller.text.toLowerCase()))
+        .where((medicine) =>
+            medicine.toLowerCase().contains(_controller.text.toLowerCase()))
         .toList();
 
     if (matchingResults.isNotEmpty) {
@@ -112,70 +121,60 @@ class _MedicineScreenState extends State<MedicineScreen> {
             child: ListView(
               padding: EdgeInsets.zero,
               shrinkWrap: true,
-              children: matchingResults.map((medicine) => ListTile(
-                title: Text(medicine),
-                onTap: () {
-                  _controller.text = medicine;
-                  selectedMedicine = medicine;
-                  _overlayEntry?.remove();
-                  setState(() {});
-                },
-              )).toList(),
+              children: matchingResults
+                  .map((medicine) => ListTile(
+                        title: Text(medicine),
+                        onTap: () {
+                          _controller.text = medicine;
+                          selectedMedicine = medicine;
+                          _overlayEntry?.remove();
+                          setState(() {});
+                        },
+                      ))
+                  .toList(),
             ),
           ),
         ),
       ),
     );
   }
-void setAlarm() async {
-  if (selectedMedicine == null || frequencyPerDay == null || selectedDate == null || selectedTime == null) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please select all fields')));
-    return;
-  }
 
-  for (int i = 0; i < frequencyPerDay!; i++) {
+  void setAlarm() async {
+    if (selectedMedicine == null ||
+        frequencyPerDay == null ||
+        selectedTime == null) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Please select all fields')));
+      return;
+    }
+
+    DateTime currentDate = DateTime.now();
+
+    // Converting TimeOfDay to DateTime
     DateTime dateTime = DateTime(
-      selectedDate!.year,
-      selectedDate!.month,
-      selectedDate!.day,
+      currentDate.year,
+      currentDate.month,
+      currentDate.day,
       selectedTime!.hour,
       selectedTime!.minute,
-    ).add(Duration(hours: i * 24 ~/ frequencyPerDay!));
-    String uniqueId = '${DateTime.now().millisecondsSinceEpoch}-$i';
-     AlarmInformation alarmInfo = AlarmInformation(
-    id: uniqueId,
-    name: selectedMedicine!,
-    time: dateTime,
-    isActive: true,
-  );
-  
-  BlocProvider.of<AlarmBloc>(context).add(SetAlarm(alarmInfo));
-
-//AlarmRepository().uploadUserAlarm(alarmInfo);
-
-  }
-  print('lol');
-
-  Navigator.push(context, MaterialPageRoute(builder: (context) => AlarmHomeScreen()));
-}
-
-
-
-
-
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate ?? DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2101),
     );
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-      });
-      _selectTime(context);
-    }
+    print('ok');
+    print(dateTime);
+    String uniqueId = '${DateTime.now().millisecondsSinceEpoch}';
+    AlarmInformation alarmInfo = AlarmInformation(
+      id: uniqueId,
+      name: selectedMedicine!,
+      time: dateTime,
+      isActive: true,
+      frequency: frequencyPerDay!,
+    );
+
+    BlocProvider.of<AlarmBloc>(context).add(SetAlarm(alarmInfo));
+
+    print('lol');
+
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (_) => AlarmHomeScreen()));
   }
 
   Future<void> _selectTime(BuildContext context) async {
@@ -183,7 +182,7 @@ void setAlarm() async {
       context: context,
       initialTime: selectedTime ?? TimeOfDay.now(),
     );
-    if (picked != null && picked != selectedTime) {
+    if (picked != null) {
       setState(() {
         selectedTime = picked;
       });
@@ -191,101 +190,114 @@ void setAlarm() async {
     }
   }
 
- @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Medicine Alarm'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            const Text(
-              'What Med would you like to add?',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      body: Column(children: [
+        Container(
+          padding: const EdgeInsets.all(16.0),
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height * 0.3,
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(50.0),
+              bottomRight: Radius.circular(50.0),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
-              child: Text(
-                'Start typing and select from the list',
-                style: TextStyle(fontSize: 16, color: Colors.grey),
+            color: Color(0xFF01888B),
+          ),
+          child: const Center(
+            child: Text(
+              "Add Alarm",
+              style: TextStyle(
+                fontSize: 36.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
               ),
             ),
-            CompositedTransformTarget(
-              link: _layerLink,
-              child: TextFormField(
-                controller: _controller,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Select Med',
+          ),
+        ),
+        const SizedBox(height: 20),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const Text(
+                'What Med would you like to add?',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 16.0),
+                child: Text(
+                  'Start typing and select from the list',
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
               ),
-            ),
-            const SizedBox(height: 16),
-            DropdownButton<int>(
-              value: frequencyPerDay,
-              hint: Text('Select Frequency Per Day'),
-              items: frequencyOptions.map<DropdownMenuItem<int>>((int value) {
-                return DropdownMenuItem<int>(
-                  value: value,
-                  child: Text('$value times a day'),
-                );
-              }).toList(),
-              onChanged: (int? newValue) {
-                setState(() {
-                  frequencyPerDay = newValue;
-                });
-              },
-            ),
-            const SizedBox(height: 16),
-            IconButton(
-                onPressed: () {
-                  if (selectedMedicine != null && frequencyPerDay != null) {
-                    _selectDate(context).then((_) {
-                      if (selectedDate != null && selectedTime != null) {
-                        //setAlarm();
-                      }
+              CompositedTransformTarget(
+                link: _layerLink,
+                child: TextFormField(
+                  controller: _controller,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Select Med',
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Center(
+                child: DropdownButton<int>(
+                  value: frequencyPerDay,
+                  hint: Text('Select Frequency Per Day'),
+                  items:
+                      frequencyOptions.map<DropdownMenuItem<int>>((int value) {
+                    return DropdownMenuItem<int>(
+                      value: value,
+                      child: Text('$value times a day'),
+                    );
+                  }).toList(),
+                  onChanged: (int? newValue) {
+                    setState(() {
+                      frequencyPerDay = newValue;
                     });
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content:
-                            Text('Please select a medicine and frequency')));
-                  }
+                  },
+                ),
+              ),
+              const SizedBox(height: 16),
+              Center(
+                  child: GestureDetector(
+                      onTap: () => {
+                            if (selectedMedicine != null &&
+                                frequencyPerDay != null)
+                              {_selectTime(context).then((_) {})}
+                            else
+                              {
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                    content: Text(
+                                        'Please select a medicine and frequency')))
+                              }
+                          },
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.timer),
+                            Text('Select First Dosage Time')
+                          ]))),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  setAlarm();
                 },
-                icon: Icon(Icons.calendar_month)),
-            ElevatedButton(
-              onPressed: () {
-                // if (selectedMedicine != null && frequencyPerDay != null) {
-                //   _selectDate(context).then((_) {
-                //     if (selectedDate != null && selectedTime != null) {
-                //       setAlarm();
-                //     }
-                //   });
-                // } else {
-                //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                //       content: Text('Please select a medicine and frequency')));
-                // }
-
-                setAlarm();
-              },
-              child: const Text('Onn Alarm'),
-              style: ElevatedButton.styleFrom(
-                primary: Colors.teal,
-                onPrimary: Colors.white,
-                minimumSize: const Size(double.infinity, 50),
+                child: const Text('Set Alarm'),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.teal,
+                  onPrimary: Colors.white,
+                  minimumSize: const Size(double.infinity, 50),
+                ),
               ),
-            ),
-            if (selectedDate != null && selectedTime != null)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                child: Text(
-                    'Alarm set for ${selectedDate!.toLocal()} at ${selectedTime!.format(context)}'),
-              ),
-          ],
-        ),
-      ),
+            ],
+          ),
+        )
+      ]),
       bottomNavigationBar: BaseMenuBar(),
     );
   }

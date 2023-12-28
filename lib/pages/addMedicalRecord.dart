@@ -209,6 +209,7 @@ class DisplaySelectedImage extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (_) => ViewRecords(
                                 userid: '',
+                                name: '',
                               )));
                 });
               }

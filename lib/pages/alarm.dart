@@ -23,9 +23,9 @@ class AlarmHomeScreen extends StatefulWidget {
 
 class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
   late List<AlarmSettings> alarms;
+  static StreamSubscription<AlarmSettings>? subscription;
   final AlarmRepository alarmRepository = AlarmRepository();
   late AlarmBloc _alarmBloc;
-  static StreamSubscription<AlarmSettings>? subscription;
 
   @override
   void initState() {
@@ -42,6 +42,9 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
       }
     });
     loadAlarms();
+    subscription ??= Alarm.ringStream.stream.listen(
+      (alarmSettings) => navigateToRingScreen(alarmSettings),
+    );
   }
 
   String getNextClosestAlarmTime(AlarmInformation alarmItem) {

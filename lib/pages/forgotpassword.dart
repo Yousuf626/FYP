@@ -12,13 +12,20 @@ class ForgotPasswordScreen extends StatefulWidget {
   _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
 }
 
-class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
+    with RouteAware {
   final TextEditingController _emailController = TextEditingController();
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<void> resetPassword(String email) async {
     await _auth.sendPasswordResetEmail(email: email);
+  }
+
+  @override
+  void didPopNext() {
+    setState(() {});
+    super.didPopNext();
   }
 
   @override

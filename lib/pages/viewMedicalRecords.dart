@@ -20,9 +20,15 @@ class ViewRecords extends StatefulWidget {
   _ViewRecordsState createState() => _ViewRecordsState();
 }
 
-class _ViewRecordsState extends State<ViewRecords> {
+class _ViewRecordsState extends State<ViewRecords> with RouteAware {
   final MedicalRecordsRepository recordsRepository = MedicalRecordsRepository();
   late MedicalRecordsBloc _recordsBloc;
+
+  @override
+  void didPopNext() {
+    setState(() {});
+    super.didPopNext();
+  }
 
   @override
   void initState() {
@@ -78,14 +84,16 @@ class _ViewRecordsState extends State<ViewRecords> {
                         top: 42.0,
                         left: 16.0,
                         child: IconButton(
-                          icon: const Icon(Icons.arrow_back, color: Colors.white),
+                          icon:
+                              const Icon(Icons.arrow_back, color: Colors.white),
                           onPressed: () {
-  Navigator.pushAndRemoveUntil(
-    context,
-    MaterialPageRoute(builder: (context) => DashboardApp()),
-    (Route<dynamic> route) => false,
-  );
-},
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DashboardApp()),
+                              (Route<dynamic> route) => false,
+                            );
+                          },
                         ),
                       ),
                     ],

@@ -23,7 +23,7 @@ class UpdateProfilePage extends StatefulWidget {
   _UpdateProfilePageState createState() => _UpdateProfilePageState();
 }
 
-class _UpdateProfilePageState extends State<UpdateProfilePage> {
+class _UpdateProfilePageState extends State<UpdateProfilePage> with RouteAware {
   final UserRepository userRepository = UserRepository();
   late UserBloc _userBloc;
   final ImagePicker _picker = ImagePicker();
@@ -39,6 +39,12 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
       TextEditingController();
   final TextEditingController _imageController = TextEditingController();
   var snap;
+
+  @override
+  void didPopNext() {
+    setState(() {});
+    super.didPopNext();
+  }
 
   Future<void> _pickImage(user) async {
     final XFile? pickedFile =

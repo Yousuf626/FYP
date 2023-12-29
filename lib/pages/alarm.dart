@@ -8,6 +8,7 @@ import 'package:aap_dev_project/core/repository/alarm_repo.dart';
 import 'package:aap_dev_project/pages/Medicine.dart';
 import 'package:aap_dev_project/pages/alarmScreen.dart';
 import 'package:aap_dev_project/pages/appDrawer.dart';
+import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
 import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +22,6 @@ class AlarmHomeScreen extends StatefulWidget {
 }
 
 class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
-  late List<AlarmSettings> alarms;
   static StreamSubscription<AlarmSettings>? subscription;
   final AlarmRepository alarmRepository = AlarmRepository();
   late AlarmBloc _alarmBloc;
@@ -38,19 +38,6 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
     _alarmBloc.stream.listen((state) {
       if (state is AlarmLoaded) {
         scheduleNextRingTime(state.alarms);
-        loadAlarms();
-        Alarm.ringStream.stream.listen(
-          (alarmSettings) => {
-            print("hi"),
-            print(alarmSettings.dateTime),
-            print("bye"),
-            print(DateTime.now()),
-            DateTime.now().difference(alarmSettings.dateTime).abs() <=
-                    const Duration(seconds: 30)
-                ? navigateToRingScreen(alarmSettings)
-                : Alarm.stop(alarmSettings.id)
-          },
-        );
       }
     });
   }
@@ -80,20 +67,10 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
 
       if (alarmItem.isActive) {
         for (var i = 0; i < alarmTimes.length; i++) {
-          final alarmSettings = AlarmSettings(
-            id: index + i + 1,
-            dateTime: alarmTimes[i],
-            vibrate: false,
-            assetAudioPath: 'assets/tune.mp3',
-            loopAudio: true,
-            fadeDuration: 3.0,
-            notificationTitle: 'Its Time to take your Medicine',
-            notificationBody: '${alarmItem.name} ',
-            enableNotificationOnKill: true,
+          FlutterAlarmClock.createAlarm(
+            hour: alarmTimes[i].hour,
+            minutes: alarmTimes[i].minute,
           );
-          print("Alarm Settings");
-          print(alarmSettings.dateTime);
-          await Alarm.set(alarmSettings: alarmSettings);
         }
       }
     }
@@ -109,13 +86,6 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
     }
 
     return alarmTimes;
-  }
-
-  void loadAlarms() {
-    setState(() {
-      alarms = Alarm.getAlarms();
-      alarms.sort((a, b) => a.dateTime.isBefore(b.dateTime) ? 0 : 1);
-    });
   }
 
   Future<void> navigateToRingScreen(AlarmSettings alarmSettings) async {

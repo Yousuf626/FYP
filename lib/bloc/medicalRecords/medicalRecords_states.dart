@@ -1,7 +1,11 @@
 import 'package:aap_dev_project/models/report.dart';
+import 'package:equatable/equatable.dart';
 
-abstract class RecordState {
+abstract class RecordState extends Equatable {
   const RecordState([List props = const []]) : super();
+
+  @override
+  List<Object?> get props => [];
 }
 
 class RecordEmpty extends RecordState {}

@@ -6,9 +6,7 @@ import 'bottomNavigationBar.dart';
 import 'appDrawer.dart';
 
 class AboutUsPage extends StatefulWidget {
-  final UserProfile user;
-
-  const AboutUsPage({Key? key, required this.user}) : super(key: key);
+  const AboutUsPage({Key? key}) : super(key: key);
 
   @override
   _AboutUsPageState createState() => _AboutUsPageState();

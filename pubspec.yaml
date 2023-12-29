@@ -52,10 +52,16 @@ dependencies:
   permission_handler: ^10.4.0
   firebase_app_check: ^0.2.1+8
   dropdown_button2: ^2.3.9
+  golden_toolkit: ^0.15.0
+  bloc_test: ^9.1.5
+  flutter_alarm_clock: ^0.1.1
   
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_driver:
+    sdk: flutter
+  screenshot: ^2.1.0
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

@@ -6,7 +6,6 @@ import 'package:aap_dev_project/bloc/alarm/alarm_event.dart';
 import 'package:aap_dev_project/bloc/alarm/alarm_state.dart';
 import 'package:aap_dev_project/core/repository/alarm_repo.dart';
 import 'package:aap_dev_project/pages/Medicine.dart';
-import 'package:aap_dev_project/pages/alarmScreen.dart';
 import 'package:aap_dev_project/pages/appDrawer.dart';
 import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
 import 'package:alarm/alarm.dart';
@@ -86,16 +85,6 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
     }
 
     return alarmTimes;
-  }
-
-  Future<void> navigateToRingScreen(AlarmSettings alarmSettings) async {
-    print("Alarm Settings");
-    await Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) =>
-              ExampleAlarmRingScreen(alarmSettings: alarmSettings),
-        ));
   }
 
   Future<void> checkAndroidNotificationPermission() async {

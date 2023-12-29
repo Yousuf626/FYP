@@ -13,4 +13,10 @@ class UserRepository {
         await _firestore.collection('users').doc(user?.uid).get();
     return UserProfile.fromJson(snapshot.data() as Map<String, dynamic>);
   }
+
+  Future<void> uploadUserRecords(UserProfile userp) async {
+    User? user = _auth.currentUser;
+
+    await _firestore.collection('users').doc(user?.uid).set(userp.toJson());
+  }
 }

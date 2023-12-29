@@ -18,3 +18,12 @@ class UserError extends UserState {
   final String? errorMsg;
   UserError({this.errorMsg});
 }
+
+class UserSetting extends UserState {}
+
+class UserSetSuccess extends UserState {}
+
+class UserSetError extends UserState {
+  final String? errorMsg;
+  UserSetError({this.errorMsg});
+}

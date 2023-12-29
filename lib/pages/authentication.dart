@@ -1,5 +1,8 @@
 // ignore_for_file: unused_import, unused_local_variable, unnecessary_import, deprecated_member_use, library_private_types_in_public_api, avoid_unnecessary_containers, use_build_context_synchronously, avoid_print
 
+import 'package:aap_dev_project/bloc/user/user_block.dart';
+import 'package:aap_dev_project/bloc/user/user_event.dart';
+import 'package:aap_dev_project/core/repository/user_repo.dart';
 import 'package:aap_dev_project/pages/Medicine.dart';
 import 'package:aap_dev_project/pages/forgotpassword.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,6 +15,8 @@ import '../firebase/firebase_options.dart';
 import 'package:aap_dev_project/pages/Register.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'dashboard.dart';
+import 'package:aap_dev_project/models/user.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Authentication extends StatelessWidget {
   const Authentication({super.key});
@@ -85,12 +90,24 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final UserRepository userRepository = UserRepository();
+  late UserBloc _userBloc;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool _isHidden = true;
   String signInStatus = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _userBloc = UserBloc(userRepository: userRepository);
+  }
+
   Future<UserCredential?> signInWithGoogle() async {
-    // Trigger the authentication flow
+    QuerySnapshot snapshot = await _firestore.collection('users').get();
+    var exists = false;
+
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
     // Return null if user cancels the Google Sign-In
@@ -107,7 +124,24 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+    var a = await FirebaseAuth.instance.signInWithCredential(credential);
+    snapshot.docs.forEach((doc) => {
+          exists = doc.id == a.user?.uid,
+        });
+    if (exists == false) {
+      _userBloc.add(SetUser(
+          user: UserProfile(
+        name: googleUser.displayName!,
+        age: 0,
+        email: googleUser.email,
+        mobile: '',
+        adress: '',
+        cnic: '',
+        medicalHistory: '',
+        image: googleUser.photoUrl!,
+      )));
+    }
+    return a;
   }
 
   void _toggleVisibility() {
@@ -262,19 +296,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey, width: 0.2),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: IconButton(
-                          // Dummy placeholder for Facebook icon
-                          icon: const FaIcon(FontAwesomeIcons.facebook),
-                          onPressed: () {},
-                        ),
-                      ),
-                    ),
                     const SizedBox(width: 10), // Add this
                     Expanded(
                       child: Container(
@@ -306,19 +327,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     const SizedBox(width: 10), // Add this
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey, width: 0.2),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: IconButton(
-                          // Dummy placeholder for Apple icon
-                          icon: const FaIcon(FontAwesomeIcons.apple),
-                          onPressed: () {},
-                        ),
-                      ),
-                    ),
                   ],
                 ),
                 const SizedBox(height: 16),

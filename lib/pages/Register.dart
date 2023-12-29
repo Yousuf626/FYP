@@ -1,5 +1,9 @@
 // ignore_for_file: file_names, unused_import, use_key_in_widget_constructors, library_private_types_in_public_api, use_build_context_synchronously, avoid_print, sized_box_for_whitespace, sort_child_properties_last, deprecated_member_use
 
+import 'package:aap_dev_project/bloc/user/user_block.dart';
+import 'package:aap_dev_project/bloc/user/user_event.dart';
+import 'package:aap_dev_project/core/repository/user_repo.dart';
+import 'package:aap_dev_project/models/user.dart';
 import 'package:aap_dev_project/pages/authentication.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
@@ -17,6 +21,15 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+  final UserRepository userRepository = UserRepository();
+  late UserBloc _userBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _userBloc = UserBloc(userRepository: userRepository);
+  }
+
   Future<UserCredential?> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -48,37 +61,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     }
   }
 
-  void _registerGoogleUser(userCredential) async {
-    try {
-      print(userCredential.user!.uid);
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userCredential.user!.uid)
-          .set({
-        'name': 'Enter Your Name',
-        'age': 18,
-        'email': _emailController.text,
-        'mobile': 'Enter Your Mobile Number',
-        'address': 'Enter Your Address',
-        'cnic': 'Enter Your CNIC Number',
-        'medicalHistory': 'Enter Your Medical History',
-        'image': ''
-      });
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => DashboardApp()),
-      );
-
-      // You might want to navigate the user to a different screen after successful registration
-    } on FirebaseAuthException catch (e) {
-      // Handle registration errors
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed to register: ${e.message}")),
-      );
-    }
-  }
-
   Future<UserCredential?> signInWithFacebook() async {
     final LoginResult result = await FacebookAuth.instance.login();
     if (result.status != LoginStatus.success) return null;
@@ -88,8 +70,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   final _formKey = GlobalKey<FormState>();
-  final _usernameController = TextEditingController();
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
+  final _mobileController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -131,9 +114,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     ),
                   ),
                   const SizedBox(height: 48),
-                  buildTextFormField(_usernameController, 'Username'),
+                  buildTextFormField(_nameController, 'Name'),
                   const SizedBox(height: 16),
                   buildTextFormField(_emailController, 'Email'),
+                  const SizedBox(height: 16),
+                  buildTextFormField(_mobileController, 'Mobile Number'),
                   const SizedBox(height: 16),
                   buildTextFormField(_passwordController, 'Password',
                       isPassword: true),
@@ -160,49 +145,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(width: 1, color: Colors.grey)),
-                        child: socialButton(FontAwesomeIcons.google, () async {
-                          try {
-                            final userCredential = await signInWithGoogle();
-                            print(userCredential?.user?.uid);
-                            if (userCredential != null) {
-                              _registerGoogleUser(userCredential);
-                            }
-                          } catch (e) {
-                            // Handle the error
-                          }
-                        }),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(width: 1, color: Colors.grey)),
-                        child:
-                            socialButton(FontAwesomeIcons.facebook, () async {
-                          try {
-                            final userCredential = await signInWithFacebook();
-                            if (userCredential != null) {
-                              // Handle the user sign-in
-                            }
-                          } catch (e) {
-                            // Handle the error
-                          }
-                        }),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(width: 1, color: Colors.grey)),
-                        child: socialButton(FontAwesomeIcons.apple, () {}),
-                      ),
-                    ],
-                  ),
                   const SizedBox(height: 24),
                   const SizedBox(height: 24),
                   Center(
@@ -298,19 +240,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         const SnackBar(content: Text("User successfully registered!")),
       );
 
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userCredential.user!.uid)
-          .set({
-        'name': 'Enter Your Name',
-        'age': 18,
-        'email': _emailController.text,
-        'mobile': 'Enter Your Mobile Number',
-        'address': 'Enter Your Address',
-        'cnic': 'Enter Your CNIC Number',
-        'medicalHistory': 'Enter Your Medical History',
-        'image': ''
-      });
+      _userBloc.add(SetUser(
+          user: UserProfile(
+        name: _nameController.text,
+        age: 0,
+        email: _emailController.text,
+        mobile: _mobileController.text,
+        adress: '',
+        cnic: '',
+        medicalHistory: '',
+        image: '',
+      )));
 
       Navigator.push(
         context,

@@ -2,6 +2,9 @@
 
 import 'dart:io';
 
+import 'package:aap_dev_project/bloc/user/user_block.dart';
+import 'package:aap_dev_project/bloc/user/user_event.dart';
+import 'package:aap_dev_project/core/repository/user_repo.dart';
 import 'package:aap_dev_project/models/user.dart';
 import 'package:aap_dev_project/pages/bottomNavigationBar.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -19,6 +22,8 @@ class UpdateProfilePage extends StatefulWidget {
 }
 
 class _UpdateProfilePageState extends State<UpdateProfilePage> {
+  final UserRepository userRepository = UserRepository();
+  late UserBloc _userBloc;
   final ImagePicker _picker = ImagePicker();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -54,6 +59,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
   void initState() {
     super.initState();
     _getUserProfile();
+    _userBloc = UserBloc(userRepository: userRepository);
   }
 
   Future<void> _getUserProfile() async {
@@ -93,16 +99,17 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
     User? user = _auth.currentUser;
     if (user != null) {
       try {
-        await _firestore.collection('users').doc(user.uid).set({
-          'name': _nameController.text,
-          'age': int.tryParse(_ageController.text) ?? 0,
-          'email': _emailController.text,
-          'mobile': _mobileController.text,
-          'address': _addressController.text,
-          'cnic': _cnicController.text,
-          'medicalHistory': _medicalHistoryController.text,
-          'image': _imageController.text,
-        });
+        _userBloc.add(SetUser(
+            user: UserProfile(
+          name: _nameController.text,
+          age: int.tryParse(_ageController.text) ?? 0,
+          email: _emailController.text,
+          mobile: _mobileController.text,
+          adress: _addressController.text,
+          cnic: _cnicController.text,
+          medicalHistory: _medicalHistoryController.text,
+          image: _imageController.text,
+        )));
       } catch (e) {
         print("Error updating user profile: $e");
       }
@@ -113,235 +120,234 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-       onTap: () {
-      // Hide keyboard when tapping anywhere outside the text field
-      FocusScope.of(context).unfocus();
-    },
-    
-    child: Scaffold(
-        body: _isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : Container(
-                color: const Color(0xFFCCE7E8),
-                padding: const EdgeInsets.only(
-                    left: 16, right: 16, top: 0, bottom: 0),
-                child: SingleChildScrollView(
-                    child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Column(
-                      children: [
-                        const SizedBox(height: 32),
-                        Stack(
-                          alignment: Alignment.bottomRight,
-                          children: [
-                            Container(
-                              width: 100,
-                              height: 100,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white,
-                              ),
-                              child: ClipOval(
-                                  child: Container(
-                                decoration: _imageController.text.isEmpty
-                                    ? const BoxDecoration(
-                                        image: DecorationImage(
-                                          image:
-                                              AssetImage("assets/profile.png"),
+      onTap: () {
+        // Hide keyboard when tapping anywhere outside the text field
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+          body: _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : Container(
+                  color: const Color(0xFFCCE7E8),
+                  padding: const EdgeInsets.only(
+                      left: 16, right: 16, top: 0, bottom: 0),
+                  child: SingleChildScrollView(
+                      child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Column(
+                        children: [
+                          const SizedBox(height: 32),
+                          Stack(
+                            alignment: Alignment.bottomRight,
+                            children: [
+                              Container(
+                                width: 100,
+                                height: 100,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                ),
+                                child: ClipOval(
+                                    child: Container(
+                                  decoration: _imageController.text.isEmpty
+                                      ? const BoxDecoration(
+                                          image: DecorationImage(
+                                            image: AssetImage(
+                                                "assets/profile.png"),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        )
+                                      : null, // Set to null if there's no decoration
+                                  child: _imageController.text.isEmpty
+                                      ? null // No child if using decoration
+                                      : Image.network(
+                                          _imageController.text,
                                           fit: BoxFit.cover,
+                                          width: 100,
+                                          height: 100,
                                         ),
-                                      )
-                                    : null, // Set to null if there's no decoration
-                                child: _imageController.text.isEmpty
-                                    ? null // No child if using decoration
-                                    : Image.network(
-                                        _imageController.text,
-                                        fit: BoxFit.cover,
-                                        width: 100,
-                                        height: 100,
-                                      ),
-                              )),
-                            ),
-                            GestureDetector(
-                              onTap: () async {
-                                await _pickImage(_auth.currentUser);
-                              },
-                              child: const Stack(
-                                alignment: Alignment.bottomRight,
-                                children: [
-                                  // ... (your existing container and image code)
-                                  Icon(Icons.camera_alt),
-                                ],
+                                )),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 64),
-                    Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 40),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            TextField(
-                              controller: _nameController,
-                              decoration: InputDecoration(
-                                labelText: 'Name',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                filled: true,
-                                fillColor: Colors.white,
-                                labelStyle:
-                                    const TextStyle(color: Color(0xFF01888B)),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Color(0xFF01888B), width: 2.0),
-                                  borderRadius: BorderRadius.circular(10.0),
+                              GestureDetector(
+                                onTap: () async {
+                                  await _pickImage(_auth.currentUser);
+                                },
+                                child: const Stack(
+                                  alignment: Alignment.bottomRight,
+                                  children: [
+                                    // ... (your existing container and image code)
+                                    Icon(Icons.camera_alt),
+                                  ],
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: 32),
-                            TextField(
-                              controller: _ageController,
-                              decoration: InputDecoration(
-                                labelText: 'Age',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                filled: true,
-                                fillColor: Colors.white,
-                                labelStyle:
-                                    const TextStyle(color: Color(0xFF01888B)),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Color(0xFF01888B), width: 2.0),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                              ),
-                              keyboardType: TextInputType.number,
-                            ),
-                            const SizedBox(height: 32),
-                            TextField(
-                              controller: _emailController,
-                              decoration: InputDecoration(
-                                labelText: 'Email',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                filled: true,
-                                fillColor: Colors.white,
-                                labelStyle:
-                                    const TextStyle(color: Color(0xFF01888B)),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Color(0xFF01888B), width: 2.0),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 32),
-                            TextField(
-                              controller: _mobileController,
-                              decoration: InputDecoration(
-                                labelText: 'Mobile',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                filled: true,
-                                fillColor: Colors.white,
-                                labelStyle:
-                                    const TextStyle(color: Color(0xFF01888B)),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Color(0xFF01888B), width: 2.0),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 32),
-                            TextField(
-                              controller: _addressController,
-                              decoration: InputDecoration(
-                                labelText: 'Address',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                filled: true,
-                                fillColor: Colors.white,
-                                labelStyle:
-                                    const TextStyle(color: Color(0xFF01888B)),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Color(0xFF01888B), width: 2.0),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 32),
-                            TextField(
-                              controller: _cnicController,
-                              decoration: InputDecoration(
-                                labelText: 'CNIC',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                filled: true,
-                                fillColor: Colors.white,
-                                labelStyle:
-                                    const TextStyle(color: Color(0xFF01888B)),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Color(0xFF01888B), width: 2.0),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 32),
-                            TextField(
-                              controller: _medicalHistoryController,
-                              decoration: InputDecoration(
-                                labelText: 'Medical History',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                filled: true,
-                                fillColor: Colors.white,
-                                labelStyle:
-                                    const TextStyle(color: Color(0xFF01888B)),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Color(0xFF01888B), width: 2.0),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                              ),
-                              maxLines: null,
-                            ),
-                          ],
-                        )),
-                    const SizedBox(height: 56),
-                    FractionallySizedBox(
-                      widthFactor: 0.5,
-                      child: ElevatedButton(
-                        onPressed: _updateUserProfile,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF01888B),
-                        ),
-                        child: const Text(
-                            style: TextStyle(color: Colors.white),
-                            'Update Profile'),
+                            ],
+                          ),
+                        ],
                       ),
-                    ),
-                    const SizedBox(height: 100),
-                  ],
-                )),
-              ),
-        extendBody: true,
-        backgroundColor: Colors.transparent,
-        bottomNavigationBar: BaseMenuBar(),
-        drawer: CustomDrawer(user: snap)),
-        );
+                      const SizedBox(height: 64),
+                      Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 40),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TextField(
+                                controller: _nameController,
+                                decoration: InputDecoration(
+                                  labelText: 'Name',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  labelStyle:
+                                      const TextStyle(color: Color(0xFF01888B)),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF01888B), width: 2.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 32),
+                              TextField(
+                                controller: _ageController,
+                                decoration: InputDecoration(
+                                  labelText: 'Age',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  labelStyle:
+                                      const TextStyle(color: Color(0xFF01888B)),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF01888B), width: 2.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                ),
+                                keyboardType: TextInputType.number,
+                              ),
+                              const SizedBox(height: 32),
+                              TextField(
+                                controller: _emailController,
+                                decoration: InputDecoration(
+                                  labelText: 'Email',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  labelStyle:
+                                      const TextStyle(color: Color(0xFF01888B)),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF01888B), width: 2.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 32),
+                              TextField(
+                                controller: _mobileController,
+                                decoration: InputDecoration(
+                                  labelText: 'Mobile',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  labelStyle:
+                                      const TextStyle(color: Color(0xFF01888B)),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF01888B), width: 2.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 32),
+                              TextField(
+                                controller: _addressController,
+                                decoration: InputDecoration(
+                                  labelText: 'Address',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  labelStyle:
+                                      const TextStyle(color: Color(0xFF01888B)),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF01888B), width: 2.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 32),
+                              TextField(
+                                controller: _cnicController,
+                                decoration: InputDecoration(
+                                  labelText: 'CNIC',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  labelStyle:
+                                      const TextStyle(color: Color(0xFF01888B)),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF01888B), width: 2.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 32),
+                              TextField(
+                                controller: _medicalHistoryController,
+                                decoration: InputDecoration(
+                                  labelText: 'Medical History',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  labelStyle:
+                                      const TextStyle(color: Color(0xFF01888B)),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF01888B), width: 2.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                ),
+                                maxLines: null,
+                              ),
+                            ],
+                          )),
+                      const SizedBox(height: 56),
+                      FractionallySizedBox(
+                        widthFactor: 0.5,
+                        child: ElevatedButton(
+                          onPressed: _updateUserProfile,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF01888B),
+                          ),
+                          child: const Text(
+                              style: TextStyle(color: Colors.white),
+                              'Update Profile'),
+                        ),
+                      ),
+                      const SizedBox(height: 100),
+                    ],
+                  )),
+                ),
+          extendBody: true,
+          backgroundColor: Colors.transparent,
+          bottomNavigationBar: BaseMenuBar(),
+          drawer: CustomDrawer(user: snap)),
+    );
   }
 }

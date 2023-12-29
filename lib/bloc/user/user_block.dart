@@ -11,6 +11,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<FetchUserData>((event, emit) async {
       await getUser(emit);
     });
+    on<SetUser>((event, emit) async {
+      await setUser(event.user, emit);
+    });
   }
 
   Future<void> getUser(Emitter<UserState> emit) async {
@@ -20,6 +23,17 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       emit(UserLoaded(user: user));
     } catch (e) {
       emit(UserError(errorMsg: e.toString()));
+    }
+  }
+
+  Future<void> setUser(UserProfile report, Emitter<UserState> emit) async {
+    emit(UserSetting());
+
+    try {
+      await userRepository.uploadUserRecords(report);
+      emit(UserSetSuccess());
+    } catch (e) {
+      emit(UserSetError(errorMsg: e.toString()));
     }
   }
 }

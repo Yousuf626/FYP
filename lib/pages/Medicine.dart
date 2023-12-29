@@ -76,9 +76,9 @@ class _MedicineScreenState extends State<MedicineScreen> {
   List<String> allMedicines = [
     'Panadol',
     'Ibuprofen',
-    'Ciprofloxacin',
-    'Acetaminophen'
-  ];
+    'Adderall',
+    'Ativan',
+  ]; 
   String? selectedMedicine;
   OverlayEntry? _overlayEntry;
   final LayerLink _layerLink = LayerLink();
@@ -204,27 +204,42 @@ class _MedicineScreenState extends State<MedicineScreen> {
       body: SingleChildScrollView(
       child: Column(children: [
         Container(
-          padding: const EdgeInsets.all(16.0),
-          width: double.infinity,
-          height: MediaQuery.of(context).size.height * 0.3,
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(50.0),
-              bottomRight: Radius.circular(50.0),
-            ),
-            color: Color(0xFF01888B),
-          ),
-          child: const Center(
-            child: Text(
-              "Add Alarm",
-              style: TextStyle(
-                fontSize: 36.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
+  padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
+  width: double.infinity,
+  height: MediaQuery.of(context).size.height * 0.3,
+  decoration: const BoxDecoration(
+    borderRadius: BorderRadius.only(
+      bottomLeft: Radius.circular(50.0),
+      bottomRight: Radius.circular(50.0),
+    ),
+    color: Color(0xFF01888B),
+  ),
+  child: Stack(
+    children: [
+      Align(
+        alignment: Alignment.topLeft,
+        child: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => const AlarmHomeScreen(),
+            ));
+          },
+      ),),
+      const Align(
+        alignment: Alignment.center,
+        child: Text(
+          "Add Alarm",
+          style: TextStyle(
+            fontSize: 36.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
         ),
+      ),
+    ],
+  ),
+),
         const SizedBox(height: 20),
         Padding(
           padding: const EdgeInsets.all(16.0),
@@ -257,7 +272,7 @@ class _MedicineScreenState extends State<MedicineScreen> {
               Center(
                 child: DropdownButton2<int>(
                   value: frequencyPerDay,
-                  hint: const Text('Select Frequency Per Day'),
+                  hint: const Text('Select Dosage Per Day'),
                   items:
                       frequencyOptions.map<DropdownMenuItem<int>>((int value) {
                     return DropdownMenuItem<int>(

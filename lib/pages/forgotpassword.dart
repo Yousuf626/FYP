@@ -45,7 +45,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             ),
             const SizedBox(height: 10.0),
             const Text(
-              "Don't worry! It occurs. Please enter the email address linked with your account.",
+              "Enter your email and we'll send you a link to reset your password.",
               style: TextStyle(
                 fontSize: 16.0,
                 color: Colors.grey,
@@ -73,7 +73,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 padding: const EdgeInsets.all(14),
               ),
               child: const Text(
-                'Login',
+                'Reset Password',
                 style: TextStyle(
                   fontFamily: 'Urbanist',
                   color: Colors.white,

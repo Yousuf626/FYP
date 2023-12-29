@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:aap_dev_project/models/alarmz.dart';
+import 'package:aap_dev_project/pages/dashboard.dart';
 import 'package:intl/intl.dart';
 import 'package:aap_dev_project/bloc/alarm/alarm_bloc.dart';
 import 'package:aap_dev_project/bloc/alarm/alarm_event.dart';
@@ -202,27 +203,43 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
             return Column(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(16.0),
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(50.0),
-                      bottomRight: Radius.circular(50.0),
-                    ),
-                    color: Color(0xFF01888B),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      "Alarm",
-                      style: TextStyle(
-                        fontSize: 36.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
+  padding: const EdgeInsets.all(16.0),
+  width: double.infinity,
+  height: MediaQuery.of(context).size.height * 0.3,
+  decoration: const BoxDecoration(
+    borderRadius: BorderRadius.only(
+      bottomLeft: Radius.circular(50.0),
+      bottomRight: Radius.circular(50.0),
+    ),
+    color: Color(0xFF01888B),
+  ),
+  child: Stack(
+    children: [
+      Align(
+        alignment: Alignment.topLeft,
+        child: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => DashboardApp()),
+            );
+          },
+        ),
+      ),
+      const Align(
+        alignment: Alignment.center,
+        child: Text(
+          "Alarm",
+          style: TextStyle(
+            fontSize: 36.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    ],
+  ),
+),
                 Expanded(
                   child: Padding(
                     padding:
@@ -257,7 +274,7 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
                         color: Colors.white,
                       ),
                     )),
-                    SizedBox(height: 25,),
+                    const SizedBox(height: 25),
               ],
             );
           } else if (state is AlarmError) {

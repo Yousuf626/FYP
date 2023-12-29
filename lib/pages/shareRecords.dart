@@ -5,6 +5,7 @@ import 'package:aap_dev_project/bloc/recordShare/recordShare_block.dart';
 import 'package:aap_dev_project/bloc/recordShare/recordShare_event.dart';
 import 'package:aap_dev_project/bloc/recordShare/recordShare_states.dart';
 import 'package:aap_dev_project/core/repository/recordsSharing_repo.dart';
+import 'package:aap_dev_project/pages/dashboard.dart';
 import 'package:aap_dev_project/pages/viewMedicalRecords.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -94,28 +95,46 @@ class _ShareRecordsState extends State<ShareRecords> {
                 child: Column(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(16.0),
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(50.0),
-                      bottomRight: Radius.circular(50.0),
-                    ),
-                    color: Color(0xFF01888B),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'Medical Records Sharing',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 36.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
+  padding: const EdgeInsets.all(16.0),
+  width: double.infinity,
+  height: MediaQuery.of(context).size.height * 0.3,
+  decoration: const BoxDecoration(
+    borderRadius: BorderRadius.only(
+      bottomLeft: Radius.circular(50.0),
+      bottomRight: Radius.circular(50.0),
+    ),
+    color: Color(0xFF01888B),
+  ),
+  child: Stack(
+    children: [
+      Align(
+        alignment: Alignment.topLeft,
+        child: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => DashboardApp(),
+              ),
+            );
+          },
+        ),
+      ),
+      const Align(
+        alignment: Alignment.center,
+        child: Text(
+          'Medical Records Sharing',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 36.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    ],
+  ),
+),
                 const SizedBox(height: 50.0),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),

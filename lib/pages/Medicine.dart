@@ -15,6 +15,8 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter/widgets.dart';
 import 'package:aap_dev_project/models/alarmz.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
+
 
 class MedqrPage extends StatelessWidget {
   const MedqrPage({super.key});
@@ -72,6 +74,8 @@ class MedicineScreen extends StatefulWidget {
 
 class _MedicineScreenState extends State<MedicineScreen> {
   final TextEditingController _controller = TextEditingController();
+      final TextEditingController _typeAheadController = TextEditingController();
+
   List<String> allMedicines = [
     'Panadol',
     'Ibuprofen',
@@ -79,67 +83,67 @@ class _MedicineScreenState extends State<MedicineScreen> {
     'Ativan',
   ];
   String? selectedMedicine;
-  OverlayEntry? _overlayEntry;
-  final LayerLink _layerLink = LayerLink();
+  // OverlayEntry? _overlayEntry;
+  // final LayerLink _layerLink = LayerLink();
   TimeOfDay? selectedTime;
   int? frequencyPerDay; // New variable for frequency
   List<int> frequencyOptions = List.generate(5, (index) => index + 1);
 
-  @override
-  void initState() {
-    super.initState();
-    _controller.addListener(() {
-      updateOverlay();
-    });
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _controller.addListener(() {
+  //     updateOverlay();
+  //   });
+  // }
 
-  void updateOverlay() {
-    _overlayEntry?.remove();
-    if (_controller.text.isEmpty) {
-      return;
-    }
+  // void updateOverlay() {
+  //   _overlayEntry?.remove();
+  //   if (_controller.text.isEmpty) {
+  //     return;
+  //   }
 
-    List<String> matchingResults = allMedicines
-        .where((medicine) =>
-            medicine.toLowerCase().contains(_controller.text.toLowerCase()))
-        .toList();
+  //   List<String> matchingResults = allMedicines
+  //       .where((medicine) =>
+  //           medicine.toLowerCase().contains(_controller.text.toLowerCase()))
+  //       .toList();
 
-    if (matchingResults.isNotEmpty) {
-      _overlayEntry = createOverlayEntry(matchingResults);
-      Overlay.of(context).insert(_overlayEntry!);
-    }
-  }
+  //   if (matchingResults.isNotEmpty) {
+  //     _overlayEntry = createOverlayEntry(matchingResults);
+  //     Overlay.of(context).insert(_overlayEntry!);
+  //   }
+  // }
 
-  OverlayEntry createOverlayEntry(List<String> matchingResults) {
-    return OverlayEntry(
-      builder: (context) => Positioned(
-        width: 200,
-        child: CompositedTransformFollower(
-          link: _layerLink,
-          showWhenUnlinked: false,
-          offset: const Offset(0, 60),
-          child: Material(
-            elevation: 4,
-            child: ListView(
-              padding: EdgeInsets.zero,
-              shrinkWrap: true,
-              children: matchingResults
-                  .map((medicine) => ListTile(
-                        title: Text(medicine),
-                        onTap: () {
-                          _controller.text = medicine;
-                          selectedMedicine = medicine;
-                          _overlayEntry?.remove();
-                          setState(() {});
-                        },
-                      ))
-                  .toList(),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  // OverlayEntry createOverlayEntry(List<String> matchingResults) {
+  //   return OverlayEntry(
+  //     builder: (context) => Positioned(
+  //       width: 200,
+  //       child: CompositedTransformFollower(
+  //         link: _layerLink,
+  //         showWhenUnlinked: false,
+  //         offset: const Offset(0, 60),
+  //         child: Material(
+  //           elevation: 4,
+  //           child: ListView(
+  //             padding: EdgeInsets.zero,
+  //             shrinkWrap: true,
+  //             children: matchingResults
+  //                 .map((medicine) => ListTile(
+  //                       title: Text(medicine),
+  //                       onTap: () {
+  //                         _controller.text = medicine;
+  //                         selectedMedicine = medicine;
+  //                         _overlayEntry?.remove();
+  //                         setState(() {});
+  //                       },
+  //                     ))
+  //                 .toList(),
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   void setAlarm() async {
     if (selectedMedicine == null ||
@@ -258,16 +262,39 @@ class _MedicineScreenState extends State<MedicineScreen> {
                       style: TextStyle(fontSize: 16, color: Colors.grey),
                     ),
                   ),
-                  CompositedTransformTarget(
-                    link: _layerLink,
-                    child: TextFormField(
-                      controller: _controller,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Select Medicine',
-                      ),
-                    ),
-                  ),
+                  // CompositedTransformTarget(
+                  //   link: _layerLink,
+                  //   child: TextFormField(
+                  //     controller: _controller,
+                  //     decoration: const InputDecoration(
+                  //       border: OutlineInputBorder(),
+                  //       labelText: 'Select Medicine',
+                  //     ),
+                  //   ),
+                  // ),
+                  TypeAheadFormField(
+              textFieldConfiguration: TextFieldConfiguration(
+                controller: _typeAheadController,
+                decoration: InputDecoration(
+                  labelText: 'Select Medicine',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              suggestionsCallback: (pattern) {
+                return allMedicines.where(
+                  (medicine) => medicine.toLowerCase().contains(pattern.toLowerCase()),
+                );
+              },
+              itemBuilder: (context, String suggestion) {
+                return ListTile(
+                  title: Text(suggestion),
+                );
+              },
+              onSuggestionSelected: (String suggestion) {
+                _typeAheadController.text = suggestion;
+                selectedMedicine = suggestion;
+              },
+            ),
                   const SizedBox(height: 16),
                   Center(
                     child: DropdownButton2<int>(

@@ -232,28 +232,44 @@ class DisplaySelectedImage extends StatelessWidget {
               }
               return SingleChildScrollView(
                   child: Column(children: [
-                Container(
-                  padding: const EdgeInsets.all(16.0),
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(50.0),
-                      bottomRight: Radius.circular(50.0),
-                    ),
-                    color: Color(0xFF01888B),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      "Upload Report",
-                      style: TextStyle(
-                        fontSize: 36.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
+                       Container(
+  padding: const EdgeInsets.all(16.0),
+  width: double.infinity,
+  height: MediaQuery.of(context).size.height * 0.3,
+  decoration: const BoxDecoration(
+    borderRadius: BorderRadius.only(
+      bottomLeft: Radius.circular(50.0),
+      bottomRight: Radius.circular(50.0),
+    ),
+    color: Color(0xFF01888B),
+  ),
+  child: Stack(
+    children: [
+      Align(
+        alignment: Alignment.topLeft,
+        child: SafeArea(
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () => Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (_) => const AddReport()),
+            ),
+          ),
+        ),
+      ),
+      const Align(
+        alignment: Alignment.center,
+        child: Text(
+          "Upload Report",
+          style: TextStyle(
+            fontSize: 36.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    ],
+  ),
+),
                 const SizedBox(height: 50.0),
                 Image.file(selectedImage),
                 const SizedBox(height: 40.0),

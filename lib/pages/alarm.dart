@@ -70,6 +70,7 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
           FlutterAlarmClock.createAlarm(
             hour: alarmTimes[i].hour,
             minutes: alarmTimes[i].minute,
+            title: 'It is time to take ${alarmItem.name}!',
           );
         }
       }
@@ -113,9 +114,14 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
   Widget buildAlarmCard(AlarmInformation alarm, state) {
     return Card(
       color: const Color(0xFF01888B),
-      elevation: 4.0,
+      elevation: 8.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(25.0),
+        side: BorderSide(
+          // Add this side property for border
+          color: Colors.yellow, // Set your desired border color here
+          width: 5.0, // Set the border width
+        ),
       ),
       margin: const EdgeInsets.all(8.0),
       child: Padding(
@@ -203,43 +209,45 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
             return Column(
               children: [
                 Container(
-  padding: const EdgeInsets.all(16.0),
-  width: double.infinity,
-  height: MediaQuery.of(context).size.height * 0.3,
-  decoration: const BoxDecoration(
-    borderRadius: BorderRadius.only(
-      bottomLeft: Radius.circular(50.0),
-      bottomRight: Radius.circular(50.0),
-    ),
-    color: Color(0xFF01888B),
-  ),
-  child: Stack(
-    children: [
-      Align(
-        alignment: Alignment.topLeft,
-        child: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => DashboardApp()),
-            );
-          },
-        ),
-      ),
-      const Align(
-        alignment: Alignment.center,
-        child: Text(
-          "Alarm",
-          style: TextStyle(
-            fontSize: 36.0,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-      ),
-    ],
-  ),
-),
+                  padding: const EdgeInsets.all(16.0),
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height * 0.3,
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(50.0),
+                      bottomRight: Radius.circular(50.0),
+                    ),
+                    color: Color(0xFF01888B),
+                  ),
+                  child: Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: IconButton(
+                          icon:
+                              const Icon(Icons.arrow_back, color: Colors.white),
+                          onPressed: () {
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) => DashboardApp()),
+                            );
+                          },
+                        ),
+                      ),
+                      const Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          "Alarm",
+                          style: TextStyle(
+                            fontSize: 36.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 Expanded(
                   child: Padding(
                     padding:
@@ -274,7 +282,7 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
                         color: Colors.white,
                       ),
                     )),
-                    const SizedBox(height: 25),
+                const SizedBox(height: 25),
               ],
             );
           } else if (state is AlarmError) {
@@ -293,12 +301,16 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
                   builder: (context) => const AlarmHomeScreen(),
                 ));
           } else if (state is AlarmDeleting) {
-            const Center();
+            const Center(
+                child: Column(children: [
+              CircularProgressIndicator(),
+              Text("Deleteing Alarm")
+            ]));
           } else if (state is AlarmDeleteError) {
             return Center(
                 child: Text(state.errorMsg ?? 'No error message available'));
           }
-          return const Center();
+          return const Center(child: CircularProgressIndicator());
         },
       ),
     );

@@ -274,6 +274,7 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
                         color: Colors.white,
                       ),
                     )),
+                    SizedBox(height: 25,),
               ],
             );
           } else if (state is AlarmError) {

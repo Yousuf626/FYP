@@ -3,6 +3,7 @@ import 'package:aap_dev_project/bloc/medicalRecords/medicalRecords_block.dart';
 import 'package:aap_dev_project/bloc/medicalRecords/medicalRecords_event.dart';
 import 'package:aap_dev_project/bloc/medicalRecords/medicalRecords_states.dart';
 import 'package:aap_dev_project/core/repository/medicalRecords_repo.dart';
+import 'package:aap_dev_project/pages/dashboard.dart';
 import 'package:aap_dev_project/pages/reportDisplay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,30 +47,48 @@ class _ViewRecordsState extends State<ViewRecords> {
               }
               if (state is RecordLoaded) {
                 return Column(children: [
-                  Container(
-                    padding: const EdgeInsets.all(16.0),
-                    width: double.infinity,
-                    height: MediaQuery.of(context).size.height * 0.3,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(50.0),
-                        bottomRight: Radius.circular(50.0),
-                      ),
-                      color: Color(0xFF01888B),
-                    ),
-                    child: Center(
-                      child: Text(
-                        textAlign: TextAlign.center,
-                        widget.name != ''
-                            ? 'Medical Records of ${widget.name}'
-                            : 'Your Medical Records',
-                        style: const TextStyle(
-                          fontSize: 36.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                  Stack(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(16.0),
+                        width: double.infinity,
+                        height: MediaQuery.of(context).size.height * 0.3,
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(50.0),
+                            bottomRight: Radius.circular(50.0),
+                          ),
+                          color: Color(0xFF01888B),
+                        ),
+                        child: Center(
+                          child: Text(
+                            widget.name != ''
+                                ? 'Medical Records of ${widget.name}'
+                                : 'Your Medical Records',
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 36.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                      Positioned(
+                        top: 42.0,
+                        left: 16.0,
+                        child: IconButton(
+                          icon: const Icon(Icons.arrow_back, color: Colors.white),
+                          onPressed: () {
+  Navigator.pushAndRemoveUntil(
+    context,
+    MaterialPageRoute(builder: (context) => DashboardApp()),
+    (Route<dynamic> route) => false,
+  );
+},
+                        ),
+                      ),
+                    ],
                   ),
                   Expanded(
                     child: Padding(

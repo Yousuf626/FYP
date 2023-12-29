@@ -1,6 +1,5 @@
 // ignore_for_file: file_names, library_private_types_in_public_api, sized_box_for_whitespace
 
-import 'package:aap_dev_project/models/user.dart';
 import 'package:flutter/material.dart';
 import 'bottomNavigationBar.dart';
 import 'appDrawer.dart';
@@ -28,7 +27,7 @@ class AboutUsContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return ListView(
       children: [
         Container(
           padding: const EdgeInsets.all(16.0),
@@ -56,10 +55,9 @@ class AboutUsContent extends StatelessWidget {
         Container(
           width: MediaQuery.of(context).size.width * 0.9,
           height: MediaQuery.of(context).size.height * 0.53,
-          child: const Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+          child: ListView(
+            
+            children: const [
               FeatureLine(
                 icon: 'assets/lock.png',
                 feature:

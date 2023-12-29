@@ -7,6 +7,7 @@ import 'package:aap_dev_project/core/repository/medicalRecords_repo.dart';
 import 'package:aap_dev_project/models/report.dart';
 import 'package:aap_dev_project/pages/appDrawer.dart';
 import 'package:aap_dev_project/pages/bottomNavigationBar.dart';
+import 'package:aap_dev_project/pages/dashboard.dart';
 import 'package:aap_dev_project/pages/viewMedicalRecords.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -51,27 +52,43 @@ class _AddReportState extends State<AddReport> {
         bottomNavigationBar: BaseMenuBar(),
         body: Column(children: [
           Container(
-            padding: const EdgeInsets.all(16.0),
-            width: double.infinity,
-            height: MediaQuery.of(context).size.height * 0.3,
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(50.0),
-                bottomRight: Radius.circular(50.0),
-              ),
-              color: Color(0xFF01888B),
-            ),
-            child: const Center(
-              child: Text(
-                'Add A Report',
-                style: TextStyle(
-                  fontSize: 36.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-            ),
+  padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0, bottom: 0),
+  width: double.infinity,
+  height: MediaQuery.of(context).size.height * 0.3,
+  decoration: const BoxDecoration(
+    borderRadius: BorderRadius.only(
+      bottomLeft: Radius.circular(50.0),
+      bottomRight: Radius.circular(50.0),
+    ),
+    color: Color(0xFF01888B),
+  ),
+  child: Stack(
+    alignment: Alignment.center,
+    children: [
+      Align(
+        alignment: Alignment.topLeft,
+        child: SafeArea(
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () => Navigator.pushAndRemoveUntil(
+  context,
+  MaterialPageRoute(builder: (context) => DashboardApp()),
+  ModalRoute.withName('/'),
+),
           ),
+        ),
+      ),
+      const Text(
+        'Add A Report',
+        style: TextStyle(
+          fontSize: 36.0,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
+      ),
+    ],
+  ),
+),
           SizedBox(height: MediaQuery.of(context).size.height * 0.2),
           SizedBox(
               child: Center(

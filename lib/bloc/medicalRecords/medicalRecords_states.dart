@@ -25,8 +25,11 @@ class RecordError extends RecordState {
 
 class RecordSetting extends RecordState {} // New state for setting a record
 
-class RecordSetSuccess
-    extends RecordState {} // New state for successful record setting
+class RecordSetSuccess extends RecordState {
+  final List<UserReport> records;
+
+  RecordSetSuccess({required this.records}) : super([records]);
+} // New state for successful record setting
 
 class RecordSetError extends RecordState {
   final String? errorMsg;

@@ -37,5 +37,36 @@ void main() {
                 isInstanceOf<UserReport>()),
       ],
     );
+
+    blocTest<MedicalRecordsBloc, RecordState>(
+      'emits [AlarmLoading, AlarmLoaded] after adding a new alarm',
+      build: () => recordsBloc,
+      act: (bloc) {
+        bloc.add(SetRecord(
+            report: UserReport(
+          type: "Test Report",
+          image:
+              'https://firebasestorage.googleapis.com/v0/b/medqr-3e1ce.appspot.com/o/oq1wkiepfd767kr1iu4ynf50n9neo8f66yflczt3vnjpzyqlf0?alt=media&token=6e64eb22-2762-47ac-a2e7-9818667c7026',
+          createdAt: "28/12/2023",
+        )));
+      },
+      expect: () => [
+        RecordSetting(),
+        isA<RecordSetSuccess>()
+            .having((state) => state.records.length, 'records length', 4)
+            .having(
+                (state) => state.records[3].type, 'Report Type', 'Test Report')
+            .having(
+              (state) => state.records[3].image,
+              'Report Image',
+              'https://firebasestorage.googleapis.com/v0/b/medqr-3e1ce.appspot.com/o/oq1wkiepfd767kr1iu4ynf50n9neo8f66yflczt3vnjpzyqlf0?alt=media&token=6e64eb22-2762-47ac-a2e7-9818667c7026',
+            )
+            .having(
+              (state) => state.records[3].createdAt,
+              'Report Date',
+              '28/12/2023',
+            ),
+      ],
+    );
   });
 }

@@ -173,23 +173,6 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
                 ),
               ),
               const SizedBox(height: 4.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Transform.scale(
-                      scale: 1.4,
-                      child: Switch(
-                        activeColor: Colors.yellow,
-                        materialTapTargetSize: MaterialTapTargetSize.padded,
-                        value: alarm.isActive,
-                        onChanged: (value) {},
-                      ),
-                    ),
-                  ),
-                ],
-              ),
             ],
           ),
         ),

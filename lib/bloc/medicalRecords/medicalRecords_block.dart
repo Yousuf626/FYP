@@ -32,8 +32,9 @@ class MedicalRecordsBloc extends Bloc<RecordEvent, RecordState> {
     emit(RecordSetting());
 
     try {
-      await recordsRepository.uploadUserRecords(report);
-      emit(RecordSetSuccess());
+      final List<UserReport> records =
+          await recordsRepository.uploadUserRecords(report);
+      emit(RecordSetSuccess(records: records));
     } catch (e) {
       emit(RecordSetError(errorMsg: e.toString()));
     }

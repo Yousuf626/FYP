@@ -1,7 +1,11 @@
 import 'package:aap_dev_project/models/alarmz.dart';
+import 'package:equatable/equatable.dart';
 
-abstract class AlarmState {
+abstract class AlarmState extends Equatable {
   const AlarmState([List props = const []]) : super();
+
+  @override
+  List<Object?> get props => [];
 }
 
 class AlarmInitial extends AlarmState {}

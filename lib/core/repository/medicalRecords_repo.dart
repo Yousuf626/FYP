@@ -47,11 +47,12 @@ class MedicalRecordsRepository {
           .collection('medicalRecords')
           .doc(user?.uid)
           .update({'records': userReports.map((e) => e.toJson()).toList()});
+      return userReports;
     } else {
       await _firestore.collection('medicalRecords').doc(user?.uid).set({
         'records': [uploadedReport.toJson()]
       });
+      return [uploadedReport];
     }
-    return [];
   }
 }

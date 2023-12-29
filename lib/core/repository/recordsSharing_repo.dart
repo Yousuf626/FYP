@@ -40,6 +40,7 @@ class RecordsSharingRepository {
       userRecords.removeWhere((users) => users.userid == user?.uid);
       await _firestore.collection('recordSharing').doc('efg').update(
           {'currentlySharing': userRecords.map((e) => e.toJson()).toList()});
+      return userRecords;
     }
     return [];
   }
@@ -72,13 +73,14 @@ class RecordsSharingRepository {
             UserSharing(code: code, userid: user.uid, name: profile.name);
       } else {
         // If no matching userid found, add the new item
-        userRecords.add(
-            UserSharing(code: code, userid: user.uid, name: profile.name));
+        userRecords
+            .add(UserSharing(code: code, userid: user.uid, name: profile.name));
       }
       print(userRecords.length);
 
       await _firestore.collection('recordSharing').doc('efg').update(
           {'currentlySharing': userRecords.map((e) => e.toJson()).toList()});
+      return userRecords;
     }
     return [];
   }

@@ -34,8 +34,9 @@ class RecordShareBloc extends Bloc<RecordEvent, RecordState> {
     emit(RecordSetting());
 
     try {
-      await recordsRepository.removerUserFromShared();
-      emit(RecordSetSuccess());
+      final List<UserSharing> records =
+          await recordsRepository.removerUserFromShared();
+      emit(RecordSetSuccess(records: records));
     } catch (e) {
       emit(RecordSetError(errorMsg: e.toString()));
     }
@@ -45,8 +46,9 @@ class RecordShareBloc extends Bloc<RecordEvent, RecordState> {
     emit(RecordSetting());
 
     try {
-      await recordsRepository.addUserToShared(code);
-      emit(RecordSetSuccess());
+      final List<UserSharing> records =
+          await recordsRepository.addUserToShared(code);
+      emit(RecordSetSuccess(records: records));
     } catch (e) {
       emit(RecordSetError(errorMsg: e.toString()));
     }

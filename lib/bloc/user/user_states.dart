@@ -1,7 +1,11 @@
 import 'package:aap_dev_project/models/user.dart';
+import 'package:equatable/equatable.dart';
 
-abstract class UserState {
+abstract class UserState extends Equatable {
   const UserState([List props = const []]) : super();
+
+  @override
+  List<Object?> get props => [];
 }
 
 class UserEmpty extends UserState {}

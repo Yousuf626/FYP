@@ -13,7 +13,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter/widgets.dart';
-import 'package:aap_dev_project/models/alarmz.dart';
+import 'package:aap_dev_project/models/alarmz.dart'; 
+import 'package:dropdown_button2/dropdown_button2.dart';
+
 
 class MedqrPage extends StatelessWidget {
   const MedqrPage({super.key});
@@ -82,7 +84,7 @@ class _MedicineScreenState extends State<MedicineScreen> {
   final LayerLink _layerLink = LayerLink();
   TimeOfDay? selectedTime;
   int? frequencyPerDay; // New variable for frequency
-  List<int> frequencyOptions = List.generate(12, (index) => index + 1);
+  List<int> frequencyOptions = List.generate(5, (index) => index + 1);
 
   @override
   void initState() {
@@ -105,7 +107,7 @@ class _MedicineScreenState extends State<MedicineScreen> {
 
     if (matchingResults.isNotEmpty) {
       _overlayEntry = createOverlayEntry(matchingResults);
-      Overlay.of(context)!.insert(_overlayEntry!);
+      Overlay.of(context).insert(_overlayEntry!);
     }
   }
 
@@ -145,7 +147,7 @@ class _MedicineScreenState extends State<MedicineScreen> {
         frequencyPerDay == null ||
         selectedTime == null) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Please select all fields')));
+          .showSnackBar(const SnackBar(content: Text('Please select all fields')));
       return;
     }
 
@@ -193,8 +195,14 @@ class _MedicineScreenState extends State<MedicineScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(children: [
+    return GestureDetector(
+    onTap: () {
+      // Hide keyboard when tapping anywhere outside the text field
+      FocusScope.of(context).unfocus();
+    },
+    child: Scaffold(
+      body: SingleChildScrollView(
+      child: Column(children: [
         Container(
           padding: const EdgeInsets.all(16.0),
           width: double.infinity,
@@ -220,17 +228,18 @@ class _MedicineScreenState extends State<MedicineScreen> {
         const SizedBox(height: 20),
         Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
+          child: 
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               const Text(
-                'What Med would you like to add?',
+                'What Medicine would you like to add?',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 16.0),
                 child: Text(
-                  'Start typing and select from the list',
+                  'Type and Select from the list',
                   style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
               ),
@@ -240,15 +249,15 @@ class _MedicineScreenState extends State<MedicineScreen> {
                   controller: _controller,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Select Med',
+                    labelText: 'Select Medicine',
                   ),
                 ),
               ),
               const SizedBox(height: 16),
               Center(
-                child: DropdownButton<int>(
+                child: DropdownButton2<int>(
                   value: frequencyPerDay,
-                  hint: Text('Select Frequency Per Day'),
+                  hint: const Text('Select Frequency Per Day'),
                   items:
                       frequencyOptions.map<DropdownMenuItem<int>>((int value) {
                     return DropdownMenuItem<int>(
@@ -261,6 +270,7 @@ class _MedicineScreenState extends State<MedicineScreen> {
                       frequencyPerDay = newValue;
                     });
                   },
+                
                 ),
               ),
               const SizedBox(height: 16),
@@ -272,22 +282,33 @@ class _MedicineScreenState extends State<MedicineScreen> {
                               {_selectTime(context).then((_) {})}
                             else
                               {
-                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                                     content: Text(
                                         'Please select a medicine and frequency')))
                               }
                           },
-                      child: Row(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(7.0),
+                          border: Border.all(color: Colors.grey),
+                        ),
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
+                          children: const [
                             Icon(Icons.timer),
-                            Text('Select First Dosage Time')
-                          ]))),
-              SizedBox(height: 20),
+                            SizedBox(width: 8.0),
+                            Text('Select First Dosage Time'),
+                          ],
+                        ),
+                      ),
+                  ),
+              ),
+              const SizedBox(height: 20),
               BlocBuilder<AlarmBloc, AlarmState>(
                 builder: (context, state) {
                   if (state is AlarmLoading) {
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   } else if (state is AlarmSetSuccess) {
                     // If the alarm is set successfully, navigate to the AlarmScreen
                     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -323,7 +344,8 @@ class _MedicineScreenState extends State<MedicineScreen> {
           ),
         )
       ]),
+      ),
       bottomNavigationBar: BaseMenuBar(),
-    );
+    ),);
   }
 }

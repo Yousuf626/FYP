@@ -46,7 +46,7 @@ class _ShareRecordsState extends State<ShareRecords> {
   }
 
   Future<void> _stopShare() async {
-    _recordsBloc.add(RemoveRecord());
+    _recordsBloc.add(const RemoveRecord());
   }
 
   void checkAccessCode(BuildContext context, String accessCode, state) {
@@ -78,7 +78,13 @@ class _ShareRecordsState extends State<ShareRecords> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return GestureDetector(
+      onTap: () {
+      // Hide keyboard when tapping anywhere outside the text field
+      FocusScope.of(context).unfocus();
+    },
+    
+    child: Scaffold(
       drawer: const CustomDrawer(),
       bottomNavigationBar: BaseMenuBar(),
       body: BlocBuilder(
@@ -187,7 +193,7 @@ class _ShareRecordsState extends State<ShareRecords> {
                       const SizedBox(height: 8.0),
                       Text(
                         accessCodeFound ? '' : 'No corresponding user found.',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 12.0,
                           fontWeight: FontWeight.bold,
                           color: Colors.red,
@@ -263,6 +269,7 @@ class _ShareRecordsState extends State<ShareRecords> {
               ],
             ));
           }),
+    ),
     );
   }
 }

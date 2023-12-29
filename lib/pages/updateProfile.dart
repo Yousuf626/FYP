@@ -112,7 +112,13 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return GestureDetector(
+       onTap: () {
+      // Hide keyboard when tapping anywhere outside the text field
+      FocusScope.of(context).unfocus();
+    },
+    
+    child: Scaffold(
         body: _isLoading
             ? const Center(child: CircularProgressIndicator())
             : Container(
@@ -335,6 +341,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
         extendBody: true,
         backgroundColor: Colors.transparent,
         bottomNavigationBar: BaseMenuBar(),
-        drawer: CustomDrawer(user: snap));
+        drawer: CustomDrawer(user: snap)),
+        );
   }
 }

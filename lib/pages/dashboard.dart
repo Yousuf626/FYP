@@ -166,69 +166,79 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               ),
                             ))),
                     const SizedBox(height: 10.0),
-                    Padding(
-                      padding: const EdgeInsets.all(24.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                              height: 80,
-                              width: MediaQuery.of(context).size.width * 0.3,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const AlarmHomeScreen()));
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12.0),
-                                  ),
-                                  backgroundColor: const Color(0xFFF04444),
-                                ),
-                                child: const Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'Alarm',
-                                      style: TextStyle(fontSize: 22),
-                                    ),
-                                    SizedBox(height: 5),
-                                    Icon(Icons.alarm),
-                                  ],
-                                ),
-                              )),
-                          const SizedBox(width: 10.0),
-                          Container(
-                              height: 80,
-                              width: MediaQuery.of(context).size.width * 0.55,
-                              child: ElevatedButton.icon(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ViewRecords(
-                                              userid: '',
-                                              name: '',
-                                            )),
-                                  );
-                                },
-                                label: const Text('View Medical Records',
-                                    style: TextStyle(fontSize: 22),
-                                    textAlign: TextAlign.center),
-                                icon: const Icon(Icons.remove_red_eye_outlined),
-                                style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12.0),
-                                  ),
-                                  backgroundColor: const Color(0xFF01888B),
-                                ),
-                              ))
-                        ],
-                      ),
-                    ),
+                   Padding(
+  padding: const EdgeInsets.all(24.0),
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Expanded( // Encapsulate in an Expanded widget
+        flex: 3, // Adjust flex factor as needed for layout
+        child: Container(
+          height: 80,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AlarmHomeScreen(),
+                ),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              backgroundColor: const Color(0xFFF04444),
+            ),
+            child: const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Alarm',
+                  style: TextStyle(fontSize: 22),
+                ),
+                SizedBox(height: 5),
+                Icon(Icons.alarm),
+              ],
+            ),
+          ),
+        ),
+      ),
+      SizedBox(width: 10.0), // Spacing between buttons
+      Expanded( // Encapsulate in an Expanded widget
+        flex: 5, // Adjust flex factor as needed for layout
+        child: Container(
+          height: 80,
+          child: ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ViewRecords(
+                    userid: '',
+                    name: '',
+                  ),
+                ),
+              );
+            },
+            label: const Text(
+              'View Medical Records',
+              style: TextStyle(fontSize: 22),
+              textAlign: TextAlign.center,
+            ),
+            icon: const Icon(Icons.remove_red_eye_outlined),
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              backgroundColor: const Color(0xFF01888B),
+            ),
+          ),
+        ),
+      ),
+    ],
+  ),
+),
                     const SizedBox(height: 20.0),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 24.0),

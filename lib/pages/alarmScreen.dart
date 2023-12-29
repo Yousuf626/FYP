@@ -21,7 +21,7 @@ class ExampleAlarmRingScreen extends StatelessWidget {
               child: Text(
                 "It's time to take ${alarmSettings.notificationBody}!",
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headline4!.copyWith(
+                style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
@@ -50,8 +50,7 @@ class ExampleAlarmRingScreen extends StatelessWidget {
                     ).then((_) => Navigator.pop(context));
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.white,
-                    onPrimary: const Color(0xFF01888B),
+                    foregroundColor: const Color(0xFF01888B), backgroundColor: Colors.white,
                   ),
                   icon: const Icon(Icons.snooze, color: Color(0xFF01888B)),
                   label: const Text(
@@ -68,8 +67,7 @@ class ExampleAlarmRingScreen extends StatelessWidget {
                         .then((_) => Navigator.pop(context));
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.white,
-                    onPrimary: const Color(0xFF01888B),
+                    foregroundColor: const Color(0xFF01888B), backgroundColor: Colors.white,
                   ),
                   icon: const Icon(Icons.stop, color: Color(0xFF01888B)),
                   label: const Text(

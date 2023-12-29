@@ -21,7 +21,7 @@ void main() async {
   runApp(
     BlocProvider<AlarmBloc>(
       create: (context) => AlarmBloc(alarmRepository: AlarmRepository()),
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }

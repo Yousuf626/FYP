@@ -145,7 +145,7 @@ class DisplaySelectedImage extends StatelessWidget {
   final TextEditingController reportTypeController = TextEditingController();
   final File selectedImage;
   final MedicalRecordsRepository recordsRepository = MedicalRecordsRepository();
-  late MedicalRecordsBloc _recordsBloc =
+  late final MedicalRecordsBloc _recordsBloc =
       MedicalRecordsBloc(recordsRepository: recordsRepository);
 
   DisplaySelectedImage({Key? key, required this.selectedImage})
@@ -207,7 +207,7 @@ class DisplaySelectedImage extends StatelessWidget {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (_) => ViewRecords(
+                          builder: (_) => const ViewRecords(
                                 userid: '',
                                 name: '',
                               )));

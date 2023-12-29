@@ -51,6 +51,7 @@ dependencies:
   alarm: ^3.0.2
   permission_handler: ^10.4.0
   firebase_app_check: ^0.2.1+8
+  dropdown_button2: ^2.3.9
   
 dev_dependencies:
   flutter_test:

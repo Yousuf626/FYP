@@ -63,7 +63,7 @@ class _ViewRecordsState extends State<ViewRecords> {
                         widget.name != ''
                             ? 'Medical Records of ${widget.name}'
                             : 'Your Medical Records',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 36.0,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,

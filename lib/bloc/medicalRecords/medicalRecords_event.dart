@@ -16,7 +16,7 @@ class FetchRecord extends RecordEvent {
 class SetRecord extends RecordEvent {
   final UserReport report;
 
-  SetRecord({required this.report});
+  const SetRecord({required this.report});
 
   @override
   List<Object> get props => [report];

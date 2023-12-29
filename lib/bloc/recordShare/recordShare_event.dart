@@ -1,5 +1,3 @@
-import 'package:aap_dev_project/models/report.dart';
-import 'package:aap_dev_project/models/userSharing.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class RecordEvent extends Equatable {
@@ -16,14 +14,14 @@ class FetchRecord extends RecordEvent {
 class AddRecord extends RecordEvent {
   final String code;
 
-  AddRecord({required this.code});
+  const AddRecord({required this.code});
 
   @override
   List<Object> get props => [code];
 }
 
 class RemoveRecord extends RecordEvent {
-  RemoveRecord();
+  const RemoveRecord();
 
   @override
   List<Object> get props => [];

@@ -8,7 +8,6 @@ import 'package:aap_dev_project/core/repository/alarm_repo.dart';
 import 'package:aap_dev_project/pages/Medicine.dart';
 import 'package:aap_dev_project/pages/alarmScreen.dart';
 import 'package:aap_dev_project/pages/appDrawer.dart';
-import 'package:aap_dev_project/pages/bottomNavigationBar.dart';
 import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,7 +29,7 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
   @override
   void initState() {
     _alarmBloc = AlarmBloc(alarmRepository: alarmRepository);
-    _alarmBloc.add(FetchAlarm());
+    _alarmBloc.add(const FetchAlarm());
     super.initState();
     if (Alarm.android) {
       checkAndroidNotificationPermission();
@@ -47,7 +46,7 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
             print("bye"),
             print(DateTime.now()),
             DateTime.now().difference(alarmSettings.dateTime).abs() <=
-                    Duration(seconds: 30)
+                    const Duration(seconds: 30)
                 ? navigateToRingScreen(alarmSettings)
                 : Alarm.stop(alarmSettings.id)
           },
@@ -181,7 +180,7 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
                       onTap: () {
                         _alarmBloc.add(DeleteAlarm(alarmId: alarm.id));
                       },
-                      child: Row(
+                      child: const Row(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -202,7 +201,7 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
                 getNextClosestAlarmTime(alarm),
                 style: const TextStyle(
                   color: Colors.white,
-                  fontSize: 30.0,
+                  fontSize: 25.0,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -214,7 +213,7 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
                   fontSize: 16.0,
                 ),
               ),
-              const SizedBox(height: 8.0),
+              const SizedBox(height: 4.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -322,7 +321,7 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
             return Center(
                 child: Text(state.errorMsg ?? 'No error message available'));
           } else if (state is AlarmDeletedSuccess) {
-            _alarmBloc.add(FetchAlarm());
+            _alarmBloc.add(const FetchAlarm());
           } else if (state is AlarmSetting) {
             print("JOKLKLK");
             const Center();

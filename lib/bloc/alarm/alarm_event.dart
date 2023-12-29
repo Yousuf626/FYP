@@ -1,5 +1,4 @@
 import 'package:aap_dev_project/models/alarmz.dart';
-import 'package:aap_dev_project/pages/alarm.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class AlarmEvent extends Equatable {
@@ -16,7 +15,7 @@ class FetchAlarm extends AlarmEvent {
 class SetAlarm extends AlarmEvent {
   final AlarmInformation alarmInfo;
 
-  SetAlarm(this.alarmInfo);  // Removed the extra parameter
+  const SetAlarm(this.alarmInfo);  // Removed the extra parameter
 
   @override
   List<Object> get props => [alarmInfo];
@@ -26,7 +25,7 @@ class SetAlarm extends AlarmEvent {
 class DeleteAlarm extends AlarmEvent {
   final String alarmId;
 
-  DeleteAlarm({required this.alarmId});
+  const DeleteAlarm({required this.alarmId});
 
   @override
   List<Object> get props => [alarmId];

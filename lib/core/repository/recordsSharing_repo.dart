@@ -1,6 +1,5 @@
 import 'package:aap_dev_project/models/user.dart';
 import 'package:aap_dev_project/models/userSharing.dart';
-import 'package:aap_dev_project/pages/shareRecords.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -66,15 +65,15 @@ class RecordsSharingRepository {
               UserSharing.fromJson(records as Map<String, dynamic>))
           .toList();
       int existingIndex =
-          userRecords.indexWhere((users) => users.userid == user!.uid);
+          userRecords.indexWhere((users) => users.userid == user.uid);
       if (existingIndex != -1) {
         // Replace the existing item with the new one
         userRecords[existingIndex] =
-            UserSharing(code: code, userid: user!.uid, name: profile.name);
+            UserSharing(code: code, userid: user.uid, name: profile.name);
       } else {
         // If no matching userid found, add the new item
         userRecords.add(
-            UserSharing(code: code, userid: user!.uid, name: profile.name));
+            UserSharing(code: code, userid: user.uid, name: profile.name));
       }
       print(userRecords.length);
 

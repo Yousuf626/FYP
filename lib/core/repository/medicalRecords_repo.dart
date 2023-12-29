@@ -42,7 +42,7 @@ class MedicalRecordsRepository {
           .map((report) => UserReport.fromJson(report as Map<String, dynamic>))
           .toList();
       userReports.add(uploadedReport);
-      print(userReports?.length);
+      print(userReports.length);
       await _firestore
           .collection('medicalRecords')
           .doc(user?.uid)

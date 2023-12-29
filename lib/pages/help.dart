@@ -49,7 +49,13 @@ class _HelpPageState extends State<HelpPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return GestureDetector(
+      onTap: () {
+      // Hide keyboard when tapping anywhere outside the text field
+      FocusScope.of(context).unfocus();
+    },
+    
+    child:Scaffold(
         bottomNavigationBar: BaseMenuBar(),
         drawer: CustomDrawer(user: widget.user),
         body: SingleChildScrollView(
@@ -172,6 +178,6 @@ class _HelpPageState extends State<HelpPage> {
               ),
             ),
           ],
-        )));
+        ))),);
   }
 }

@@ -142,7 +142,9 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen>
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    alarm.name,
+                    alarm.name.length > 9
+                        ? '${state.user.name.substring(0, 9)}...'
+                        : alarm.name,
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20.0,
@@ -323,4 +325,3 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen>
     );
   }
 }
-

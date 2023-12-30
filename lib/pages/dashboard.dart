@@ -75,7 +75,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     return const Center(child: CircularProgressIndicator());
                   }
                   if (state is UserLoaded) {
-                    return Column(
+                    return SingleChildScrollView(
+                        child: Column(
                       children: [
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -97,11 +98,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      state.user.name,
+                                      state.user.name.length > 14
+                                          ? '${state.user.name.substring(0, 14)}...'
+                                          : state.user.name,
                                       style: const TextStyle(
-                                          fontFamily: 'Urbanist',
-                                          fontSize: 30,
-                                          color: Colors.white),
+                                        fontFamily: 'Urbanist',
+                                        fontSize: 30,
+                                        color: Colors.white,
+                                      ),
                                     ),
                                     const SizedBox(height: 20.0),
                                     Text(
@@ -277,7 +281,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ),
                         ),
                       ],
-                    );
+                    ));
                   }
                   if (state is UserError) {
                     return Center(child: Text(state.errorMsg!));

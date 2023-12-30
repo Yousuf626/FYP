@@ -268,15 +268,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           child: GestureDetector(
                             onTap: () async {
                               print('Tapped');
-                              const url = 'https://www.google.com';
+                              const url = 'https://www.drugs.com/drug_information.html';
                               await launchUrlString(url);
                             },
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(15),
-                              child: Image.network(
-                                'https://img.freepik.com/free-psd/medical-healthcare-poster-template_23-2148940481.jpg?w=1380&t=st=1700163117~exp=1700163717~hmac=2503f8ac3e3f45a86a6ecc0480fc21d9676592337021a3b8c62ccd4c41066b46',
-                                fit: BoxFit.cover,
-                              ),
+                            child: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                            color: const Color(0xFF01888B), // Black color border
+                                  width: 3.0, // Border width
+                                            ),
+                                            borderRadius: BorderRadius.circular(15),
+                                            ),
+                                          child: ClipRRect(
+                                         borderRadius: BorderRadius.circular(15),
+                                        child: Image.network(
+                                      'https://www.needymeds.org/images/drugs.com_promo.png',
+                                     fit: BoxFit.contain,
+                                  ),
+                                ),
                             ),
                           ),
                         ),

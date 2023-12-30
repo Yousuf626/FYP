@@ -71,7 +71,7 @@ void main() {
       expect: () => [
         AlarmDeleting(),
         isA<AlarmDeletedSuccess>()
-            .having((state) => state.alarms.length, 'records length', 2)
+            .having((state) => state.alarms.length, 'records length', 3)
             .having((state) => state.alarms.any((alarm) => alarm.id == '45678'),
                 'deleted', isFalse),
       ],

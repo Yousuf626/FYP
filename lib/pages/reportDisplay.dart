@@ -13,7 +13,13 @@ class ViewReport extends StatefulWidget {
   _ViewReportState createState() => _ViewReportState();
 }
 
-class _ViewReportState extends State<ViewReport> {
+class _ViewReportState extends State<ViewReport> with RouteAware {
+  @override
+  void didPopNext() {
+    setState(() {});
+    super.didPopNext();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

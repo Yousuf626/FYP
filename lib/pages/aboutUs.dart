@@ -12,7 +12,13 @@ class AboutUsPage extends StatefulWidget {
   _AboutUsPageState createState() => _AboutUsPageState();
 }
 
-class _AboutUsPageState extends State<AboutUsPage> {
+class _AboutUsPageState extends State<AboutUsPage> with RouteAware {
+  @override
+  void didPopNext() {
+    setState(() {});
+    super.didPopNext();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,49 +37,48 @@ class AboutUsContent extends StatelessWidget {
     return ListView(
       children: [
         Container(
-  padding: const EdgeInsets.all(16.0),
-  width: double.infinity,
-  height: MediaQuery.of(context).size.height * 0.3,
-  decoration: const BoxDecoration(
-    borderRadius: BorderRadius.only(
-      bottomLeft: Radius.circular(50.0),
-      bottomRight: Radius.circular(50.0),
-    ),
-    color: Color(0xFF01888B),
-  ),
-  child: Stack(
-    children: [
-      Align(
-        alignment: Alignment.topLeft,
-        child: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => DashboardApp(),
-            ));
-          },
-        ),
-      ),
-      const Align(
-        alignment: Alignment.center,
-        child: Text(
-          'MedQR Provides',
-          style: TextStyle(
-            fontSize: 36.0,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
+          padding: const EdgeInsets.all(16.0),
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height * 0.3,
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(50.0),
+              bottomRight: Radius.circular(50.0),
+            ),
+            color: Color(0xFF01888B),
+          ),
+          child: Stack(
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => DashboardApp(),
+                    ));
+                  },
+                ),
+              ),
+              const Align(
+                alignment: Alignment.center,
+                child: Text(
+                  'MedQR Provides',
+                  style: TextStyle(
+                    fontSize: 36.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
-      ),
-    ],
-  ),
-),
         const SizedBox(height: 20.0),
         Container(
           width: MediaQuery.of(context).size.width * 0.9,
           height: MediaQuery.of(context).size.height * 0.53,
           child: ListView(
-            
             children: const [
               FeatureLine(
                 icon: 'assets/lock.png',

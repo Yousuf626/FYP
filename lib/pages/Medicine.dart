@@ -17,7 +17,6 @@ import 'package:aap_dev_project/models/alarmz.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
-
 class MedqrPage extends StatelessWidget {
   const MedqrPage({super.key});
 
@@ -72,9 +71,15 @@ class MedicineScreen extends StatefulWidget {
   _MedicineScreenState createState() => _MedicineScreenState();
 }
 
-class _MedicineScreenState extends State<MedicineScreen> {
+class _MedicineScreenState extends State<MedicineScreen> with RouteAware {
   final TextEditingController _controller = TextEditingController();
-      final TextEditingController _typeAheadController = TextEditingController();
+  final TextEditingController _typeAheadController = TextEditingController();
+
+  @override
+  void didPopNext() {
+    setState(() {});
+    super.didPopNext();
+  }
 
   List<String> allMedicines = [
     'Panadol',
@@ -273,28 +278,30 @@ class _MedicineScreenState extends State<MedicineScreen> {
                   //   ),
                   // ),
                   TypeAheadFormField(
-              textFieldConfiguration: TextFieldConfiguration(
-                controller: _typeAheadController,
-                decoration: InputDecoration(
-                  labelText: 'Select Medicine',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              suggestionsCallback: (pattern) {
-                return allMedicines.where(
-                  (medicine) => medicine.toLowerCase().contains(pattern.toLowerCase()),
-                );
-              },
-              itemBuilder: (context, String suggestion) {
-                return ListTile(
-                  title: Text(suggestion),
-                );
-              },
-              onSuggestionSelected: (String suggestion) {
-                _typeAheadController.text = suggestion;
-                selectedMedicine = suggestion;
-              },
-            ),
+                    textFieldConfiguration: TextFieldConfiguration(
+                      controller: _typeAheadController,
+                      decoration: InputDecoration(
+                        labelText: 'Select Medicine',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    suggestionsCallback: (pattern) {
+                      return allMedicines.where(
+                        (medicine) => medicine
+                            .toLowerCase()
+                            .contains(pattern.toLowerCase()),
+                      );
+                    },
+                    itemBuilder: (context, String suggestion) {
+                      return ListTile(
+                        title: Text(suggestion),
+                      );
+                    },
+                    onSuggestionSelected: (String suggestion) {
+                      _typeAheadController.text = suggestion;
+                      selectedMedicine = suggestion;
+                    },
+                  ),
                   const SizedBox(height: 16),
                   Center(
                     child: DropdownButton2<int>(

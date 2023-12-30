@@ -22,8 +22,14 @@ class AddReport extends StatefulWidget {
   _AddReportState createState() => _AddReportState();
 }
 
-class _AddReportState extends State<AddReport> {
+class _AddReportState extends State<AddReport> with RouteAware {
   File? _selectedImage;
+
+  @override
+  void didPopNext() {
+    setState(() {});
+    super.didPopNext();
+  }
 
   Future<void> _getImage(ImageSource source) async {
     final picker = ImagePicker();
@@ -52,43 +58,44 @@ class _AddReportState extends State<AddReport> {
         bottomNavigationBar: BaseMenuBar(),
         body: Column(children: [
           Container(
-  padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0, bottom: 0),
-  width: double.infinity,
-  height: MediaQuery.of(context).size.height * 0.3,
-  decoration: const BoxDecoration(
-    borderRadius: BorderRadius.only(
-      bottomLeft: Radius.circular(50.0),
-      bottomRight: Radius.circular(50.0),
-    ),
-    color: Color(0xFF01888B),
-  ),
-  child: Stack(
-    alignment: Alignment.center,
-    children: [
-      Align(
-        alignment: Alignment.topLeft,
-        child: SafeArea(
-          child: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () => Navigator.pushAndRemoveUntil(
-  context,
-  MaterialPageRoute(builder: (context) => DashboardApp()),
-  ModalRoute.withName('/'),
-),
+            padding: const EdgeInsets.only(
+                top: 16.0, left: 16.0, right: 16.0, bottom: 0),
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height * 0.3,
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(50.0),
+                bottomRight: Radius.circular(50.0),
+              ),
+              color: Color(0xFF01888B),
+            ),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: SafeArea(
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      onPressed: () => Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => DashboardApp()),
+                        ModalRoute.withName('/'),
+                      ),
+                    ),
+                  ),
+                ),
+                const Text(
+                  'Add A Report',
+                  style: TextStyle(
+                    fontSize: 36.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
-      const Text(
-        'Add A Report',
-        style: TextStyle(
-          fontSize: 36.0,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-      ),
-    ],
-  ),
-),
           SizedBox(height: MediaQuery.of(context).size.height * 0.2),
           SizedBox(
               child: Center(
@@ -232,44 +239,47 @@ class DisplaySelectedImage extends StatelessWidget {
               }
               return SingleChildScrollView(
                   child: Column(children: [
-                       Container(
-  padding: const EdgeInsets.all(16.0),
-  width: double.infinity,
-  height: MediaQuery.of(context).size.height * 0.3,
-  decoration: const BoxDecoration(
-    borderRadius: BorderRadius.only(
-      bottomLeft: Radius.circular(50.0),
-      bottomRight: Radius.circular(50.0),
-    ),
-    color: Color(0xFF01888B),
-  ),
-  child: Stack(
-    children: [
-      Align(
-        alignment: Alignment.topLeft,
-        child: SafeArea(
-          child: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () => Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (_) => const AddReport()),
-            ),
-          ),
-        ),
-      ),
-      const Align(
-        alignment: Alignment.center,
-        child: Text(
-          "Upload Report",
-          style: TextStyle(
-            fontSize: 36.0,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-      ),
-    ],
-  ),
-),
+                Container(
+                  padding: const EdgeInsets.all(16.0),
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height * 0.3,
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(50.0),
+                      bottomRight: Radius.circular(50.0),
+                    ),
+                    color: Color(0xFF01888B),
+                  ),
+                  child: Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: SafeArea(
+                          child: IconButton(
+                            icon: const Icon(Icons.arrow_back,
+                                color: Colors.white),
+                            onPressed: () =>
+                                Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (_) => const AddReport()),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          "Upload Report",
+                          style: TextStyle(
+                            fontSize: 36.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 const SizedBox(height: 50.0),
                 Image.file(selectedImage),
                 const SizedBox(height: 40.0),

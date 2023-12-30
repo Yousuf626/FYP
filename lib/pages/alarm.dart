@@ -21,10 +21,17 @@ class AlarmHomeScreen extends StatefulWidget {
   State<AlarmHomeScreen> createState() => _ExampleAlarmHomeScreenState();
 }
 
-class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
+class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen>
+    with RouteAware {
   static StreamSubscription<AlarmSettings>? subscription;
   final AlarmRepository alarmRepository = AlarmRepository();
   late AlarmBloc _alarmBloc;
+
+  @override
+  void didPopNext() {
+    setState(() {});
+    super.didPopNext();
+  }
 
   @override
   void initState() {

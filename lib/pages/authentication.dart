@@ -36,46 +36,50 @@ class Authentication extends StatelessWidget {
               'assets/MEDQR.jpg'), // Make sure the image is in the assets folder
           const SizedBox(height: 60), // Spacing between image and buttons
           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              primary: Colors.green, // Background color
-              onPrimary: Colors.white, // Text Color
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 150, vertical: 20),
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => RegistrationScreen()),
-              );
-            },
-            child: const Text(
-              'Register',
-              style: TextStyle(
-                fontFamily: 'Urbanist',
-              ),
-            ),
-          ),
+  style: ElevatedButton.styleFrom(
+    primary: Colors.green, // Background color
+    onPrimary: Colors.white, // Text Color
+    padding: const EdgeInsets.symmetric(horizontal: 150, vertical: 20),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(8), // Rounded rectangular borders
+    ),
+  ),
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => RegistrationScreen()),
+    );
+  },
+  child: const Text(
+    'Register',
+    style: TextStyle(
+      fontFamily: 'Urbanist',
+    ),
+  ),
+),
           const SizedBox(height: 24), // Spacing between buttons
           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              primary: Colors.blue, // Background color
-              onPrimary: Colors.white, // Text Color
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 150, vertical: 20),
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const LoginScreen()),
-              );
-            },
-            child: const Text(
-              'Login',
-              style: TextStyle(
-                fontFamily: 'Urbanist',
-              ),
-            ),
-          ),
+  style: ElevatedButton.styleFrom(
+    primary: Colors.blue, // Background color
+    onPrimary: Colors.white, // Text Color
+    padding: const EdgeInsets.symmetric(horizontal: 150, vertical: 20),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(8), // Rounded rectangular borders
+    ),
+  ),
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
+    );
+  },
+  child: const Text(
+    'Login',
+    style: TextStyle(
+      fontFamily: 'Urbanist',
+    ),
+  ),
+),
         ],
       ),
     );
@@ -157,7 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor:
             Colors.white, // Set the app bar background color to white
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back,color: Colors.black),
           onPressed: () {
             Navigator.push(
               context,

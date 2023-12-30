@@ -214,7 +214,9 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> with RouteAware {
                                   decoration: InputDecoration(
                                     floatingLabelBehavior:
                                         FloatingLabelBehavior.always,
-                                    hintText: state.user.age.toString(),
+                                    hintText: state.user.age.toString() == '0'
+                                        ? ''
+                                        : state.user.age.toString(),
                                     labelText: 'Age',
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),

@@ -75,33 +75,36 @@ class AboutUsContent extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 20.0),
-        Container(
-          width: MediaQuery.of(context).size.width * 0.9,
-          height: MediaQuery.of(context).size.height * 0.53,
-          child: ListView(
-            children: const [
-              FeatureLine(
-                icon: 'assets/lock.png',
-                feature:
-                    'Secure storage of medical history, test reports and prescriptions.',
-              ),
-              SizedBox(height: 20.0),
-              FeatureLine(
-                icon: 'assets/profile.png',
-                feature:
-                    'Patients can register themselves easily and make their profile.',
-              ),
-              SizedBox(height: 20.0),
-              FeatureLine(
-                icon: 'assets/calendar.png',
-                feature: 'Customizable medication reminders',
-              ),
-              SizedBox(height: 20.0),
-              FeatureLine(
-                icon: 'assets/code.png',
-                feature: 'Streamlined doctor access to patient records',
-              ),
-            ],
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.9,
+            height: MediaQuery.of(context).size.height * 0.53,
+            child: ListView(
+              children: const [
+                FeatureLine(
+                  icon: 'assets/lock.png',
+                  feature:
+                      'Secure storage of medical history, test reports and prescriptions.',
+                ),
+                SizedBox(height: 20.0),
+                FeatureLine(
+                  icon: 'assets/profile.png',
+                  feature:
+                      'Patients can register themselves easily and make their profile.',
+                ),
+                SizedBox(height: 20.0),
+                FeatureLine(
+                  icon: 'assets/calendar.png',
+                  feature: 'Customizable medication reminders',
+                ),
+                SizedBox(height: 20.0),
+                FeatureLine(
+                  icon: 'assets/code.png',
+                  feature: 'Streamlined doctor access to patient records',
+                ),
+              ],
+            ),
           ),
         ),
       ],

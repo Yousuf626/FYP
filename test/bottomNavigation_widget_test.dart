@@ -28,26 +28,6 @@ testWidgets('Taps first BottomNavigationBarItem and opens drawer', (WidgetTester
   // Verify that the drawer is opened
   expect(find.byType(Drawer), findsOneWidget);
 });
-// testWidgets('Taps second BottomNavigationBarItem and navigates to Dashboard', (WidgetTester tester) async {
-//   await tester.pumpWidget(MaterialApp(home: Scaffold(body: BaseMenuBar())));
-
-//   // Tap the second BottomNavigationBarItem
-//   await tester.tap(find.byIcon(Icons.home_outlined));
-//   await tester.pumpAndSettle(); // Wait for animations
-
-//   // Verify that navigation to Dashboard occurred
-//   expect(find.byType(DashboardApp), findsOneWidget);
-// });
-// testWidgets('Taps third BottomNavigationBarItem and navigates to ShareRecords', (WidgetTester tester) async {
-//   await tester.pumpWidget(MaterialApp(home: Scaffold(body: BaseMenuBar())));
-
-//   // Tap the third BottomNavigationBarItem
-//   await tester.tap(find.byIcon(Icons.group));
-//   await tester.pumpAndSettle(); // Wait for animations
-
-//   // Verify that navigation to ShareRecords occurred
-//   expect(find.byType(ShareRecords), findsOneWidget);
-// });
 
   });
 }

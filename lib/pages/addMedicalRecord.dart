@@ -189,21 +189,35 @@ class DisplaySelectedImage extends StatelessWidget {
     return randomName;
   }
 
-  Future<void> _UploadReport() async {
-    DateTime now = DateTime.now();
-    String formattedDate = DateFormat('dd/MM/yyyy').format(now);
-
-    Reference storageReference =
-        FirebaseStorage.instance.ref().child(generateRandomName());
-    TaskSnapshot uploadTask =
-        await storageReference.putFile(File(selectedImage.path));
-    String imageUrl = await uploadTask.ref.getDownloadURL();
-    _recordsBloc.add(SetRecord(
-        report: UserReport(
-            type: reportTypeController.text,
-            image: imageUrl,
-            createdAt: formattedDate)));
+  Future<void> _UploadReport(BuildContext context) async {
+  if (reportTypeController.text.isEmpty) {
+    // Show a message if the report name is not provided
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Please Name the Report'),
+        backgroundColor: Colors.red,
+      ),
+    );
+    return;
   }
+
+  DateTime now = DateTime.now();
+  String formattedDate = DateFormat('dd/MM/yyyy').format(now);
+
+  Reference storageReference = 
+      FirebaseStorage.instance.ref().child(generateRandomName());
+  TaskSnapshot uploadTask = 
+      await storageReference.putFile(File(selectedImage.path));
+  String imageUrl = await uploadTask.ref.getDownloadURL();
+  _recordsBloc.add(SetRecord(
+    report: UserReport(
+      type: reportTypeController.text,
+      image: imageUrl,
+      createdAt: formattedDate,
+    ),
+  ));
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -310,7 +324,7 @@ class DisplaySelectedImage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(50.0),
                       child: ElevatedButton(
                         onPressed: () {
-                          _UploadReport();
+                          _UploadReport(context);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF01888B),

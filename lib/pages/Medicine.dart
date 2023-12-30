@@ -15,7 +15,6 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter/widgets.dart';
 import 'package:aap_dev_project/models/alarmz.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 class MedqrPage extends StatelessWidget {
   const MedqrPage({super.key});
@@ -229,7 +228,7 @@ class _MedicineScreenState extends State<MedicineScreen> with RouteAware {
                   Align(
                     alignment: Alignment.topLeft,
                     child: IconButton(
-                      icon: Icon(Icons.arrow_back, color: Colors.white),
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => const AlarmHomeScreen(),
@@ -281,7 +280,7 @@ class _MedicineScreenState extends State<MedicineScreen> with RouteAware {
                   TypeAheadFormField(
                     textFieldConfiguration: TextFieldConfiguration(
                       controller: _typeAheadController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Select Medicine',
                         border: OutlineInputBorder(),
                       ),
@@ -343,9 +342,9 @@ class _MedicineScreenState extends State<MedicineScreen> with RouteAware {
                           borderRadius: BorderRadius.circular(7.0),
                           border: Border.all(color: Colors.grey),
                         ),
-                        child: Row(
+                        child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             Icon(Icons.timer),
                             SizedBox(width: 8.0),
                             Text('Select First Dosage Time'),
@@ -360,7 +359,7 @@ class _MedicineScreenState extends State<MedicineScreen> with RouteAware {
                       if (state is AlarmLoading) {
                         return const CircularProgressIndicator();
                       } else if (state is AlarmSetSuccess) {
-                        BlocProvider.of<AlarmBloc>(context).add(FetchAlarm());
+                        BlocProvider.of<AlarmBloc>(context).add(const FetchAlarm());
                         WidgetsBinding.instance.addPostFrameCallback((_) {
                           Navigator.push(
                             context,

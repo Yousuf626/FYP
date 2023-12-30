@@ -86,7 +86,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => AboutUsPage()),
+                        MaterialPageRoute(builder: (context) => const AboutUsPage()),
                       );
                     },
                   ),
@@ -108,13 +108,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     title: const Text('Logout'),
                     onTap: () {
                       signOut().then((_) {
-                        // After signing out, navigate the user back to the login screen or wherever appropriate
+                        
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
                               builder: (context) => const Authentication()),
                         );
                       }).catchError((error) {
-                        // Handle error, if any
+                        
                         print("Error signing out: $error");
                       });
                     },

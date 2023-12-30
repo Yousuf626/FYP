@@ -24,7 +24,7 @@ void main() {
     blocTest<RecordShareBloc, RecordState>(
       'emits [RecordLoading, RecordLoaded] with specific UserReport instances when FetchRecord event is added',
       build: () => recordsBloc,
-      act: (bloc) => bloc.add(FetchRecord()),
+      act: (bloc) => bloc.add(const FetchRecord()),
       expect: () => [
         RecordLoading(),
         isA<RecordLoaded>()
@@ -41,7 +41,7 @@ void main() {
     blocTest<RecordShareBloc, RecordState>(
       'emits [RecordLoading, RecordLoaded] after adding a user to shared records',
       build: () => recordsBloc,
-      act: (bloc) => bloc.add(AddRecord(code: "67890")),
+      act: (bloc) => bloc.add(const AddRecord(code: "67890")),
       expect: () => [
         RecordSetting(),
         isA<RecordSetSuccess>()

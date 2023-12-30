@@ -15,7 +15,7 @@ void main() async {
         Device.tabletLandscape,
       ])
       ..addScenario(
-        widget: AboutUsPage(),
+        widget: const AboutUsPage(),
         name: 'about Us page',
       );
     //flutter test --update-goldens

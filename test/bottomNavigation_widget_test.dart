@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:aap_dev_project/pages/bottomNavigationBar.dart'; // Update with correct import path
-import 'package:aap_dev_project/pages/dashboard.dart';
-import 'package:aap_dev_project/pages/shareRecords.dart';
 
 void main() {
   group('BaseMenuBar Tests', () {
@@ -19,7 +17,7 @@ void main() {
   expect(find.byIcon(Icons.group), findsOneWidget);
 });
 testWidgets('Taps first BottomNavigationBarItem and opens drawer', (WidgetTester tester) async {
-  await tester.pumpWidget(MaterialApp(home: Scaffold(drawer: Drawer(), body: BaseMenuBar())));
+  await tester.pumpWidget(MaterialApp(home: Scaffold(drawer: const Drawer(), body: BaseMenuBar())));
 
   // Tap the first BottomNavigationBarItem
   await tester.tap(find.byIcon(Icons.menu));

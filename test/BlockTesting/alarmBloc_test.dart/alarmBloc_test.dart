@@ -1,7 +1,6 @@
 import 'package:aap_dev_project/bloc/alarm/alarm_bloc.dart';
 import 'package:aap_dev_project/bloc/alarm/alarm_event.dart';
 import 'package:aap_dev_project/bloc/alarm/alarm_state.dart';
-import 'package:aap_dev_project/bloc/recordShare/recordShare_states.dart';
 import 'package:aap_dev_project/models/alarmz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bloc_test/bloc_test.dart';
@@ -25,7 +24,7 @@ void main() {
     blocTest<AlarmBloc, AlarmState>(
       'emits [RecordLoading, RecordLoaded] with specific UserReport instances when FetchRecord event is added',
       build: () => alarmBloc,
-      act: (bloc) => bloc.add(FetchAlarm()),
+      act: (bloc) => bloc.add(const FetchAlarm()),
       expect: () => [
         AlarmLoading(),
         isA<AlarmLoaded>()
@@ -66,7 +65,7 @@ void main() {
       'emits [AlarmLoading, AlarmLoaded] without deleting when the alarm ID does not exist',
       build: () => alarmBloc,
       act: (bloc) {
-        bloc.add(DeleteAlarm(alarmId: "45678"));
+        bloc.add(const DeleteAlarm(alarmId: "45678"));
       },
       expect: () => [
         AlarmDeleting(),

@@ -28,22 +28,22 @@ class Authentication extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: Colors.white, // Set the background color to white
+      backgroundColor: Colors.white, 
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Image.asset(
-              'assets/MEDQR.jpg'), // Make sure the image is in the assets folder
-          const SizedBox(height: 60), // Spacing between image and buttons
+              'assets/MEDQR.jpg'), 
+          const SizedBox(height: 60), 
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              primary: Colors.green, // Background color
-              onPrimary: Colors.white, // Text Color
+              primary: Colors.green, 
+              onPrimary: Colors.white, 
               padding:
                   const EdgeInsets.symmetric(horizontal: 150, vertical: 20),
               shape: RoundedRectangleBorder(
                 borderRadius:
-                    BorderRadius.circular(8), // Rounded rectangular borders
+                    BorderRadius.circular(8), 
               ),
             ),
             onPressed: () {
@@ -59,16 +59,16 @@ class Authentication extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 24), // Spacing between buttons
+          const SizedBox(height: 24), 
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              primary: Colors.blue, // Background color
-              onPrimary: Colors.white, // Text Color
+              primary: Colors.blue, 
+              onPrimary: Colors.white, 
               padding:
                   const EdgeInsets.symmetric(horizontal: 150, vertical: 20),
               shape: RoundedRectangleBorder(
                 borderRadius:
-                    BorderRadius.circular(8), // Rounded rectangular borders
+                    BorderRadius.circular(8), 
               ),
             ),
             onPressed: () {
@@ -133,9 +133,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
     // Once signed in, return the UserCredential
     var a = await FirebaseAuth.instance.signInWithCredential(credential);
-    snapshot.docs.forEach((doc) => {
-          exists = doc.id == a.user?.uid,
-        });
+    for (var doc in snapshot.docs) {
+      exists = doc.id == a.user?.uid;
+    }
     if (exists == false) {
       _userBloc.add(SetUser(
           user: UserProfile(

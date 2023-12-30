@@ -40,7 +40,6 @@ class _AddReportState extends State<AddReport> with RouteAware {
         _selectedImage = File(pickedImage.path);
       });
 
-      // Navigate to the other page to display the selected image
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -107,16 +106,16 @@ class _AddReportState extends State<AddReport> with RouteAware {
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: const Color(
-                              0xFF01888B), // Choose your desired color
-                          width: 5.0, // Choose the width of the border
+                              0xFF01888B), 
+                          width: 5.0, 
                         ),
                         borderRadius: BorderRadius.circular(
-                            8.0), // Optional: Add border radius
+                            8.0), 
                       ),
                       child: GestureDetector(
                           onTap: () {
                             _getImage(ImageSource
-                                .camera); // Option 1: Click a picture
+                                .camera); 
                           },
                           child: Column(
                             children: [
@@ -137,11 +136,11 @@ class _AddReportState extends State<AddReport> with RouteAware {
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: const Color(
-                              0xFF01888B), // Choose your desired color
-                          width: 5.0, // Choose the width of the border
+                              0xFF01888B), 
+                          width: 5.0, 
                         ),
                         borderRadius: BorderRadius.circular(
-                            8.0), // Optional: Add border radius
+                            8.0), 
                       ),
                       child: GestureDetector(
                           onTap: () {
@@ -193,7 +192,7 @@ class DisplaySelectedImage extends StatelessWidget {
   if (reportTypeController.text.isEmpty) {
     // Show a message if the report name is not provided
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      const SnackBar(
         content: Text('Please Name the Report'),
         backgroundColor: Colors.red,
       ),

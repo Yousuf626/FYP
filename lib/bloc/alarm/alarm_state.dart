@@ -20,7 +20,7 @@ class AlarmLoaded extends AlarmState {
 
 class AlarmError extends AlarmState {
   final String? errorMsg;
-  AlarmError({this.errorMsg});
+  const AlarmError({this.errorMsg});
 }
 
 class AlarmSetting extends AlarmState {}
@@ -33,7 +33,7 @@ class AlarmSetSuccess extends AlarmState {
 
 class AlarmSetError extends AlarmState {
   final String? errorMsg;
-  AlarmSetError({this.errorMsg});
+  const AlarmSetError({this.errorMsg});
 }
 
 class AlarmDeleting extends AlarmState {}
@@ -46,5 +46,5 @@ class AlarmDeletedSuccess extends AlarmState {
 
 class AlarmDeleteError extends AlarmState {
   final String? errorMsg;
-  AlarmDeleteError({this.errorMsg});
+  const AlarmDeleteError({this.errorMsg});
 }

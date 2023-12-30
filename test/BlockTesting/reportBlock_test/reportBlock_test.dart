@@ -24,7 +24,7 @@ void main() {
     blocTest<MedicalRecordsBloc, RecordState>(
       'emits [RecordLoading, RecordLoaded] with specific UserReport instances when FetchRecord event is added',
       build: () => recordsBloc,
-      act: (bloc) => bloc.add(FetchRecord(userid: '123')),
+      act: (bloc) => bloc.add(const FetchRecord(userid: '123')),
       expect: () => [
         RecordLoading(),
         isA<RecordLoaded>()

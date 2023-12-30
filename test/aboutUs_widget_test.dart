@@ -6,13 +6,13 @@ void main() {
   group('About Us Page Tests', () {
     // Individual test cases will go here
     testWidgets('Finds AboutUsContent widget', (WidgetTester tester) async {
-  await tester.pumpWidget(MaterialApp(home: AboutUsPage()));
+  await tester.pumpWidget(const MaterialApp(home: AboutUsPage()));
 
   // Verify that AboutUsContent is present
   expect(find.byType(AboutUsContent), findsOneWidget);
 });
 testWidgets('Checks text and layout in AboutUsContent', (WidgetTester tester) async {
-  await tester.pumpWidget(MaterialApp(home: AboutUsPage()));
+  await tester.pumpWidget(const MaterialApp(home: AboutUsPage()));
 
   // Verify text content
   expect(find.text('MedQR Provides'), findsOneWidget);
@@ -21,7 +21,7 @@ testWidgets('Checks text and layout in AboutUsContent', (WidgetTester tester) as
   expect(find.byType(FeatureLine), findsNWidgets(4));
 });
 testWidgets('Checks each FeatureLine for correct icon and text', (WidgetTester tester) async {
-  await tester.pumpWidget(MaterialApp(home: AboutUsPage()));
+  await tester.pumpWidget(const MaterialApp(home: AboutUsPage()));
 
   // Helper function to test individual FeatureLine
   void testFeatureLine(String iconPath, String featureText) {

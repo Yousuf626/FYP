@@ -68,7 +68,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> with RouteAware {
     super.initState();
 
     _userBloc = UserBloc(userRepository: userRepository);
-    _userBloc.add(FetchUserData());
+    _userBloc.add(const FetchUserData());
   }
 
   Future<void> _updateUserProfile(state) async {

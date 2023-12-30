@@ -124,10 +124,9 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen>
       elevation: 8.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(25.0),
-        side: BorderSide(
-          // Add this side property for border
-          color: Colors.yellow, // Set your desired border color here
-          width: 5.0, // Set the border width
+        side: const BorderSide(
+                    color: Colors.yellow, 
+          width: 5.0, 
         ),
       ),
       margin: const EdgeInsets.all(8.0),

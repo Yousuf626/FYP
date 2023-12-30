@@ -15,7 +15,7 @@ class FetchAlarm extends AlarmEvent {
 class SetAlarm extends AlarmEvent {
   final AlarmInformation alarmInfo;
 
-  const SetAlarm(this.alarmInfo);  // Removed the extra parameter
+  const SetAlarm(this.alarmInfo);  
 
   @override
   List<Object> get props => [alarmInfo];

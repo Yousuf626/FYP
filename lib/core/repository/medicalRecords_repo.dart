@@ -14,7 +14,7 @@ class MedicalRecordsRepository {
         .doc(userid != '' ? userid : user?.uid)
         .get();
     if (snapshot.exists) {
-      // Assuming 'reports' is the field containing a list of reports in your document
+     
       List<dynamic>? reportData =
           (snapshot.data() as Map<String, dynamic>?)?['records'];
       if (reportData != null) {

@@ -32,7 +32,7 @@ class AlarmInformation {
       'time': Timestamp.fromDate(time),
       'isActive': isActive,
       'frequency': frequency,
-      'id': id ?? '',
+      'id': id ?? ' ',
     };
   }
 

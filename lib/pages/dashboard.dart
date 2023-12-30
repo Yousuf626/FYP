@@ -220,7 +220,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 10.0), // Spacing between buttons
+                              const SizedBox(width: 10.0), // Spacing between buttons
                               Expanded(
                                 // Encapsulate in an Expanded widget
                                 flex:

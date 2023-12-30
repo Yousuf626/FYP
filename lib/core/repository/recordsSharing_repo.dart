@@ -68,11 +68,10 @@ class RecordsSharingRepository {
       int existingIndex =
           userRecords.indexWhere((users) => users.userid == user.uid);
       if (existingIndex != -1) {
-        // Replace the existing item with the new one
+       
         userRecords[existingIndex] =
             UserSharing(code: code, userid: user.uid, name: profile.name);
       } else {
-        // If no matching userid found, add the new item
         userRecords
             .add(UserSharing(code: code, userid: user.uid, name: profile.name));
       }

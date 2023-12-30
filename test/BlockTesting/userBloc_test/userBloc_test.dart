@@ -23,7 +23,7 @@ void main() {
     blocTest<UserBloc, UserState>(
       'emits [UserLoading, UserLoaded] with specific UserProfile instance when FetchUserData event is added',
       build: () => userBloc,
-      act: (bloc) => bloc.add(FetchUserData()),
+      act: (bloc) => bloc.add(const FetchUserData()),
       expect: () {
         final expectedProfile = UserProfile(
           name: 'John Moc',

@@ -349,15 +349,11 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> with RouteAware {
                         const SizedBox(height: 56),
                         FractionallySizedBox(
                           widthFactor: 0.5,
-                          child: ElevatedButton(
-                            onPressed: () => {_updateUserProfile(state)},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF01888B),
-                            ),
-                            child: const Text(
-                                style: TextStyle(color: Colors.white),
-                                'Update Profile'),
-                          ),
+                          child: FloatingActionButton(
+  onPressed: () => _updateUserProfile(state),
+  backgroundColor: const Color(0xFF01888B),
+  child: const Icon(Icons.update, color: Colors.white),
+),
                         ),
                         const SizedBox(height: 100),
                       ],

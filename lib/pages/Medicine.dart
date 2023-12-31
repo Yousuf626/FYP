@@ -35,7 +35,7 @@ class MedqrPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 40),
-          ElevatedButton(
+          FloatingActionButton.extended(
             onPressed: () {
               Navigator.push(
                 context,
@@ -47,15 +47,9 @@ class MedqrPage extends StatelessWidget {
                         )),
               );
             },
-            child: const Text('Add your Medicine'),
-            style: ElevatedButton.styleFrom(
-              primary: Colors.red,
-              onPrimary: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-            ),
+            label: const Text('Add your Medicine'),
+            backgroundColor: Colors.red,
+            foregroundColor: Colors.white,
           ),
         ],
       ),
@@ -378,15 +372,15 @@ class _MedicineScreenState extends State<MedicineScreen> with RouteAware {
                       return Container();
                     },
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      setAlarm();
-                    },
-                    child: const Text('Set Alarm'),
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.teal,
-                      onPrimary: Colors.white,
-                      minimumSize: const Size(double.infinity, 50),
+                  Center(
+                    child: FloatingActionButton.extended(
+                      onPressed: () {
+                        setAlarm();
+                      },
+                      label: const Text('Set Alarm'),
+                      backgroundColor: Colors.teal,
+                      foregroundColor: Colors.white,
+                      icon: const Icon(Icons.alarm),
                     ),
                   ),
                 ],

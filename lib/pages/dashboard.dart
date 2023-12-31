@@ -150,118 +150,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ),
                         ),
                         const SizedBox(height: 30.0),
-                        Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 24.0),
-                            child: Container(
-                                height: 80,
-                                width: double.infinity,
-                                child: ElevatedButton.icon(
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const AddReport()));
-                                  },
-                                  label: const Text(
-                                    'Add Medical Records',
-                                    style: TextStyle(fontSize: 22),
-                                  ),
-                                  icon: const Icon(Icons.add_circle_outline),
-                                  style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12.0),
-                                    ),
-                                    backgroundColor: const Color(0xFF01888B),
-                                  ),
-                                ))),
-                        const SizedBox(height: 10.0),
-                        Padding(
-                          padding: const EdgeInsets.all(24.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                // Encapsulate in an Expanded widget
-                                flex:
-                                    3, // Adjust flex factor as needed for layout
-                                child: Container(
-                                  height: 80,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const AlarmHomeScreen(),
-                                        ),
-                                      );
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(12.0),
-                                      ),
-                                      backgroundColor: const Color(0xFFF04444),
-                                    ),
-                                    child: const Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'Alarm',
-                                          style: TextStyle(fontSize: 22),
-                                        ),
-                                        SizedBox(height: 5),
-                                        Icon(Icons.alarm),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 10.0), // Spacing between buttons
-                              Expanded(
-                                // Encapsulate in an Expanded widget
-                                flex:
-                                    5, // Adjust flex factor as needed for layout
-                                child: Container(
-                                  height: 80,
-                                  child: ElevatedButton.icon(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const ViewRecords(
-                                            userid: '',
-                                            name: '',
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    label: const Text(
-                                      'View Medical Records',
-                                      style: TextStyle(fontSize: 22),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    icon: const Icon(
-                                        Icons.remove_red_eye_outlined),
-                                    style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(12.0),
-                                      ),
-                                      backgroundColor: const Color(0xFF01888B),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 20.0),
-                        Container(
+                            Container(
                           padding: const EdgeInsets.symmetric(horizontal: 24.0),
                           height: 220,
                           width: double.infinity,
@@ -289,6 +178,93 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             ),
                           ),
                         ),
+                        SizedBox(height: 25),
+                        Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 24.0),
+                            child: Container(
+                                height: 80,
+                                width: double.infinity,
+      child:  FloatingActionButton.extended(
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const AddReport(),
+      ),
+    );
+  },
+  label: const Text(
+    'Add Medical Records',
+    style: TextStyle(fontSize: 22),
+  ),
+  icon: const Icon(Icons.add_circle_outline),
+  backgroundColor: const Color(0xFF01888B),
+))),
+                        const SizedBox(height: 10.0),
+                        Padding(
+                          padding: const EdgeInsets.all(24.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                // Encapsulate in an Expanded widget
+                                flex:
+                                    3, // Adjust flex factor as needed for layout
+                                child: Container(
+                                  height: 80,
+                                  child: FloatingActionButton.extended(
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const AlarmHomeScreen(),
+      ),
+    );
+  },
+  label: const Text(
+    'Alarm',
+    style: TextStyle(fontSize: 22),
+  ),
+  icon: const Icon(Icons.alarm),
+  backgroundColor: const Color(0xFFF04444),
+),
+                                ),
+                              ),
+                              const SizedBox(width: 10.0), // Spacing between buttons
+                              Expanded(
+                                // Encapsulate in an Expanded widget
+                                flex:
+                                    5, // Adjust flex factor as needed for layout
+                                child: Container(
+                                  height: 80,
+                                  child: FloatingActionButton.extended(
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const ViewRecords(
+          userid: '',
+          name: '',
+        ),
+      ),
+    );
+  },
+  label: const Text(
+  'View Medical\nRecords',
+  textAlign: TextAlign.center,
+  style: TextStyle(fontSize: 22),
+),
+  icon: const Icon(Icons.remove_red_eye_outlined),
+  backgroundColor: const Color(0xFF01888B),
+),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 20.0),
+                    
                       ],
                     ));
                   }

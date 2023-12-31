@@ -68,25 +68,22 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
               keyboardType: TextInputType.emailAddress,
             ),
             const SizedBox(height: 20.0),
-            ElevatedButton(
-              onPressed: () {
-                resetPassword(_emailController.text);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF01888B),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                padding: const EdgeInsets.all(14),
-              ),
-              child: const Text(
-                'Reset Password',
-                style: TextStyle(
-                  fontFamily: 'Urbanist',
-                  color: Colors.white,
-                ),
-              ),
-            ),
+            FloatingActionButton(
+  onPressed: () {
+    resetPassword(_emailController.text);
+  },
+  backgroundColor: const Color(0xFF01888B),
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(8),
+  ),
+  child: const Text(
+    'Reset Password',
+    style: TextStyle(
+      fontFamily: 'Urbanist',
+      color: Colors.white,
+    ),
+  ),
+),
             Stack(
               children: <Widget>[
                 const Column(

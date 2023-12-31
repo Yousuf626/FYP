@@ -316,21 +316,18 @@ class DisplaySelectedImage extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 30.0),
+                const SizedBox(height: 20.0),
                 FractionallySizedBox(
                     widthFactor: 0.5,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(50.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          _UploadReport(context);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF01888B),
-                        ),
-                        child: const Text(
-                            style: TextStyle(color: Colors.white), 'UPLOAD'),
-                      ),
+                      child: FloatingActionButton.extended(
+  onPressed: () {
+    _UploadReport(context);
+  },
+  backgroundColor: const Color(0xFF01888B),
+  label: const Text('UPLOAD', style: TextStyle(color: Colors.white)),
+),
                     )),
               ]));
             }));

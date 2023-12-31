@@ -176,7 +176,7 @@ class _HelpPageState extends State<HelpPage> with RouteAware {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ElevatedButton(
+                        FloatingActionButton(
                           onPressed: () async {
                             await sendEmail(
                               _emailController.text,
@@ -189,12 +189,11 @@ class _HelpPageState extends State<HelpPage> with RouteAware {
                               ),
                             );
                           },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF01888B),
+                          backgroundColor: const Color(0xFF01888B),
+                          child: const Icon(
+                            Icons.send,
+                            color: Colors.white,
                           ),
-                          child: const Text(
-                              style: TextStyle(color: Colors.white),
-                              'Send Message'),
                         ),
                       ],
                     ),

@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:aap_dev_project/pages/dashboard.dart';
 
@@ -66,14 +65,6 @@ class _RegistrationScreenState extends State<RegistrationScreen>
       );
       return null;
     }
-  }
-
-  Future<UserCredential?> signInWithFacebook() async {
-    final LoginResult result = await FacebookAuth.instance.login();
-    if (result.status != LoginStatus.success) return null;
-    final credential =
-        FacebookAuthProvider.credential(result.accessToken!.token);
-    return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -137,19 +128,18 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                   Container(
                     width: double
                         .infinity, // This will make the button's width match its parent
-                    child: ElevatedButton(
-                      onPressed: _registerUser,
-                      child: const Text(
-                          style: TextStyle(color: Colors.white), 'Register'),
-                      style: ElevatedButton.styleFrom(
-                        primary: const Color(0xFF01888B),
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        textStyle: const TextStyle(fontSize: 18),
-                      ),
-                    ),
+                    child: FloatingActionButton.extended(
+  onPressed: _registerUser,
+  label: const Text(
+    'Register',
+    style: TextStyle(
+      color: Colors.white,
+      fontFamily: 'Urbanist',
+    ),
+  ),
+  icon: const Icon(Icons.app_registration_outlined),
+  backgroundColor: const Color(0xFF01888B),
+),
                   ),
                   const SizedBox(height: 16),
                   const SizedBox(height: 24),

@@ -189,28 +189,20 @@ class _ShareRecordsState extends State<ShareRecords> with RouteAware {
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(right: 10.0),
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      accessCodeFound = true;
-                                    });
-                                    checkAccessCode(context, accessCode, state);
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xFF01888B),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                  ),
-                                  child: const Text(
-                                    'Enter',
-                                    style: TextStyle(
-                                      fontSize: 24.0,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
+                                child:FloatingActionButton(
+  onPressed: () {
+    setState(() {
+      accessCodeFound = true;
+    });
+    checkAccessCode(context, accessCode, state);
+  },
+  backgroundColor: const Color(0xFF01888B),
+  child: const Icon(
+    Icons.check,
+    size: 24.0,
+    color: Colors.white,
+  ),
+),
                               )
                             ],
                           ),

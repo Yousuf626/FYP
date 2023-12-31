@@ -35,53 +35,45 @@ class Authentication extends StatelessWidget {
           Image.asset(
               'assets/MEDQR.jpg'), 
           const SizedBox(height: 60), 
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              primary: Colors.green, 
-              onPrimary: Colors.white, 
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 150, vertical: 20),
-              shape: RoundedRectangleBorder(
-                borderRadius:
-                    BorderRadius.circular(8), 
+          SizedBox(
+            width: 300, // Ensures both buttons have the same width
+            child: FloatingActionButton.extended(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RegistrationScreen()),
+                );
+              },
+              label: const Text(
+                'Register',
+                style: TextStyle(
+                  fontFamily: 'Urbanist',
+                ),
               ),
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => RegistrationScreen()),
-              );
-            },
-            child: const Text(
-              'Register',
-              style: TextStyle(
-                fontFamily: 'Urbanist',
-              ),
+              backgroundColor: Colors.green,
+              icon: const Icon(Icons.app_registration),
             ),
           ),
           const SizedBox(height: 24), 
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              primary: Colors.blue, 
-              onPrimary: Colors.white, 
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 150, vertical: 20),
-              shape: RoundedRectangleBorder(
-                borderRadius:
-                    BorderRadius.circular(8), 
+          SizedBox(
+            width: 300, // Ensures both buttons have the same width
+            child: FloatingActionButton.extended(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()),
+                );
+              },
+              label: const Text(
+                'Login',
+                style: TextStyle(
+                  fontFamily: 'Urbanist',
+                  color: Colors.white,
+                ),
               ),
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const LoginScreen()),
-              );
-            },
-            child: const Text(
-              'Login',
-              style: TextStyle(
-                fontFamily: 'Urbanist',
-              ),
+              backgroundColor: Colors.blue,
+              icon: const Icon(Icons.login_outlined),
+             
             ),
           ),
         ],
@@ -183,7 +175,7 @@ class _LoginScreenState extends State<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const Text(
-                  'Welcome back',
+                  'Welcome Back',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 30,
@@ -254,83 +246,79 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () async {
-                    try {
-                      UserCredential userCredential = await FirebaseAuth
-                          .instance
-                          .signInWithEmailAndPassword(
-                        email: emailController.text,
-                        password: passwordController.text,
-                      );
-                      // Update status message on successful sign-in
-                      // Navigate to MedicineScreen
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => DashboardApp()),
-                      );
-                    } on FirebaseAuthException catch (e) {
-                      // Update status message on error
-                      setState(() {
-                        if (e.code == 'user-not-found' ||
-                            e.code == 'invalid-credential' ||
-                            e.code == 'wrong-password') {
-                          signInStatus = 'Incorrect email or password';
-                        } else {
-                          signInStatus = e.code;
-                        }
-                      });
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: const Color(0xFF01888B),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    padding: const EdgeInsets.all(14),
-                  ),
-                  child: const Text(
-                    'Login',
-                    style: TextStyle(
-                      fontFamily: 'Urbanist',
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
+                FloatingActionButton.extended(
+  onPressed: () async {
+    try {
+      UserCredential userCredential = await FirebaseAuth
+          .instance
+          .signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+      // Update status message on successful sign-in
+      // Navigate to MedicineScreen
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => DashboardApp()),
+      );
+    } on FirebaseAuthException catch (e) {
+      // Update status message on error
+      setState(() {
+        if (e.code == 'user-not-found' ||
+            e.code == 'invalid-credential' ||
+            e.code == 'wrong-password') {
+          signInStatus = 'Incorrect email or password';
+        } else {
+          signInStatus = e.code;
+        }
+      });
+    }
+  },
+  icon: const Icon(Icons.login),
+
+label: const Text(
+    'Login',
+    style: TextStyle(
+      fontFamily: 'Urbanist',
+      color: Colors.white,
+    ),
+  ),  backgroundColor: const Color(0xFF01888B),
+),
                 const SizedBox(height: 30),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const SizedBox(width: 10), // Add this
                     Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey, width: 0.2),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: IconButton(
-                          icon: const FaIcon(FontAwesomeIcons.google),
-                          onPressed: () async {
-                            try {
-                              final UserCredential? userCredential =
-                                  await signInWithGoogle();
-                              if (userCredential != null) {
-                                // User signed in with Google. You can navigate to another screen here.
-                                print('Successfully signed in with Google');
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => DashboardApp()),
-                                );
-                              }
-                            } catch (e) {
-                              // Handle error here
-                              print('Error signing in with Google: $e');
-                            }
-                          },
-                        ),
-                      ),
-                    ),
+  child: Container(
+    decoration: BoxDecoration(
+      border: Border.all(color: Colors.grey, width: 0.2),
+      borderRadius: BorderRadius.circular(10),
+    ),
+    child: TextButton.icon(
+      icon: const FaIcon(FontAwesomeIcons.google),
+      label: const Text('Sign in with Google'),
+      onPressed: () async {
+        try {
+          final UserCredential? userCredential =
+              await signInWithGoogle();
+          if (userCredential != null) {
+            // User signed in with Google. You can navigate to another screen here.
+            print('Successfully signed in with Google');
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => DashboardApp()),
+            );
+          }
+        } catch (e) {
+          // Handle error here
+          print('Error signing in with Google: $e');
+        }
+      },
+    ),
+  ),
+),
                     const SizedBox(width: 10), // Add this
                   ],
                 ),

@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:aap_dev_project/models/alarmInfo.dart';
 import 'package:aap_dev_project/pages/home/dashboard.dart';
 import 'package:intl/intl.dart';

@@ -112,45 +112,60 @@ class _ViewRecordsState extends State<ViewRecords> with RouteAware {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => ViewReport(
-                                          report: state.records[index])),
+                                    builder: (context) => ViewReport(
+                                        report: state.records[index]),
+                                  ),
                                 );
                               },
-                              child: Container(
+                              child: Card(
+                                color: Color(0xFFCCE7E8),
                                 margin: const EdgeInsets.symmetric(
                                     vertical: 8.0, horizontal: 16.0),
-                                padding: const EdgeInsets.all(12.0),
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFFCCE7E8),
+                                shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20.0),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Colors.black12,
-                                      offset: Offset(0, 4),
-                                      blurRadius: 1.0,
-                                    )
-                                  ],
+                                  side: const BorderSide(
+                                    color: Color(0xFF01888B),
+                                    width: 3.0,
+                                  ),
                                 ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      record.type,
-                                      style: const TextStyle(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xFF01888B),
-                                      ),
-                                    ),
-                                    Text(
-                                      record.createdAt.toString(),
-                                      style: const TextStyle(
+                                elevation: 4.0,
+                                child: ListTile(
+                                  contentPadding: const EdgeInsets.all(16.0),
+                                  leading: Image.asset(
+                                    'assets/report.png',
+                                    height: 50,
+                                    width: 50,
+                                  ),
+                                  title: RichText(
+                                    text: TextSpan(
+                                      text: 'Title: ',
+                                      style: TextStyle(
                                         fontSize: 14.0,
                                         color: Color(0xFF01888B),
                                       ),
+                                      children: [
+                                        TextSpan(
+                                          text: record.type,
+                                          style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xFF01888B),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
+                                  subtitle: Text(
+                                    'Date of Upload: ${record.createdAt!}',
+                                    style: TextStyle(
+                                      fontSize: 14.0,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                  trailing: Icon(
+                                    Icons.arrow_forward,
+                                    color: Color(0xFF01888B),
+                                  ),
                                 ),
                               ),
                             );

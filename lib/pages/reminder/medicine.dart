@@ -63,7 +63,6 @@ class MedicineScreen extends StatefulWidget {
 }
 
 class _MedicineScreenState extends State<MedicineScreen> with RouteAware {
-  final TextEditingController _controller = TextEditingController();
   final TextEditingController _typeAheadController = TextEditingController();
 
   @override

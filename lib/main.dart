@@ -1,23 +1,21 @@
 // ignore_for_file: duplicate_import, unused_import
 import 'package:aap_dev_project/bloc/alarm/alarm_bloc.dart';
 import 'package:aap_dev_project/core/repository/alarm_repo.dart';
-import 'package:aap_dev_project/pages/Medicine.dart';
-import 'package:aap_dev_project/pages/authentication.dart';
+import 'package:aap_dev_project/pages/reminder/medicine.dart';
+import 'package:aap_dev_project/pages/account/authentication.dart';
 import 'package:aap_dev_project/firebase/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'firebase/firebase_options.dart';
-import 'pages/dashboard.dart';
-import 'package:alarm/alarm.dart';
+import 'pages/home/dashboard.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await Alarm.init(showDebugLogs: true);
   runApp(
     BlocProvider<AlarmBloc>(
       create: (context) => AlarmBloc(alarmRepository: AlarmRepository()),

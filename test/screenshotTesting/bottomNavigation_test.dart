@@ -1,4 +1,4 @@
-import 'package:aap_dev_project/pages/bottomNavigationBar.dart';
+import 'package:aap_dev_project/pages/navigation/bottomNavigationBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';

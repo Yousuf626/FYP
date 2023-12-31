@@ -1,7 +1,7 @@
 import 'package:aap_dev_project/bloc/alarm/alarm_bloc.dart';
 import 'package:aap_dev_project/bloc/alarm/alarm_event.dart';
 import 'package:aap_dev_project/bloc/alarm/alarm_state.dart';
-import 'package:aap_dev_project/models/alarmz.dart';
+import 'package:aap_dev_project/models/alarmInfo.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bloc_test/bloc_test.dart';
 

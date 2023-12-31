@@ -1,14 +1,14 @@
 // ignore_for_file: file_names, library_private_types_in_public_api, sized_box_for_whitespace
 import 'package:aap_dev_project/bloc/medicalRecords/medicalRecords_block.dart';
 import 'package:aap_dev_project/bloc/medicalRecords/medicalRecords_event.dart';
-import 'package:aap_dev_project/bloc/medicalRecords/medicalRecords_states.dart';
+import 'package:aap_dev_project/bloc/medicalRecords/medicalRecords_state.dart';
 import 'package:aap_dev_project/core/repository/medicalRecords_repo.dart';
-import 'package:aap_dev_project/pages/dashboard.dart';
-import 'package:aap_dev_project/pages/reportDisplay.dart';
+import 'package:aap_dev_project/pages/home/dashboard.dart';
+import 'package:aap_dev_project/pages/medicalReports/reportDisplay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'bottomNavigationBar.dart';
-import 'appDrawer.dart';
+import '../navigation/bottomNavigationBar.dart';
+import '../navigation/appDrawer.dart';
 
 class ViewRecords extends StatefulWidget {
   const ViewRecords({Key? key, required this.userid, required this.name})
@@ -58,7 +58,7 @@ class _ViewRecordsState extends State<ViewRecords> with RouteAware {
                       Container(
                         padding: const EdgeInsets.all(16.0),
                         width: double.infinity,
-                        height: MediaQuery.of(context).size.height * 0.3,
+                        height: MediaQuery.of(context).size.height * 0.2,
                         decoration: const BoxDecoration(
                           borderRadius: BorderRadius.only(
                             bottomLeft: Radius.circular(50.0),
@@ -66,22 +66,24 @@ class _ViewRecordsState extends State<ViewRecords> with RouteAware {
                           ),
                           color: Color(0xFF01888B),
                         ),
-                        child: Center(
-                          child: Text(
-                            widget.name != ''
-                                ? 'Medical Records of ${widget.name}'
-                                : 'Your Medical Records',
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              fontSize: 36.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
+                        child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            child: Center(
+                              child: Text(
+                                widget.name != ''
+                                    ? 'Medical Records of ${widget.name}'
+                                    : 'Your Medical Records',
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontSize: 36.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )),
                       ),
                       Positioned(
-                        top: 42.0,
+                        top: 60.0,
                         left: 16.0,
                         child: IconButton(
                           icon:

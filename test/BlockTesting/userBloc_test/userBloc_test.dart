@@ -1,6 +1,6 @@
 import 'package:aap_dev_project/bloc/user/user_block.dart';
 import 'package:aap_dev_project/bloc/user/user_event.dart';
-import 'package:aap_dev_project/bloc/user/user_states.dart';
+import 'package:aap_dev_project/bloc/user/user_state.dart';
 import 'package:aap_dev_project/models/user.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bloc_test/bloc_test.dart';

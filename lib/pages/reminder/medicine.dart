@@ -4,16 +4,14 @@ import 'package:aap_dev_project/bloc/alarm/alarm_bloc.dart';
 import 'package:aap_dev_project/bloc/alarm/alarm_event.dart';
 import 'package:aap_dev_project/bloc/alarm/alarm_state.dart';
 import 'package:aap_dev_project/core/repository/alarm_repo.dart';
-import 'package:aap_dev_project/pages/alarm.dart';
-import 'package:aap_dev_project/pages/appDrawer.dart';
-import 'package:aap_dev_project/pages/bottomNavigationBar.dart';
-import 'package:alarm/alarm.dart';
-import 'package:alarm/model/alarm_settings.dart';
+import 'package:aap_dev_project/pages/navigation/bottomNavigationBar.dart';
+import 'package:aap_dev_project/pages/reminder/alarm.dart';
+import 'package:aap_dev_project/pages/navigation/appDrawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter/widgets.dart';
-import 'package:aap_dev_project/models/alarmz.dart';
+import 'package:aap_dev_project/models/alarmInfo.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 
 class MedqrPage extends StatelessWidget {
@@ -79,7 +77,6 @@ class _MedicineScreenState extends State<MedicineScreen> with RouteAware {
     'Ibuprofen',
     'Adderall',
     'Ativan',
-
   ];
   String? selectedMedicine;
   // OverlayEntry? _overlayEntry;
@@ -209,7 +206,7 @@ class _MedicineScreenState extends State<MedicineScreen> with RouteAware {
               padding:
                   const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
               width: double.infinity,
-              height: MediaQuery.of(context).size.height * 0.3,
+              height: MediaQuery.of(context).size.height * 0.2,
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(50.0),
@@ -221,14 +218,17 @@ class _MedicineScreenState extends State<MedicineScreen> with RouteAware {
                 children: [
                   Align(
                     alignment: Alignment.topLeft,
-                    child: IconButton(
-                      icon: const Icon(Icons.arrow_back, color: Colors.white),
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const AlarmHomeScreen(),
-                        ));
-                      },
-                    ),
+                    child: Padding(
+                        padding: EdgeInsets.only(top: 50),
+                        child: IconButton(
+                          icon:
+                              const Icon(Icons.arrow_back, color: Colors.white),
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const AlarmHomeScreen(),
+                            ));
+                          },
+                        )),
                   ),
                   const Align(
                     alignment: Alignment.center,
@@ -244,7 +244,7 @@ class _MedicineScreenState extends State<MedicineScreen> with RouteAware {
                 ],
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 100),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -353,7 +353,8 @@ class _MedicineScreenState extends State<MedicineScreen> with RouteAware {
                       if (state is AlarmLoading) {
                         return const CircularProgressIndicator();
                       } else if (state is AlarmSetSuccess) {
-                        BlocProvider.of<AlarmBloc>(context).add(const FetchAlarm());
+                        BlocProvider.of<AlarmBloc>(context)
+                            .add(const FetchAlarm());
                         WidgetsBinding.instance.addPostFrameCallback((_) {
                           Navigator.push(
                             context,
@@ -393,7 +394,3 @@ class _MedicineScreenState extends State<MedicineScreen> with RouteAware {
     );
   }
 }
-  
-
-
-  

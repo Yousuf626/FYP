@@ -4,17 +4,17 @@ import 'dart:io';
 
 import 'package:aap_dev_project/bloc/user/user_block.dart';
 import 'package:aap_dev_project/bloc/user/user_event.dart';
-import 'package:aap_dev_project/bloc/user/user_states.dart';
+import 'package:aap_dev_project/bloc/user/user_state.dart';
 import 'package:aap_dev_project/core/repository/user_repo.dart';
 import 'package:aap_dev_project/models/user.dart';
-import 'package:aap_dev_project/pages/bottomNavigationBar.dart';
+import 'package:aap_dev_project/pages/navigation/bottomNavigationBar.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'appDrawer.dart';
+import '../navigation/appDrawer.dart';
 
 class UpdateProfilePage extends StatefulWidget {
   final UserProfile user;
@@ -348,12 +348,15 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> with RouteAware {
                             )),
                         const SizedBox(height: 56),
                         FractionallySizedBox(
-                          widthFactor: 0.5,
-                          child: FloatingActionButton(
-  onPressed: () => _updateUserProfile(state),
-  backgroundColor: const Color(0xFF01888B),
-  child: const Icon(Icons.update, color: Colors.white),
-),
+                          widthFactor:
+                              0.8, // Make the button take full width available
+                          child: FloatingActionButton.extended(
+                            onPressed: () => _updateUserProfile(state),
+                            backgroundColor: const Color(0xFF01888B),
+                            label: Text(
+                                "Update Profile"), // Use FloatingActionButton.extended for text with an icon
+                            icon: Icon(Icons.update, color: Colors.white),
+                          ),
                         ),
                         const SizedBox(height: 100),
                       ],

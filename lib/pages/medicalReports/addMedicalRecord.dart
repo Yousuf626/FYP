@@ -2,13 +2,13 @@ import 'dart:io';
 import 'dart:math';
 import 'package:aap_dev_project/bloc/medicalRecords/medicalRecords_block.dart';
 import 'package:aap_dev_project/bloc/medicalRecords/medicalRecords_event.dart';
-import 'package:aap_dev_project/bloc/medicalRecords/medicalRecords_states.dart';
+import 'package:aap_dev_project/bloc/medicalRecords/medicalRecords_state.dart';
 import 'package:aap_dev_project/core/repository/medicalRecords_repo.dart';
 import 'package:aap_dev_project/models/report.dart';
-import 'package:aap_dev_project/pages/appDrawer.dart';
-import 'package:aap_dev_project/pages/bottomNavigationBar.dart';
-import 'package:aap_dev_project/pages/dashboard.dart';
-import 'package:aap_dev_project/pages/viewMedicalRecords.dart';
+import 'package:aap_dev_project/pages/navigation/appDrawer.dart';
+import 'package:aap_dev_project/pages/navigation/bottomNavigationBar.dart';
+import 'package:aap_dev_project/pages/home/dashboard.dart';
+import 'package:aap_dev_project/pages/medicalReports/viewMedicalRecords.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -60,7 +60,7 @@ class _AddReportState extends State<AddReport> with RouteAware {
             padding: const EdgeInsets.only(
                 top: 16.0, left: 16.0, right: 16.0, bottom: 0),
             width: double.infinity,
-            height: MediaQuery.of(context).size.height * 0.3,
+            height: MediaQuery.of(context).size.height * 0.2,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(50.0),
@@ -74,13 +74,17 @@ class _AddReportState extends State<AddReport> with RouteAware {
                 Align(
                   alignment: Alignment.topLeft,
                   child: SafeArea(
-                    child: IconButton(
-                      icon: const Icon(Icons.arrow_back, color: Colors.white),
-                      onPressed: () => Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (context) => DashboardApp()),
-                        ModalRoute.withName('/'),
-                      ),
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 20),
+                      child: IconButton(
+                          icon:
+                              const Icon(Icons.arrow_back, color: Colors.white),
+                          onPressed: () => Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DashboardApp()),
+                                ModalRoute.withName('/'),
+                              )),
                     ),
                   ),
                 ),
@@ -95,7 +99,7 @@ class _AddReportState extends State<AddReport> with RouteAware {
               ],
             ),
           ),
-          SizedBox(height: MediaQuery.of(context).size.height * 0.2),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.25),
           SizedBox(
               child: Center(
             child: Row(
@@ -105,17 +109,14 @@ class _AddReportState extends State<AddReport> with RouteAware {
                   Container(
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: const Color(
-                              0xFF01888B), 
-                          width: 5.0, 
+                          color: const Color(0xFF01888B),
+                          width: 5.0,
                         ),
-                        borderRadius: BorderRadius.circular(
-                            8.0), 
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
                       child: GestureDetector(
                           onTap: () {
-                            _getImage(ImageSource
-                                .camera); 
+                            _getImage(ImageSource.camera);
                           },
                           child: Column(
                             children: [
@@ -135,12 +136,10 @@ class _AddReportState extends State<AddReport> with RouteAware {
                   Container(
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: const Color(
-                              0xFF01888B), 
-                          width: 5.0, 
+                          color: const Color(0xFF01888B),
+                          width: 5.0,
                         ),
-                        borderRadius: BorderRadius.circular(
-                            8.0), 
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
                       child: GestureDetector(
                           onTap: () {
@@ -189,34 +188,33 @@ class DisplaySelectedImage extends StatelessWidget {
   }
 
   Future<void> _UploadReport(BuildContext context) async {
-  if (reportTypeController.text.isEmpty) {
-    // Show a message if the report name is not provided
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Please Name the Report'),
-        backgroundColor: Colors.red,
+    if (reportTypeController.text.isEmpty) {
+      // Show a message if the report name is not provided
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please Name the Report'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('dd/MM/yyyy').format(now);
+
+    Reference storageReference =
+        FirebaseStorage.instance.ref().child(generateRandomName());
+    TaskSnapshot uploadTask =
+        await storageReference.putFile(File(selectedImage.path));
+    String imageUrl = await uploadTask.ref.getDownloadURL();
+    _recordsBloc.add(SetRecord(
+      report: UserReport(
+        type: reportTypeController.text,
+        image: imageUrl,
+        createdAt: formattedDate,
       ),
-    );
-    return;
+    ));
   }
-
-  DateTime now = DateTime.now();
-  String formattedDate = DateFormat('dd/MM/yyyy').format(now);
-
-  Reference storageReference = 
-      FirebaseStorage.instance.ref().child(generateRandomName());
-  TaskSnapshot uploadTask = 
-      await storageReference.putFile(File(selectedImage.path));
-  String imageUrl = await uploadTask.ref.getDownloadURL();
-  _recordsBloc.add(SetRecord(
-    report: UserReport(
-      type: reportTypeController.text,
-      image: imageUrl,
-      createdAt: formattedDate,
-    ),
-  ));
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -322,13 +320,15 @@ class DisplaySelectedImage extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(50.0),
                       child: FloatingActionButton.extended(
-  onPressed: () {
-    _UploadReport(context);
-  },
-  backgroundColor: const Color(0xFF01888B),
-  label: const Text('UPLOAD', style: TextStyle(color: Colors.white)),
-),
+                        onPressed: () {
+                          _UploadReport(context);
+                        },
+                        backgroundColor: const Color(0xFF01888B),
+                        label: const Text('UPLOAD',
+                            style: TextStyle(color: Colors.white)),
+                      ),
                     )),
+                SizedBox(height: 20)
               ]));
             }));
   }

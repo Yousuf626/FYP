@@ -1,6 +1,6 @@
 // ignore_for_file: unused_import, unused_catch_clause, library_private_types_in_public_api, sort_child_properties_last
 
-import 'package:aap_dev_project/pages/authentication.dart';
+import 'package:aap_dev_project/pages/account/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -69,21 +69,21 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
             ),
             const SizedBox(height: 20.0),
             FloatingActionButton(
-  onPressed: () {
-    resetPassword(_emailController.text);
-  },
-  backgroundColor: const Color(0xFF01888B),
-  shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(8),
-  ),
-  child: const Text(
-    'Reset Password',
-    style: TextStyle(
-      fontFamily: 'Urbanist',
-      color: Colors.white,
-    ),
-  ),
-),
+              onPressed: () {
+                resetPassword(_emailController.text);
+              },
+              backgroundColor: const Color(0xFF01888B),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Text(
+                'Reset Password',
+                style: TextStyle(
+                  fontFamily: 'Urbanist',
+                  color: Colors.white,
+                ),
+              ),
+            ),
             Stack(
               children: <Widget>[
                 const Column(

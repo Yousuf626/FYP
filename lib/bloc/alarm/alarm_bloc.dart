@@ -2,7 +2,7 @@ import 'package:aap_dev_project/bloc/alarm/alarm_event.dart';
 import 'package:aap_dev_project/bloc/alarm/alarm_state.dart';
 import 'package:aap_dev_project/core/repository/alarm_repo.dart';
 import 'package:bloc/bloc.dart';
-import 'package:aap_dev_project/models/alarmz.dart';
+import 'package:aap_dev_project/models/alarmInfo.dart';
 
 class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
   final AlarmRepository alarmRepository;

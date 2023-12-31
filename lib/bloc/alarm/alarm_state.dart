@@ -1,4 +1,4 @@
-import 'package:aap_dev_project/models/alarmz.dart';
+import 'package:aap_dev_project/models/alarmInfo.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class AlarmState extends Equatable {

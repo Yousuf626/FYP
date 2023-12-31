@@ -4,7 +4,7 @@ import 'package:aap_dev_project/bloc/user/user_block.dart';
 import 'package:aap_dev_project/bloc/user/user_event.dart';
 import 'package:aap_dev_project/core/repository/user_repo.dart';
 import 'package:aap_dev_project/models/user.dart';
-import 'package:aap_dev_project/pages/authentication.dart';
+import 'package:aap_dev_project/pages/account/authentication.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +12,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:aap_dev_project/pages/dashboard.dart';
+import 'package:aap_dev_project/pages/home/dashboard.dart';
 
 class RegistrationScreen extends StatefulWidget {
   @override
@@ -129,17 +129,17 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                     width: double
                         .infinity, // This will make the button's width match its parent
                     child: FloatingActionButton.extended(
-  onPressed: _registerUser,
-  label: const Text(
-    'Register',
-    style: TextStyle(
-      color: Colors.white,
-      fontFamily: 'Urbanist',
-    ),
-  ),
-  icon: const Icon(Icons.app_registration_outlined),
-  backgroundColor: const Color(0xFF01888B),
-),
+                      onPressed: _registerUser,
+                      label: const Text(
+                        'Register',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Urbanist',
+                        ),
+                      ),
+                      icon: const Icon(Icons.app_registration_outlined),
+                      backgroundColor: const Color(0xFF01888B),
+                    ),
                   ),
                   const SizedBox(height: 16),
                   const SizedBox(height: 24),

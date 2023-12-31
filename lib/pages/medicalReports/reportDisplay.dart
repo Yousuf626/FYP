@@ -1,8 +1,8 @@
 // ignore_for_file: file_names, library_private_types_in_public_api, sized_box_for_whitespace
 import 'package:aap_dev_project/models/report.dart';
 import 'package:flutter/material.dart';
-import 'bottomNavigationBar.dart';
-import 'appDrawer.dart';
+import '../navigation/bottomNavigationBar.dart';
+import '../navigation/appDrawer.dart';
 
 class ViewReport extends StatefulWidget {
   final UserReport? report;
@@ -31,7 +31,7 @@ class _ViewReportState extends State<ViewReport> with RouteAware {
               Container(
                 padding: const EdgeInsets.all(16.0),
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.3,
+                height: MediaQuery.of(context).size.height * 0.2,
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(50.0),
@@ -50,7 +50,7 @@ class _ViewReportState extends State<ViewReport> with RouteAware {
                   ),
                 ),
               ),
-              const SizedBox(height: 50.0),
+              const SizedBox(height: 80.0),
               Image.network(
                 widget.report!.image,
                 fit: BoxFit.contain,
@@ -60,10 +60,10 @@ class _ViewReportState extends State<ViewReport> with RouteAware {
             ],
           ),
           const Positioned(
-  top: 20,
-  left: 20,
-  child: BackButton(color: Colors.white),
-),
+            top: 20,
+            left: 20,
+            child: BackButton(color: Colors.white),
+          ),
         ],
       ),
     );

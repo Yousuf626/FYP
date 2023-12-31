@@ -2,16 +2,16 @@
 
 import 'package:aap_dev_project/bloc/user/user_block.dart';
 import 'package:aap_dev_project/bloc/user/user_event.dart';
-import 'package:aap_dev_project/bloc/user/user_states.dart';
+import 'package:aap_dev_project/bloc/user/user_state.dart';
 import 'package:aap_dev_project/core/repository/user_repo.dart';
-import 'package:aap_dev_project/pages/addMedicalRecord.dart';
-import 'package:aap_dev_project/pages/alarm.dart';
-import 'package:aap_dev_project/pages/viewMedicalRecords.dart';
+import 'package:aap_dev_project/pages/medicalReports/addMedicalRecord.dart';
+import 'package:aap_dev_project/pages/medicalReports/viewMedicalRecords.dart';
+import 'package:aap_dev_project/pages/reminder/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-import 'package:aap_dev_project/pages/bottomNavigationBar.dart';
-import 'package:aap_dev_project/pages/appDrawer.dart';
+import 'package:aap_dev_project/pages/navigation/bottomNavigationBar.dart';
+import 'package:aap_dev_project/pages/navigation/appDrawer.dart';
 
 void main() {
   runApp(DashboardApp());
@@ -81,7 +81,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 24.0),
                           width: double.infinity,
-                          height: MediaQuery.of(context).size.height * 0.3,
+                          height: MediaQuery.of(context).size.height * 0.25,
                           decoration: const BoxDecoration(
                             borderRadius: BorderRadius.only(
                               bottomLeft: Radius.circular(50.0),
@@ -149,32 +149,34 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 30.0),
-                            Container(
+                        const SizedBox(height: 60.0),
+                        Container(
                           padding: const EdgeInsets.symmetric(horizontal: 24.0),
                           height: 220,
                           width: double.infinity,
                           child: GestureDetector(
                             onTap: () async {
                               print('Tapped');
-                              const url = 'https://www.drugs.com/drug_information.html';
+                              const url =
+                                  'https://www.drugs.com/drug_information.html';
                               await launchUrlString(url);
                             },
                             child: Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                            color: const Color(0xFF01888B), // Black color border
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: const Color(
+                                      0xFF01888B), // Black color border
                                   width: 3.0, // Border width
-                                            ),
-                                            borderRadius: BorderRadius.circular(15),
-                                            ),
-                                          child: ClipRRect(
-                                         borderRadius: BorderRadius.circular(15),
-                                        child: Image.network(
-                                      'https://www.needymeds.org/images/drugs.com_promo.png',
-                                     fit: BoxFit.contain,
-                                  ),
                                 ),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(15),
+                                child: Image.network(
+                                  'https://www.needymeds.org/images/drugs.com_promo.png',
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -185,22 +187,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             child: Container(
                                 height: 80,
                                 width: double.infinity,
-      child:  FloatingActionButton.extended(
-  onPressed: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const AddReport(),
-      ),
-    );
-  },
-  label: const Text(
-    'Add Medical Records',
-    style: TextStyle(fontSize: 22),
-  ),
-  icon: const Icon(Icons.add_circle_outline),
-  backgroundColor: const Color(0xFF01888B),
-))),
+                                child: FloatingActionButton.extended(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const AddReport(),
+                                      ),
+                                    );
+                                  },
+                                  label: const Text(
+                                    'Add Medical Records',
+                                    style: TextStyle(fontSize: 22),
+                                  ),
+                                  icon: const Icon(Icons.add_circle_outline),
+                                  backgroundColor: const Color(0xFF01888B),
+                                ))),
                         const SizedBox(height: 10.0),
                         Padding(
                           padding: const EdgeInsets.all(24.0),
@@ -214,24 +216,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 child: Container(
                                   height: 80,
                                   child: FloatingActionButton.extended(
-  onPressed: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const AlarmHomeScreen(),
-      ),
-    );
-  },
-  label: const Text(
-    'Alarm',
-    style: TextStyle(fontSize: 22),
-  ),
-  icon: const Icon(Icons.alarm),
-  backgroundColor: const Color(0xFFF04444),
-),
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const AlarmHomeScreen(),
+                                        ),
+                                      );
+                                    },
+                                    label: const Text(
+                                      'Alarm',
+                                      style: TextStyle(fontSize: 22),
+                                    ),
+                                    icon: const Icon(Icons.alarm),
+                                    backgroundColor: const Color(0xFFF04444),
+                                  ),
                                 ),
                               ),
-                              const SizedBox(width: 10.0), // Spacing between buttons
+                              const SizedBox(
+                                  width: 10.0), // Spacing between buttons
                               Expanded(
                                 // Encapsulate in an Expanded widget
                                 flex:
@@ -239,32 +243,33 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 child: Container(
                                   height: 80,
                                   child: FloatingActionButton.extended(
-  onPressed: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const ViewRecords(
-          userid: '',
-          name: '',
-        ),
-      ),
-    );
-  },
-  label: const Text(
-  'View Medical\nRecords',
-  textAlign: TextAlign.center,
-  style: TextStyle(fontSize: 22),
-),
-  icon: const Icon(Icons.remove_red_eye_outlined),
-  backgroundColor: const Color(0xFF01888B),
-),
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const ViewRecords(
+                                            userid: '',
+                                            name: '',
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    label: const Text(
+                                      'View Medical\nRecords',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontSize: 22),
+                                    ),
+                                    icon: const Icon(
+                                        Icons.remove_red_eye_outlined),
+                                    backgroundColor: const Color(0xFF01888B),
+                                  ),
                                 ),
                               ),
                             ],
                           ),
                         ),
                         const SizedBox(height: 20.0),
-                    
                       ],
                     ));
                   }

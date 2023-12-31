@@ -3,14 +3,14 @@ import 'dart:math';
 
 import 'package:aap_dev_project/bloc/recordShare/recordShare_block.dart';
 import 'package:aap_dev_project/bloc/recordShare/recordShare_event.dart';
-import 'package:aap_dev_project/bloc/recordShare/recordShare_states.dart';
+import 'package:aap_dev_project/bloc/recordShare/recordShare_state.dart';
 import 'package:aap_dev_project/core/repository/recordsSharing_repo.dart';
-import 'package:aap_dev_project/pages/dashboard.dart';
-import 'package:aap_dev_project/pages/viewMedicalRecords.dart';
+import 'package:aap_dev_project/pages/home/dashboard.dart';
+import 'package:aap_dev_project/pages/medicalReports/viewMedicalRecords.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'bottomNavigationBar.dart';
-import 'appDrawer.dart';
+import '../navigation/bottomNavigationBar.dart';
+import '../navigation/appDrawer.dart';
 
 class ShareRecords extends StatefulWidget {
   const ShareRecords({Key? key}) : super(key: key);
@@ -102,7 +102,7 @@ class _ShareRecordsState extends State<ShareRecords> with RouteAware {
                   Container(
                     padding: const EdgeInsets.all(16.0),
                     width: double.infinity,
-                    height: MediaQuery.of(context).size.height * 0.3,
+                    height: MediaQuery.of(context).size.height * 0.2,
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(50.0),
@@ -112,20 +112,6 @@ class _ShareRecordsState extends State<ShareRecords> with RouteAware {
                     ),
                     child: Stack(
                       children: [
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: IconButton(
-                            icon: const Icon(Icons.arrow_back,
-                                color: Colors.white),
-                            onPressed: () {
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                  builder: (context) => DashboardApp(),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
                         const Align(
                           alignment: Alignment.center,
                           child: Text(
@@ -141,7 +127,7 @@ class _ShareRecordsState extends State<ShareRecords> with RouteAware {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 50.0),
+                  const SizedBox(height: 120.0),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Column(
@@ -189,20 +175,25 @@ class _ShareRecordsState extends State<ShareRecords> with RouteAware {
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(right: 10.0),
-                                child:FloatingActionButton(
-  onPressed: () {
-    setState(() {
-      accessCodeFound = true;
-    });
-    checkAccessCode(context, accessCode, state);
-  },
-  backgroundColor: const Color(0xFF01888B),
-  child: const Icon(
-    Icons.check,
-    size: 24.0,
-    color: Colors.white,
-  ),
-),
+                                child: SizedBox(
+                                  width: 40.0,
+                                  height: 40.0,
+                                  child: FloatingActionButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        accessCodeFound = true;
+                                      });
+                                      checkAccessCode(
+                                          context, accessCode, state);
+                                    },
+                                    backgroundColor: const Color(0xFF01888B),
+                                    child: const Icon(
+                                      Icons.check,
+                                      size: 24.0,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
                               )
                             ],
                           ),

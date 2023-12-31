@@ -3,18 +3,18 @@
 import 'package:aap_dev_project/bloc/user/user_block.dart';
 import 'package:aap_dev_project/bloc/user/user_event.dart';
 import 'package:aap_dev_project/core/repository/user_repo.dart';
-import 'package:aap_dev_project/pages/Medicine.dart';
-import 'package:aap_dev_project/pages/forgotpassword.dart';
+import 'package:aap_dev_project/pages/reminder/medicine.dart';
+import 'package:aap_dev_project/pages/account/forgotPassword.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/services.dart';
-import '../firebase/firebase_options.dart';
-import 'package:aap_dev_project/pages/Register.dart';
+import '../../firebase/firebase_options.dart';
+import 'package:aap_dev_project/pages/account/register.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'dashboard.dart';
+import '../home/dashboard.dart';
 import 'package:aap_dev_project/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -28,13 +28,12 @@ class Authentication extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: Colors.white, 
+      backgroundColor: Colors.white,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Image.asset(
-              'assets/MEDQR.jpg'), 
-          const SizedBox(height: 60), 
+          Image.asset('assets/MEDQR.jpg'),
+          const SizedBox(height: 60),
           SizedBox(
             width: 300, // Ensures both buttons have the same width
             child: FloatingActionButton.extended(
@@ -54,7 +53,7 @@ class Authentication extends StatelessWidget {
               icon: const Icon(Icons.app_registration),
             ),
           ),
-          const SizedBox(height: 24), 
+          const SizedBox(height: 24),
           SizedBox(
             width: 300, // Ensures both buttons have the same width
             child: FloatingActionButton.extended(
@@ -73,7 +72,6 @@ class Authentication extends StatelessWidget {
               ),
               backgroundColor: Colors.blue,
               icon: const Icon(Icons.login_outlined),
-             
             ),
           ),
         ],
@@ -247,78 +245,78 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 FloatingActionButton.extended(
-  onPressed: () async {
-    try {
-      UserCredential userCredential = await FirebaseAuth
-          .instance
-          .signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
-      // Update status message on successful sign-in
-      // Navigate to MedicineScreen
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => DashboardApp()),
-      );
-    } on FirebaseAuthException catch (e) {
-      // Update status message on error
-      setState(() {
-        if (e.code == 'user-not-found' ||
-            e.code == 'invalid-credential' ||
-            e.code == 'wrong-password') {
-          signInStatus = 'Incorrect email or password';
-        } else {
-          signInStatus = e.code;
-        }
-      });
-    }
-  },
-  icon: const Icon(Icons.login),
-
-label: const Text(
-    'Login',
-    style: TextStyle(
-      fontFamily: 'Urbanist',
-      color: Colors.white,
-    ),
-  ),  backgroundColor: const Color(0xFF01888B),
-),
+                  onPressed: () async {
+                    try {
+                      UserCredential userCredential = await FirebaseAuth
+                          .instance
+                          .signInWithEmailAndPassword(
+                        email: emailController.text,
+                        password: passwordController.text,
+                      );
+                      // Update status message on successful sign-in
+                      // Navigate to MedicineScreen
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => DashboardApp()),
+                      );
+                    } on FirebaseAuthException catch (e) {
+                      // Update status message on error
+                      setState(() {
+                        if (e.code == 'user-not-found' ||
+                            e.code == 'invalid-credential' ||
+                            e.code == 'wrong-password') {
+                          signInStatus = 'Incorrect email or password';
+                        } else {
+                          signInStatus = e.code;
+                        }
+                      });
+                    }
+                  },
+                  icon: const Icon(Icons.login),
+                  label: const Text(
+                    'Login',
+                    style: TextStyle(
+                      fontFamily: 'Urbanist',
+                      color: Colors.white,
+                    ),
+                  ),
+                  backgroundColor: const Color(0xFF01888B),
+                ),
                 const SizedBox(height: 30),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const SizedBox(width: 10), // Add this
                     Expanded(
-  child: Container(
-    decoration: BoxDecoration(
-      border: Border.all(color: Colors.grey, width: 0.2),
-      borderRadius: BorderRadius.circular(10),
-    ),
-    child: TextButton.icon(
-      icon: const FaIcon(FontAwesomeIcons.google),
-      label: const Text('Sign in with Google'),
-      onPressed: () async {
-        try {
-          final UserCredential? userCredential =
-              await signInWithGoogle();
-          if (userCredential != null) {
-            // User signed in with Google. You can navigate to another screen here.
-            print('Successfully signed in with Google');
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => DashboardApp()),
-            );
-          }
-        } catch (e) {
-          // Handle error here
-          print('Error signing in with Google: $e');
-        }
-      },
-    ),
-  ),
-),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey, width: 0.2),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: TextButton.icon(
+                          icon: const FaIcon(FontAwesomeIcons.google),
+                          label: const Text('Sign in with Google'),
+                          onPressed: () async {
+                            try {
+                              final UserCredential? userCredential =
+                                  await signInWithGoogle();
+                              if (userCredential != null) {
+                                // User signed in with Google. You can navigate to another screen here.
+                                print('Successfully signed in with Google');
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => DashboardApp()),
+                                );
+                              }
+                            } catch (e) {
+                              // Handle error here
+                              print('Error signing in with Google: $e');
+                            }
+                          },
+                        ),
+                      ),
+                    ),
                     const SizedBox(width: 10), // Add this
                   ],
                 ),

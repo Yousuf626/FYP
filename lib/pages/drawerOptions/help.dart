@@ -1,12 +1,12 @@
 // ignore_for_file: avoid_print, prefer_interpolation_to_compose_strings, library_private_types_in_public_api, use_build_context_synchronously
 
 import 'package:aap_dev_project/models/user.dart';
-import 'package:aap_dev_project/pages/dashboard.dart';
+import 'package:aap_dev_project/pages/home/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
-import 'bottomNavigationBar.dart';
-import 'appDrawer.dart';
+import '../navigation/bottomNavigationBar.dart';
+import '../navigation/appDrawer.dart';
 
 Future<void> sendEmail(String userEmail, String userRequest) async {
   String username = 'auroobaparker@outlook.com';
@@ -70,7 +70,7 @@ class _HelpPageState extends State<HelpPage> with RouteAware {
               Container(
                 padding: const EdgeInsets.all(16.0),
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.3,
+                height: MediaQuery.of(context).size.height * 0.2,
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(50.0),
@@ -82,31 +82,38 @@ class _HelpPageState extends State<HelpPage> with RouteAware {
                   children: [
                     Align(
                       alignment: Alignment.topLeft,
-                      child: IconButton(
-                        icon: const Icon(Icons.arrow_back, color: Colors.white),
-                        onPressed: () {
-                          Navigator.of(context)
-                              .pushReplacement(MaterialPageRoute(
-                            builder: (context) => DashboardApp(),
-                          ));
-                        },
-                      ),
+                      child: Padding(
+                          padding: const EdgeInsets.only(top: 50.0),
+                          child: IconButton(
+                            icon: const Icon(Icons.arrow_back,
+                                color: Colors.white),
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .pushReplacement(MaterialPageRoute(
+                                builder: (context) => DashboardApp(),
+                              ));
+                            },
+                          )),
                     ),
                     const Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        'How Can We Help?',
-                        style: TextStyle(
-                          fontSize: 36.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
+                        alignment: Alignment.center,
+                        child: Padding(
+                          padding:
+                              EdgeInsets.only(left: 50, right: 50, top: 20),
+                          child: Text(
+                            textAlign: TextAlign.center,
+                            'How Can We Help?',
+                            style: TextStyle(
+                              fontSize: 36.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        )),
                   ],
                 ),
               ),
-              const SizedBox(height: 20.0),
+              const SizedBox(height: 70.0),
               Container(
                 width: MediaQuery.of(context).size.width * 0.9,
                 height: MediaQuery.of(context).size.height * 0.53,
@@ -174,27 +181,25 @@ class _HelpPageState extends State<HelpPage> with RouteAware {
                       ],
                     ),
                     Row(
+                      mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        FloatingActionButton(
-                          onPressed: () async {
-                            await sendEmail(
-                              _emailController.text,
-                              _requestController.text,
-                            );
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                    'Message sent successfully! We have received your message and will get back to you soon.'),
-                              ),
-                            );
-                          },
-                          backgroundColor: const Color(0xFF01888B),
-                          child: const Icon(
-                            Icons.send,
-                            color: Colors.white,
-                          ),
-                        ),
+                        FloatingActionButton.extended(
+                            onPressed: () async {
+                              await sendEmail(
+                                _emailController.text,
+                                _requestController.text,
+                              );
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                      'Message sent successfully! We have received your message and will get back to you soon.'),
+                                ),
+                              );
+                            },
+                            backgroundColor: const Color(0xFF01888B),
+                            label: const Text('Send Message'),
+                            icon: Icon(Icons.send, color: Colors.white)),
                       ],
                     ),
                   ],

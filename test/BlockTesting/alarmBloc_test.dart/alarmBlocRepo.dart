@@ -1,5 +1,5 @@
 import 'package:aap_dev_project/core/repository/alarm_repo.dart';
-import 'package:aap_dev_project/models/alarmz.dart';
+import 'package:aap_dev_project/models/alarmInfo.dart';
 
 List<AlarmInformation> MockData = [
   AlarmInformation(

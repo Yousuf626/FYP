@@ -1,18 +1,16 @@
 import 'dart:async';
-import 'package:aap_dev_project/models/alarmz.dart';
-import 'package:aap_dev_project/pages/dashboard.dart';
+import 'package:aap_dev_project/models/alarmInfo.dart';
+import 'package:aap_dev_project/pages/home/dashboard.dart';
 import 'package:intl/intl.dart';
 import 'package:aap_dev_project/bloc/alarm/alarm_bloc.dart';
 import 'package:aap_dev_project/bloc/alarm/alarm_event.dart';
 import 'package:aap_dev_project/bloc/alarm/alarm_state.dart';
 import 'package:aap_dev_project/core/repository/alarm_repo.dart';
-import 'package:aap_dev_project/pages/Medicine.dart';
-import 'package:aap_dev_project/pages/appDrawer.dart';
+import 'package:aap_dev_project/pages/reminder/medicine.dart';
+import 'package:aap_dev_project/pages/navigation/appDrawer.dart';
 import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
-import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class AlarmHomeScreen extends StatefulWidget {
   const AlarmHomeScreen({Key? key}) : super(key: key);
@@ -23,7 +21,6 @@ class AlarmHomeScreen extends StatefulWidget {
 
 class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen>
     with RouteAware {
-  static StreamSubscription<AlarmSettings>? subscription;
   final AlarmRepository alarmRepository = AlarmRepository();
   late AlarmBloc _alarmBloc;
 
@@ -38,10 +35,6 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen>
     _alarmBloc = AlarmBloc(alarmRepository: alarmRepository);
     _alarmBloc.add(const FetchAlarm());
     super.initState();
-    if (Alarm.android) {
-      checkAndroidNotificationPermission();
-      checkAndroidExternalStoragePermission();
-    }
     _alarmBloc.stream.listen((state) {
       if (state is AlarmLoaded) {
         scheduleNextRingTime(state.alarms);
@@ -96,28 +89,6 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen>
     return alarmTimes;
   }
 
-  Future<void> checkAndroidNotificationPermission() async {
-    final status = await Permission.notification.status;
-    if (status.isDenied) {
-      alarmPrint('Requesting notification permission...');
-      final res = await Permission.notification.request();
-      alarmPrint(
-        'Notification permission ${res.isGranted ? '' : 'not'} granted.',
-      );
-    }
-  }
-
-  Future<void> checkAndroidExternalStoragePermission() async {
-    final status = await Permission.storage.status;
-    if (status.isDenied) {
-      alarmPrint('Requesting external storage permission...');
-      final res = await Permission.storage.request();
-      alarmPrint(
-        'External storage permission ${res.isGranted ? '' : 'not'} granted.',
-      );
-    }
-  }
-
   Widget buildAlarmCard(AlarmInformation alarm, state) {
     return Card(
       color: const Color(0xFF01888B),
@@ -125,8 +96,8 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen>
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(25.0),
         side: const BorderSide(
-                    color: Colors.yellow, 
-          width: 5.0, 
+          color: Colors.yellow,
+          width: 5.0,
         ),
       ),
       margin: const EdgeInsets.all(8.0),
@@ -198,7 +169,6 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen>
   @override
   void dispose() {
     _alarmBloc.close();
-    subscription?.cancel();
     super.dispose();
   }
 
@@ -219,7 +189,7 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen>
                 Container(
                   padding: const EdgeInsets.all(16.0),
                   width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.3,
+                  height: MediaQuery.of(context).size.height * 0.2,
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(50.0),
@@ -231,16 +201,18 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen>
                     children: [
                       Align(
                         alignment: Alignment.topLeft,
-                        child: IconButton(
-                          icon:
-                              const Icon(Icons.arrow_back, color: Colors.white),
-                          onPressed: () {
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                  builder: (context) => DashboardApp()),
-                            );
-                          },
-                        ),
+                        child: Padding(
+                            padding: EdgeInsets.only(top: 50),
+                            child: IconButton(
+                              icon: const Icon(Icons.arrow_back,
+                                  color: Colors.white),
+                              onPressed: () {
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) => DashboardApp()),
+                                );
+                              },
+                            )),
                       ),
                       const Align(
                         alignment: Alignment.center,

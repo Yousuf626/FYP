@@ -1,5 +1,5 @@
 import 'package:aap_dev_project/bloc/medicalRecords/medicalRecords_event.dart';
-import 'package:aap_dev_project/bloc/medicalRecords/medicalRecords_states.dart';
+import 'package:aap_dev_project/bloc/medicalRecords/medicalRecords_state.dart';
 import 'package:aap_dev_project/core/repository/medicalRecords_repo.dart';
 import 'package:aap_dev_project/models/report.dart';
 import 'package:bloc/bloc.dart';

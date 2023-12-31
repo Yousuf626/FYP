@@ -1,8 +1,8 @@
 // ignore_for_file: file_names
 
-import 'package:aap_dev_project/pages/shareRecords.dart';
+import 'package:aap_dev_project/pages/medicalReports/shareRecords.dart';
 import 'package:flutter/material.dart';
-import 'dashboard.dart';
+import '../home/dashboard.dart';
 
 class BaseMenuBar extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

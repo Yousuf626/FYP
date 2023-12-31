@@ -2,15 +2,15 @@
 
 import 'package:aap_dev_project/bloc/user/user_block.dart';
 import 'package:aap_dev_project/bloc/user/user_event.dart';
-import 'package:aap_dev_project/bloc/user/user_states.dart';
+import 'package:aap_dev_project/bloc/user/user_state.dart';
 import 'package:aap_dev_project/core/repository/user_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'updateProfile.dart';
-import 'aboutUs.dart';
-import 'help.dart';
+import '../drawerOptions/updateProfile.dart';
+import '../drawerOptions/aboutUs.dart';
+import '../drawerOptions/help.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:aap_dev_project/pages/authentication.dart';
+import 'package:aap_dev_project/pages/account/authentication.dart';
 
 class CustomDrawer extends StatefulWidget {
   final dynamic user;
@@ -86,7 +86,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const AboutUsPage()),
+                        MaterialPageRoute(
+                            builder: (context) => const AboutUsPage()),
                       );
                     },
                   ),
@@ -108,13 +109,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     title: const Text('Logout'),
                     onTap: () {
                       signOut().then((_) {
-                        
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
                               builder: (context) => const Authentication()),
                         );
                       }).catchError((error) {
-                        
                         print("Error signing out: $error");
                       });
                     },

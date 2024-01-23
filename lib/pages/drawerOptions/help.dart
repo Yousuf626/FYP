@@ -10,7 +10,7 @@ import '../navigation/appDrawer.dart';
 
 Future<void> sendEmail(String userEmail, String userRequest) async {
   String username = 'auroobaparker@outlook.com';
-  String password = 'Aabathebest1';
+  String password = '';
 
   final smtpServer = hotmail(username, password);
 

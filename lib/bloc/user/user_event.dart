@@ -20,3 +20,15 @@ class SetUser extends UserEvent {
   @override
   List<Object> get props => [user];
 }
+
+class RegisterUser extends UserEvent {
+  final String name;
+  final String email;
+  final String password;
+  final String mobilenumber;
+
+  const RegisterUser({required this.name, required this.email, required this.password, required this.mobilenumber});
+
+  @override
+  List<Object> get props => [name, email, password, mobilenumber];
+}

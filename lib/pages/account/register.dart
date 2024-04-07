@@ -1,5 +1,7 @@
 // ignore_for_file: file_names, unused_import, use_key_in_widget_constructors, library_private_types_in_public_api, use_build_context_synchronously, avoid_print, sized_box_for_whitespace, sort_child_properties_last, deprecated_member_use
 
+import 'package:aap_dev_project/bloc/authentication/authentication_bloc.dart';
+import 'package:aap_dev_project/bloc/authentication/authentication_event.dart';
 import 'package:aap_dev_project/bloc/user/user_block.dart';
 import 'package:aap_dev_project/bloc/user/user_event.dart';
 import 'package:aap_dev_project/core/repository/user_repo.dart';
@@ -9,10 +11,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:aap_dev_project/pages/home/dashboard.dart';
+import 'package:aap_dev_project/core/repository/authentication_repo.dart';
+import 'package:aap_dev_project/bloc/authentication/authentication_bloc.dart';
+import 'package:aap_dev_project/bloc/authentication/authentication_event.dart';
+import 'package:aap_dev_project/bloc/authentication/authentication_state.dart';
+
+
 
 class RegistrationScreen extends StatefulWidget {
   @override
@@ -21,8 +30,8 @@ class RegistrationScreen extends StatefulWidget {
 
 class _RegistrationScreenState extends State<RegistrationScreen>
     with RouteAware {
-  final UserRepository userRepository = UserRepository();
-  late UserBloc _userBloc;
+  final AuthenticationRepository authenticationRepository = AuthenticationRepository();
+  late AuthenticationBloc _authenticationBloc;
 
   @override
   void didPopNext() {
@@ -33,7 +42,7 @@ class _RegistrationScreenState extends State<RegistrationScreen>
   @override
   void initState() {
     super.initState();
-    _userBloc = UserBloc(userRepository: userRepository);
+    _authenticationBloc = AuthenticationBloc(authenticationRepository);
   }
 
   Future<UserCredential?> signInWithGoogle() async {
@@ -78,7 +87,17 @@ class _RegistrationScreenState extends State<RegistrationScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+ return BlocListener<AuthenticationBloc, AuthenticationState>(
+      listener: (context, state) {
+        if (state is RegistrationSuccess) {
+          // Navigator.of(context).pushReplacement(
+          //   MaterialPageRoute(builder: (_) => DashboardScreen()),
+          // );
+        } else if (state is RegistrationFailure) {
+          print(state);
+        }
+      },
+    child :Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor:
@@ -182,6 +201,7 @@ class _RegistrationScreenState extends State<RegistrationScreen>
           ),
         ),
       ),
+    ),
     );
   }
 
@@ -224,41 +244,55 @@ class _RegistrationScreenState extends State<RegistrationScreen>
     );
   }
 
+    // try {
+    //   await _auth.createUserWithEmailAndPassword(
+    //     email: _emailController.text,
+    //     password: _passwordController.text,
+    //   );
+
+    //   // Registration successful
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     const SnackBar(content: Text("User successfully registered!")),
+    //   );
+
+    //   _userBloc.add(SetUser(
+    //       user: UserProfile(
+    //     name: _nameController.text,
+    //     age: 0,
+    //     email: _emailController.text,
+    //     mobile: _mobileController.text,
+    //     adress: '',
+    //     cnic: '',
+    //     medicalHistory: '',
+    //     image: '',
+    //   )));
+
+    //   Navigator.push(
+    //     context,
+    //     MaterialPageRoute(builder: (context) => DashboardApp()),
+    //   );
+
+    //   // You might want to navigate the user to a different screen after successful registration
+    // } on FirebaseAuthException catch (e) {
+    //   // Handle registration errors
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     SnackBar(content: Text("Failed to register: ${e.message}")),
+    //   );
+    // }
   void _registerUser() async {
-    try {
-      await _auth.createUserWithEmailAndPassword(
-        email: _emailController.text,
-        password: _passwordController.text,
-      );
+  if (_formKey.currentState!.validate()) {
 
-      // Registration successful
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("User successfully registered!")),
-      );
+    try{
+      _authenticationBloc.add(
+        UserSignUpRequested(
+                  _nameController.text,
+                 _emailController.text,
+         _mobileController.text,
+             _passwordController.text,
 
-      _userBloc.add(SetUser(
-          user: UserProfile(
-        name: _nameController.text,
-        age: 0,
-        email: _emailController.text,
-        mobile: _mobileController.text,
-        adress: '',
-        cnic: '',
-        medicalHistory: '',
-        image: '',
-      )));
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => DashboardApp()),
-      );
-
-      // You might want to navigate the user to a different screen after successful registration
-    } on FirebaseAuthException catch (e) {
-      // Handle registration errors
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed to register: ${e.message}")),
-      );
+      ));
+    }catch(e){
     }
+  }
   }
 }

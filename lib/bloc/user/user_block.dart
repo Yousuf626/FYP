@@ -36,4 +36,15 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       emit(UserSetError(errorMsg: e.toString()));
     }
   }
+
+    Future<void> registerUser(name,email,password,mobilenumber, Emitter<UserState> emit) async {
+    emit(UserAdding());
+
+    try {
+      await userRepository.registerUser(name,email,password,mobilenumber);
+      emit(UserSetSuccess());
+    } catch (e) {
+      emit(UserSetError(errorMsg: e.toString()));
+    }
+  }
 }

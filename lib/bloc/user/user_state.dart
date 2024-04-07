@@ -31,3 +31,5 @@ class UserSetError extends UserState {
   final String? errorMsg;
   const UserSetError({this.errorMsg});
 }
+
+class UserAdding extends UserState {}

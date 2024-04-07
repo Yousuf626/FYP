@@ -1,6 +1,8 @@
 // ignore_for_file: duplicate_import, unused_import
 import 'package:aap_dev_project/bloc/alarm/alarm_bloc.dart';
+import 'package:aap_dev_project/bloc/authentication/authentication_bloc.dart';
 import 'package:aap_dev_project/core/repository/alarm_repo.dart';
+import 'package:aap_dev_project/core/repository/authentication_repo.dart';
 import 'package:aap_dev_project/pages/reminder/medicine.dart';
 import 'package:aap_dev_project/pages/account/authentication.dart';
 import 'package:aap_dev_project/firebase/firebase_options.dart';
@@ -17,8 +19,8 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(
-    BlocProvider<AlarmBloc>(
-      create: (context) => AlarmBloc(alarmRepository: AlarmRepository()),
+    BlocProvider<AuthenticationBloc>(
+      create: (context) => AuthenticationBloc(AuthenticationRepository()),
       child: const MyApp(),
     ),
   );

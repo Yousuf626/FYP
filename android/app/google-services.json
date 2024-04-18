@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "853280509993",
+    "project_id": "medqr-3e1ce",
+    "storage_bucket": "medqr-3e1ce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:853280509993:android:96f3d367e428e4baab8c38",
+        "android_client_info": {
+          "package_name": "com.example.aap_dev_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "853280509993-h6d653m3f1q3eh35u0auga4if1hcumaf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.aap_dev_project",
+            "certificate_hash": "b26fa583b2558c00b043fef5e3162753caf5e5d4"
+          }
+        },
+        {
+          "client_id": "853280509993-mng4ms3qm55m281ftgk2l1395nusih1m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.aap_dev_project",
+            "certificate_hash": "37bec65901cd58e06cd54616d3a0e0f9651407d7"
+          }
+        },
+        {
+          "client_id": "853280509993-s9dkkrogt0395bmh3l1vgl5vidcs0pfa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApsJyDK-ssUQ90SAljOXOM2QP0SXAagfA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "853280509993-s9dkkrogt0395bmh3l1vgl5vidcs0pfa.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "853280509993-1f98vtu8cmkmgb54pumbg2adc5ttotdf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.aapDevProject"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

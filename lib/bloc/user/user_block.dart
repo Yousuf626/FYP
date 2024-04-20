@@ -39,6 +39,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // }
 class UserBloc extends Bloc<UserEvent, UserState> {
   final UserRepository userRepository;
+    // Store UserProfile object in the bloc state
+  UserProfile? userProfile;
+
 
   UserBloc({required this.userRepository}) : super(UserLoading()) {
     on<FetchUserData>((event, emit) async {
@@ -66,6 +69,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     try {
       await userRepository.uploadUserRecords(userp:  report,pass:  password);
       emit(UserSetSuccess());
+      userProfile = report;
     } catch (e) {
       emit(UserSetError(errorMsg: e.toString()));
     }

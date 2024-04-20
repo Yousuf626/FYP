@@ -60,4 +60,12 @@ class UserRepository {
       password: pass,
     );
   }
+Future<void> LoginUser_repo(
+      {required String user_email, required String user_pass}) async {
+      await loginUser(
+      email: user_email,
+      password: user_pass,
+    );
+  }
+
 }

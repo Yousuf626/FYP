@@ -250,12 +250,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 FloatingActionButton.extended(
                   onPressed: () async {
                     try {
-                      UserCredential userCredential = await FirebaseAuth
-                          .instance
-                          .signInWithEmailAndPassword(
-                        email: emailController.text,
-                        password: passwordController.text,
-                      );
+                      await userRepository.LoginUser_repo(user_email: emailController.text, user_pass: passwordController.text);
+
+                      // UserCredential userCredential = await FirebaseAuth
+                      //     .instance
+                      //     .signInWithEmailAndPassword(
+                      //   email: emailController.text,
+                      //   password: passwordController.text,
+                      // );
                       // Update status message on successful sign-in
                       // Navigate to MedicineScreen
                       Navigator.push(

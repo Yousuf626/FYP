@@ -1,5 +1,7 @@
 // ignore_for_file: file_names
 
+import 'package:aap_dev_project/nodeBackend/jwtStorage.dart';
+import 'package:aap_dev_project/pages/account/authentication.dart';
 import 'package:aap_dev_project/pages/medicalReports/shareRecords.dart';
 import 'package:flutter/material.dart';
 import '../home/dashboard.dart';
@@ -45,12 +47,19 @@ class BaseMenuBar extends StatelessWidget {
               ),
               label: '',
             ),
+            // BottomNavigationBarItem(
+            //   icon: Padding(
+            //     padding: EdgeInsets.only(top: 16.0),
+            //     child: Icon(Icons.group, color: Colors.white),
+            //   ),
+            //   label: '',
+            // ),
             BottomNavigationBarItem(
               icon: Padding(
                 padding: EdgeInsets.only(top: 16.0),
-                child: Icon(Icons.group, color: Colors.white),
+                child: Icon(Icons.logout, color: Colors.white),
               ),
-              label: '',
+              label: 'LogOut',
             ),
           ],
         ),
@@ -58,21 +67,28 @@ class BaseMenuBar extends StatelessWidget {
     );
   }
 
-  void _onNavItemTap(BuildContext context, int index) {
+  Future<void> _onNavItemTap(BuildContext context, int index) async {
     switch (index) {
-      case 0:
+      case 0: // menu
         Scaffold.of(context).openDrawer();
         break;
-      case 1:
+      case 1://home
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => DashboardApp()),
         );
         break;
-      case 2:
+      // case 2://group
+      //   Navigator.push(
+      //     context,
+      //     MaterialPageRoute(builder: (context) => const ShareRecords()),
+      //   );
+        // break;
+        case 2://group
+        await deleteJwtToken();
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const ShareRecords()),
+          MaterialPageRoute(builder: (context) => const Authentication()),
         );
         break;
     }

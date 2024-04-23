@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const userController = require('../controllers/patientController');
+const patientController = require('../controllers/patientController');
 
-router.post('/signup', userController.signup);
-router.post('/login', userController.login);
-router.post('/forgot-password', userController.forgotPassword);
-router.post('/verify-otp', userController.verifyOTPAndChangePassword);
-router.get('/get-user-info', userController.UserInfo);
+router.post('/signup', patientController.signup);
+router.post('/login', patientController.login);
+router.post('/forgot-password', patientController.forgotPassword);
+router.post('/verify-otp', patientController.verifyOTPAndChangePassword);
+router.get('/get-user-info', patientController.UserInfo);
 
 module.exports = router;

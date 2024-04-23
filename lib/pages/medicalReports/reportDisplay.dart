@@ -54,12 +54,12 @@ class _ViewReportState extends State<ViewReport> with RouteAware {
                     ),
                   )),
               const SizedBox(height: 80.0),
-              Image.network(
-                widget.report!.image,
-                fit: BoxFit.contain,
-                width: MediaQuery.of(context).size.width * 0.8,
-                height: MediaQuery.of(context).size.height * 0.5,
-              ),
+              // Image.network(
+              //   widget.report!.image,
+              //   fit: BoxFit.contain,
+              //   width: MediaQuery.of(context).size.width * 0.8,
+              //   height: MediaQuery.of(context).size.height * 0.5,
+              // ),
             ],
           ),
           const Positioned(

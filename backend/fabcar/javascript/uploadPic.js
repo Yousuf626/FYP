@@ -2,7 +2,8 @@ const { Gateway, Wallets } = require('fabric-network');
 const fs = require('fs');
 const path = require('path');
 const { getEmail, getIdentity } = require('./config/getUser');
-async function upload(patientID, user_email,filename,contentType,length,data) {
+async function 
+upload(patientID, user_email,filename,contentType,length,data) {
     try {
         
         // load the network configuration

@@ -78,7 +78,7 @@ async function register(username) {
         };
         // console.log(x509Identity);
         await wallet.put(username, x509Identity);
-        console.log('Successfully registered and enrolled admin user ' +  username +' and imported it into the wallet');
+        console.log('Successfully registered and enrolled client user ' +  username +' and imported it into the wallet');
 
         console.log(typeof x509Identity);
         return x509Identity;

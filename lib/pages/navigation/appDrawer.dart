@@ -26,17 +26,17 @@ class _CustomDrawerState extends State<CustomDrawer> {
   late UserBloc _userBloc;
 
   @override
-   void initState() async {
+   void initState() {
     super.initState();
-        String? token = await retrieveJwtToken();
+        // String? token = await retrieveJwtToken();
 
-    _userBloc = UserBloc(userRepository: userRepository);
-    if (token != null) {
-      _userBloc.add(FetchUserData(jwtToken: token));
-    } else {
-      // Handle the case where there's no token (e.g., show a login screen)
-      print('No token found. User might need to log in.');
-    }
+    _userBloc = BlocProvider.of<UserBloc>(context);
+    // if (token != null) {
+    //   _userBloc.add(FetchUserData(jwtToken: token));
+    // } else {
+    //   // Handle the case where there's no token (e.g., show a login screen)
+    //   print('No token found. User might need to log in.');
+    // }
   }
 
 
@@ -63,7 +63,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 padding: EdgeInsets.zero,
                 children: <Widget>[
                   UserAccountsDrawerHeader(
-                    accountName: Text(state.user.name),
+                    // accountName: Text(state.user.name),
+                    accountName: Text(state.user.name),                    
                     accountEmail: Text(state.user.email),
                     decoration: BoxDecoration(
                       color: const Color(0xFF01888B),

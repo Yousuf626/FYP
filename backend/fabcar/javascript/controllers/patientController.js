@@ -49,7 +49,7 @@ exports.login = async (req, res) => {
         const { email, password } = req.body;
         const patient = await Patient.findOne({ email });
         if (!patient) {
-            return res.status(401).json({ message: 'Invalid email or password' });
+            return res.status(401).json({ message: 'No user with this email is registered' });
         }
         const isPasswordMatch = await bcrypt.compare(password, patient.password);
         if (!isPasswordMatch) {

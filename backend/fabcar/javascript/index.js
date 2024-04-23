@@ -78,7 +78,7 @@ const initializeDatabase = async () => {
 initializeDatabase();
 
 
-
+//localhost:3000/api/medical-records
 // Routes
 app.use('/api/patients', patientRoutes);
 app.use('/api/medical-records', medicalRecordRoutes); // Include medical record routes

@@ -28,8 +28,8 @@ const medicalRecordController = require('../controllers/medicalRecordController'
 // Set up multer for file upload
 const upload = multer();
 
-router.post('/:patientId/upload', upload.single('file'), medicalRecordController.uploadRecord);
-// router.get('/patient/:patientId', medicalRecordController.getAllRecordsByPatient);
+router.post('/upload', upload.single('file'), medicalRecordController.uploadRecord);
+router.get('/patient', medicalRecordController.getAllRecordsByPatient);
 // Route to generate a temporary link for accessing patient records
 router.get('/generate-link/:patientId', medicalRecordController.generateTemporaryLink);
 

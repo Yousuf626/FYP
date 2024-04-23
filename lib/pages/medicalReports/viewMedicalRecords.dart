@@ -155,13 +155,13 @@ class _ViewRecordsState extends State<ViewRecords> with RouteAware {
                                       ],
                                     ),
                                   ),
-                                  subtitle: Text(
-                                    'Date of Upload: ${record.createdAt!}',
-                                    style: TextStyle(
-                                      fontSize: 14.0,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
+                                  // subtitle: Text(
+                                  //   'Date of Upload: ${record.createdAt!}',
+                                  //   style: TextStyle(
+                                  //     fontSize: 14.0,
+                                  //     color: Colors.grey,
+                                  //   ),
+                                  // ),
                                   trailing: Icon(
                                     Icons.arrow_forward,
                                     color: Color(0xFF01888B),

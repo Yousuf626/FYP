@@ -1,71 +1,3 @@
-// const MedicalRecord = require('../models/medicalRecord');
-// const getPicture = require('../getPic');
-// // Create a new medical record
-// const createMedicalRecord = async (req, res) => {
-//   try {
-//     const { link , email } = req.body;
-
-//     const medicalRecord = new MedicalRecord({
-//       fileUrl:link,
-//       email:email
-//     });
-
-//     const check = upload(link , email);
-//     await medicalRecord.save();
-//     res.status(201).json({ message: 'Medical record created successfully' });
-//   } catch (error) {
-//     res.status(500).json({ error: 'Failed to create medical record' });
-//   }
-// };
-
-// // Retrieve all medical records associated with a specific user
-// const getMedicalRecordsByUser = async (req, res) => {
-//   try {
-//     const userId = req.params.userId;
-//     const medicalRecords = await MedicalRecord.find({ userId });
-
-//     res.status(200).json({ medicalRecords });
-//   } catch (error) {
-//     res.status(500).json({ error: 'Failed to retrieve medical records' });
-//   }
-// };
-
-// // Retrieve a single medical record by its unique identifier
-// const getMedicalRecordById = async (req, res) => {
-//   try {
-//     const { link , email } = req.body;
-
-//     const result = await getPicture(link , email);
-  
-
-//     const decoder = new TextDecoder('utf-8');
-//     const resultString = decoder.decode(result);
-//     console.log(JSON.parse(resultString));
-
-
-//     res.status(201).json(resultString);
-    
-  
-//   }catch (error) {
-//     res.status(500).json({ error: 'Failed to retrieve medical record' });
-//   }
-// };
-
-
-
-
-
-
-// module.exports = {
-//   createMedicalRecord,
-//   getMedicalRecordsByUser,
-//   getMedicalRecordById,
-//   updateMedicalRecord,
-//   deleteMedicalRecord,
-// };
-
-
-
 
 const MedicalRecord = require('../models/medicalRecord');
 const Patient = require('../models/patient');
@@ -76,7 +8,7 @@ const crypto = require('crypto');
 const nodeSchedule = require('node-schedule');
 const getPicture = require('../getPic');
 const upload = require('../uploadPic');
-
+const verifyToken = require('./middleware/tokenauth'); 
 
 
 // Create GridFS stream
@@ -101,23 +33,40 @@ const tempTokenStore = new Map();
 
 exports.uploadRecord = async (req, res) => {
     try {
-        const { patientId } = req.params;
+        // const { patientId } = req.params;
+        await verifyToken(req, res); 
+  
+        const userId = req.userId; // Access user ID attached by verifyToken
         const { originalname, mimetype, buffer } = req.file;
+ 
+        // Find existing MedicalRecord for the patient
+        let medicalRecord = await MedicalRecord.findOne({ patient: userId });
+        let PatientEmail = await Patient.findOne({_id: userId});
+        console.log(PatientEmail);
+        // If no existing record found, create a new one
+        if (!medicalRecord) {
+            medicalRecord = new MedicalRecord({
+                patient: userId,
+                records: []
+            });
+        }
 
-        const medicalRecord = new MedicalRecord({
-            patient: patientId,
+        // Push the new record details into the records array
+        medicalRecord.records.push({
             filename: originalname,
             contentType: mimetype,
             length: buffer.length,
             data: buffer
         });
 
+        // Save the updated medical record to the database
+        const savedRecord = await medicalRecord.save();
 
-        await medicalRecord.save();
         // const{email} = req.body;
-        email = 'yousuf@gmail.com'
-        await upload(medicalRecord.patient,email,medicalRecord.filename,medicalRecord.contentType,medicalRecord.length,medicalRecord.data);
-        res.status(201).json({ message: 'Medical record uploaded successfully' });
+        // email = 'yousuf@gmail.com'
+        // await upload(medicalRecord.patient,email,medicalRecord.filename,medicalRecord.contentType,medicalRecord.length,medicalRecord.data);
+        // Return success response
+        res.status(201).json({ message: 'Medical record uploaded successfully', record: savedRecord });
     } catch (error) {
         console.error('Error in uploadRecord:', error);
         res.status(500).json({ error: error.message });
@@ -125,37 +74,54 @@ exports.uploadRecord = async (req, res) => {
 };
 
 // Modified getAllRecordsByPatient to be reusable
-async function getAllRecordsByPatient(patientId,email) {
+exports.getAllRecordsByPatient = async (req, res) => {
     try {
-        const medicalRecords = await MedicalRecord.find({ patient: patientId });
-        if (medicalRecords.length === 0) {
-            return [];
-        }
-        for (let index = 0; index < medicalRecords.length; index++) {
-            const element = medicalRecords[index];
-            const check = await getPicture(patientId, element.filename, element.contentType, element.length, element.data,email);
-            if(check == false){
-                console.log('record name '+ element.filename + ' not found in blockchain ledger');
-            }
-        }
+
+        // const { patientId } = req.params;
+        await verifyToken(req, res); 
+  
+        const userId = req.userId; // Access user ID attached by verifyToken
+
+        // Find existing MedicalRecord for the patient
+        let medicalRecord = await MedicalRecord.findOne({ patient: userId });
+    
+      // If no existing record found, create a new one
+      if (!medicalRecord) {
+        return res.status(404).json({ message: 'Medical records not found for this patient' });
+    }
+    res.status(200).json(medicalRecord.records);
+
+        
+        // const medicalRecords = await MedicalRecord.find({ patient: patientId });
+        // if (medicalRecords.length === 0) {
+        //     return [];
+        // }
+        // for (let index = 0; index < medicalRecords.length; index++) {
+        //     const element = medicalRecords[index];
+        //     const check = await getPicture(patientId, element.filename, element.contentType, element.length, element.data,email);
+        //     if(check == false){
+        //         console.log('record name '+ element.filename + ' not found in blockchain ledger');
+        //     }
+        // }
 
 
-        return Promise.all(medicalRecords.map(async record => {
-            const readableStream = new Readable();
-            readableStream._read = () => {};
-            readableStream.push(record.data);
-            readableStream.push(null);
+        // return Promise.all(medicalRecords.map(async record => {
+        //     const readableStream = new Readable();
+        //     readableStream._read = () => {};
+        //     readableStream.push(record.data);
+        //     readableStream.push(null);
 
-            const bufferData = await streamToBuffer(readableStream);
-            const base64Data = bufferData.toString('base64');
+        //     const bufferData = await streamToBuffer(readableStream);
+        //     const base64Data = bufferData.toString('base64');
 
-            return {
-                _id: record._id,
-                filename: record.filename,
-                contentType: record.contentType,
-                data: base64Data
-            };
-        }));
+        //     return {
+        //         _id: record._id,
+        //         filename: record.filename,
+        //         contentType: record.contentType,
+        //         data: base64Data
+        //     };
+        // }
+    // ));
     } catch (error) {
         console.error('Error in getAllRecordsByPatient:', error);
         throw new Error(error.message);

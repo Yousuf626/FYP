@@ -11,10 +11,10 @@ import '../navigation/bottomNavigationBar.dart';
 import '../navigation/appDrawer.dart';
 
 class ViewRecords extends StatefulWidget {
-  const ViewRecords({Key? key, required this.userid, required this.name})
+  const ViewRecords({Key? key})
       : super(key: key);
-  final String userid;
-  final String name;
+  
+  // final String name;
 
   @override
   _ViewRecordsState createState() => _ViewRecordsState();
@@ -34,7 +34,7 @@ class _ViewRecordsState extends State<ViewRecords> with RouteAware {
   void initState() {
     super.initState();
     _recordsBloc = MedicalRecordsBloc(recordsRepository: recordsRepository);
-    _recordsBloc.add(FetchRecord(userid: widget.userid));
+    _recordsBloc.add(FetchRecord());
   }
 
   @override
@@ -70,9 +70,10 @@ class _ViewRecordsState extends State<ViewRecords> with RouteAware {
                             padding: EdgeInsets.symmetric(horizontal: 10),
                             child: Center(
                               child: Text(
-                                widget.name != ''
-                                    ? 'Medical Records of ${widget.name}'
-                                    : 'Your Medical Records',
+                                // widget.name != ''
+                                //     ? 'Medical Records of ${widget.name}'
+                                //     : 'Your Medical Records',
+                                "User Name",
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
                                   fontSize: 36.0,
@@ -145,7 +146,7 @@ class _ViewRecordsState extends State<ViewRecords> with RouteAware {
                                       ),
                                       children: [
                                         TextSpan(
-                                          text: record.type,
+                                          text: record.filename,
                                           style: TextStyle(
                                             fontSize: 16.0,
                                             fontWeight: FontWeight.bold,

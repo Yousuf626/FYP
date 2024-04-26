@@ -20,9 +20,9 @@ class MedicalRecordsBloc extends Bloc<RecordEvent, RecordState> {
   Future<void> _getRecord(Emitter<RecordState> emit) async {
     emit(RecordLoading());
     try {
-      final List<UserReport> records =
+       final List<MedicalRecord> records =
           await recordsRepository.getUserRecords();
-      emit(RecordLoaded(records: records));
+       emit(RecordLoaded(records: records));
     } catch (e) {
       emit(RecordError(errorMsg: e.toString()+"  in _getRecord Function"));
     }

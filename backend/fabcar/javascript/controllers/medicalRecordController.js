@@ -42,7 +42,7 @@ exports.uploadRecord = async (req, res) => {
         // Find existing MedicalRecord for the patient
         let medicalRecord = await MedicalRecord.findOne({ patient: userId });
         let PatientEmail = await Patient.findOne({_id: userId});
-        console.log(PatientEmail);
+        // console.log(PatientEmail);
         // If no existing record found, create a new one
         if (!medicalRecord) {
             medicalRecord = new MedicalRecord({

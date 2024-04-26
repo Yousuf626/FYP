@@ -1,12 +1,17 @@
-// ignore_for_file: file_names, library_private_types_in_public_api, sized_box_for_whitespace
+// // ignore_for_file: file_names, library_private_types_in_public_api, sized_box_for_whitespace
+import 'dart:typed_data';
+
 import 'package:aap_dev_project/models/report.dart';
 import 'package:flutter/material.dart';
 import '../navigation/bottomNavigationBar.dart';
 import '../navigation/appDrawer.dart';
+import 'dart:html' as html;
+import 'dart:async';
+
 
 class ViewReport extends StatefulWidget {
-  final UserReport? report;
-  const ViewReport({Key? key, this.report}) : super(key: key);
+   final MedicalRecord  report;
+  const ViewReport({Key? key, required this.report}) : super(key: key);
 
   @override
   _ViewReportState createState() => _ViewReportState();
@@ -44,7 +49,7 @@ class _ViewReportState extends State<ViewReport> with RouteAware {
                       padding: const EdgeInsets.symmetric(horizontal: 60.0),
                       child: Text(
                         textAlign: TextAlign.center,
-                        widget.report!.type,
+                        widget.report.filename,
                         style: const TextStyle(
                           fontSize: 36.0,
                           fontWeight: FontWeight.bold,
@@ -54,12 +59,8 @@ class _ViewReportState extends State<ViewReport> with RouteAware {
                     ),
                   )),
               const SizedBox(height: 80.0),
-              // Image.network(
-              //   widget.report!.image,
-              //   fit: BoxFit.contain,
-              //   width: MediaQuery.of(context).size.width * 0.8,
-              //   height: MediaQuery.of(context).size.height * 0.5,
-              // ),
+              
+              Image.memory(widget.report.data),
             ],
           ),
           const Positioned(
@@ -72,3 +73,44 @@ class _ViewReportState extends State<ViewReport> with RouteAware {
     );
   }
 }
+// import 'dart:html' as html;
+
+// class _ViewReportState extends State<ViewReport> with RouteAware {
+//   String? imageUrl;
+//   String? error;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     createImageUrl(widget.report.image).then((url) {
+//       setState(() {
+//         imageUrl = url;
+//       });
+//     }).catchError((e) {
+//       setState(() {
+//         error = e.toString();
+//       });
+//     });
+//   }
+
+//   Future<String> createImageUrl(html.Blob image) async {
+//     final completer = Completer<String>();
+//     final reader = html.FileReader();
+//     // final blob = html.Blob(image);
+//     reader.readAsDataUrl(image);
+//     reader.onError.listen((error) => completer.completeError(error));
+//     reader.onLoadEnd.listen((e) => completer.complete(reader.result as String));
+//     return completer.future;
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     if (error != null) {
+//       return Text('Error loading image: $error');
+//     } else if (imageUrl != null) {
+//       return Image.network(imageUrl!);
+//     } else {
+//       return CircularProgressIndicator();
+//     }
+//   }
+// }

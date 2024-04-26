@@ -47,20 +47,20 @@ class BaseMenuBar extends StatelessWidget {
               ),
               label: '',
             ),
-            // BottomNavigationBarItem(
-            //   icon: Padding(
-            //     padding: EdgeInsets.only(top: 16.0),
-            //     child: Icon(Icons.group, color: Colors.white),
-            //   ),
-            //   label: '',
-            // ),
             BottomNavigationBarItem(
               icon: Padding(
                 padding: EdgeInsets.only(top: 16.0),
-                child: Icon(Icons.logout, color: Colors.white),
+                child: Icon(Icons.group, color: Colors.white),
               ),
-              label: 'LogOut',
+              label: 'ShareRecord',
             ),
+            // BottomNavigationBarItem(
+            //   icon: Padding(
+            //     padding: EdgeInsets.only(top: 16.0),
+            //     child: Icon(Icons.logout, color: Colors.white),
+            //   ),
+            //   label: 'LogOut',
+            // ),
           ],
         ),
       ),
@@ -78,19 +78,19 @@ class BaseMenuBar extends StatelessWidget {
           MaterialPageRoute(builder: (context) => DashboardApp()),
         );
         break;
-      // case 2://group
-      //   Navigator.push(
-      //     context,
-      //     MaterialPageRoute(builder: (context) => const ShareRecords()),
-      //   );
-        // break;
-        case 2://group
-        await deleteJwtToken();
+      case 2://group
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const Authentication()),
+          MaterialPageRoute(builder: (context) => const ShareRecords()),
         );
         break;
+        // case 2://group
+        // await deleteJwtToken();
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => const Authentication()),
+        // );
+        // break;
     }
   }
 }

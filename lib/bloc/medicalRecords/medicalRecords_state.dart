@@ -13,7 +13,7 @@ class RecordEmpty extends RecordState {}
 class RecordLoading extends RecordState {}
 
 class RecordLoaded extends RecordState {
-  final List<UserReport> records;
+  final List<MedicalRecord> records;
 
   RecordLoaded({required this.records}) : super([records]);
 }

@@ -281,8 +281,8 @@ class DisplaySelectedImage extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (_) => const ViewRecords(
-                                userid: '',
-                                name: '',
+                                // userid: '',
+                                // name: '',
                               )));
                 });
               }

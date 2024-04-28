@@ -91,37 +91,7 @@ exports.getAllRecordsByPatient = async (req, res) => {
     }
     res.status(200).json(medicalRecord.records);
 
-        
-        // const medicalRecords = await MedicalRecord.find({ patient: patientId });
-        // if (medicalRecords.length === 0) {
-        //     return [];
-        // }
-        // for (let index = 0; index < medicalRecords.length; index++) {
-        //     const element = medicalRecords[index];
-        //     const check = await getPicture(patientId, element.filename, element.contentType, element.length, element.data,email);
-        //     if(check == false){
-        //         console.log('record name '+ element.filename + ' not found in blockchain ledger');
-        //     }
-        // }
 
-
-        // return Promise.all(medicalRecords.map(async record => {
-        //     const readableStream = new Readable();
-        //     readableStream._read = () => {};
-        //     readableStream.push(record.data);
-        //     readableStream.push(null);
-
-        //     const bufferData = await streamToBuffer(readableStream);
-        //     const base64Data = bufferData.toString('base64');
-
-        //     return {
-        //         _id: record._id,
-        //         filename: record.filename,
-        //         contentType: record.contentType,
-        //         data: base64Data
-        //     };
-        // }
-    // ));
     } catch (error) {
         console.error('Error in getAllRecordsByPatient:', error);
         throw new Error(error.message);
@@ -130,7 +100,14 @@ exports.getAllRecordsByPatient = async (req, res) => {
 
 exports.generateTemporaryLink = async (req, res) => {
     try {
-        const { patientId } = req.params;
+        
+        // const { patientId } = req.params;
+        await verifyToken(req, res); 
+  
+        const patientId = req.userId; // Access user ID attached by verifyToken
+
+
+
         const token = crypto.randomBytes(20).toString('hex');
         const linkExpirationDate = new Date(Date.now() + 120000); // 2 minutes from now
 
@@ -169,15 +146,18 @@ exports.accessTemporaryLink = async (req, res) => {
         }
         const patientName = patient.name; // Assuming the patient's name field is `name`
 
-        const medicalRecords = await getAllRecordsByPatient(tokenData.patientId,email);
-
+        const medicalRecords = await getAllRecordsByPatient_noToken(tokenData.patientId,email);
+        // console.log(medicalRecords[0].data);
 
         let imagesHtml = '';
         medicalRecords.forEach(record => {
+
+            let base64Image = Buffer.from(record.data, 'binary').toString('base64');
+            //  console.log(record.data);
             imagesHtml += `
                 <div>
                     <h2>${record.filename}</h2>
-                    <img src="data:${record.contentType};base64,${record.data}" alt="${record.filename}" style="width:100%;">
+                     <img src="data:${record.contentType};base64,${base64Image}"alt="${record.filename}" style="width:100%;" />
                 </div>
             `;
         });
@@ -204,3 +184,21 @@ exports.accessTemporaryLink = async (req, res) => {
 
 
 
+async function getAllRecordsByPatient_noToken(patientId, email) {
+    try {
+  
+  
+      // Find the medical records for the given patient
+      const medicalRecord = await MedicalRecord.findOne({ patient: patientId });
+  
+      if (!medicalRecord) {
+        return [];
+      }
+  
+      return medicalRecord.records;
+    } catch (error) {
+      console.error('Error in getAllRecordsByPatient:', error);
+      throw error;
+    }
+  }
+  

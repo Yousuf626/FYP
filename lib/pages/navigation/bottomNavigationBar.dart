@@ -3,6 +3,7 @@
 import 'package:aap_dev_project/nodeBackend/jwtStorage.dart';
 import 'package:aap_dev_project/pages/account/authentication.dart';
 import 'package:aap_dev_project/pages/medicalReports/shareRecords.dart';
+import 'package:aap_dev_project/pages/medicalReports/test.dart';
 import 'package:flutter/material.dart';
 import '../home/dashboard.dart';
 
@@ -81,7 +82,8 @@ class BaseMenuBar extends StatelessWidget {
       case 2://group
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const ShareRecords()),
+          MaterialPageRoute(builder: (context) => MedicalRecordsPage()),
+          // MaterialPageRoute(builder: (context) => const ShareRecords()),
         );
         break;
         // case 2://group

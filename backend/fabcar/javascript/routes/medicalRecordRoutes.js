@@ -1,23 +1,3 @@
-// const express = require('express');
-// const router = express.Router();
-// const medicalRecordController = require('../controllers/medicalRecordController');
-
-// // Create a new medical record
-// router.post('/create', medicalRecordController.createMedicalRecord);
-
-// // Retrieve all medical records associated with a specific user
-// router.get('/:userId', medicalRecordController.getMedicalRecordsByUser);
-
-// // Retrieve a single medical record by its unique identifier
-// router.post('/getpic', medicalRecordController.getMedicalRecordById);
-
-// // Update an existing medical record
-// router.put('/:recordId', medicalRecordController.updateMedicalRecord);
-
-// // Delete a medical record by its unique identifier
-// router.delete('/:recordId', medicalRecordController.deleteMedicalRecord);
-
-
 
 // module.exports = router;
 const express = require('express');
@@ -31,7 +11,7 @@ const upload = multer();
 router.post('/upload', upload.single('file'), medicalRecordController.uploadRecord);
 router.get('/patient', medicalRecordController.getAllRecordsByPatient);
 // Route to generate a temporary link for accessing patient records
-router.get('/generate-link/:patientId', medicalRecordController.generateTemporaryLink);
+router.get('/generate-link/', medicalRecordController.generateTemporaryLink);
 
 // Route to access patient records via a temporary link
 router.get('/temporary/:token', medicalRecordController.accessTemporaryLink);

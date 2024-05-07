@@ -129,6 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (exists == false) {
       _userBloc.add(SetUser(
           user: UserProfile(
+            
         name: googleUser.displayName!,
         age: 0,
         email: googleUser.email,
@@ -137,7 +138,9 @@ class _LoginScreenState extends State<LoginScreen> {
         cnic: '',
         medicalHistory: '',
         image: googleUser.photoUrl!,
-      )));
+      ),
+      pass: passwordController.text,
+      ));
     }
     return a;
   }
@@ -247,12 +250,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 FloatingActionButton.extended(
                   onPressed: () async {
                     try {
-                      UserCredential userCredential = await FirebaseAuth
-                          .instance
-                          .signInWithEmailAndPassword(
-                        email: emailController.text,
-                        password: passwordController.text,
-                      );
+                      await userRepository.LoginUser_repo(user_email: emailController.text, user_pass: passwordController.text);
+
+                      // UserCredential userCredential = await FirebaseAuth
+                      //     .instance
+                      //     .signInWithEmailAndPassword(
+                      //   email: emailController.text,
+                      //   password: passwordController.text,
+                      // );
                       // Update status message on successful sign-in
                       // Navigate to MedicineScreen
                       Navigator.push(

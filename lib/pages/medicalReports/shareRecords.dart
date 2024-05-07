@@ -64,8 +64,8 @@ class _ShareRecordsState extends State<ShareRecords> with RouteAware {
           context,
           MaterialPageRoute(
             builder: (context) => ViewRecords(
-              userid: user.userid,
-              name: user.name,
+              // userid: user.userid,
+              // name: user.name,
             ),
           ),
         );

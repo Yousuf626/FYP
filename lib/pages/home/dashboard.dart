@@ -4,6 +4,7 @@ import 'package:aap_dev_project/bloc/user/user_block.dart';
 import 'package:aap_dev_project/bloc/user/user_event.dart';
 import 'package:aap_dev_project/bloc/user/user_state.dart';
 import 'package:aap_dev_project/core/repository/user_repo.dart';
+import 'package:aap_dev_project/nodeBackend/jwtStorage.dart';
 import 'package:aap_dev_project/pages/medicalReports/addMedicalRecord.dart';
 import 'package:aap_dev_project/pages/medicalReports/viewMedicalRecords.dart';
 import 'package:aap_dev_project/pages/reminder/alarm.dart';
@@ -45,12 +46,24 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   late UserBloc _userBloc;
-
-  @override
+   @override
   void initState() {
     super.initState();
-    _userBloc = UserBloc(userRepository: widget.userRepository);
-    _userBloc.add(const FetchUserData());
+    _userBloc = BlocProvider.of<UserBloc>(context);
+
+    _fetchData(); // Call the new method
+  }
+
+  Future<void> _fetchData() async {
+    String? token = await retrieveJwtToken();
+    
+    if (token != null) {
+      _userBloc.add(FetchUserData(jwtToken: token));
+    } else {
+      print("i am in dashboard");
+      // Handle the case where there's no token (e.g., show a login screen)
+      print('No token found. User might need to log in.');
+    }
   }
 
   @override
@@ -249,8 +262,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               const ViewRecords(
-                                            userid: '',
-                                            name: '',
+                                            // userid: '',
+                                            // name: '',
                                           ),
                                         ),
                                       );

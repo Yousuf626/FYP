@@ -1,8 +1,8 @@
 // ignore_for_file: duplicate_import, unused_import
 import 'package:aap_dev_project/bloc/alarm/alarm_bloc.dart';
-import 'package:aap_dev_project/bloc/authentication/authentication_bloc.dart';
+import 'package:aap_dev_project/bloc/user/user_block.dart';
 import 'package:aap_dev_project/core/repository/alarm_repo.dart';
-import 'package:aap_dev_project/core/repository/authentication_repo.dart';
+import 'package:aap_dev_project/core/repository/user_repo.dart';
 import 'package:aap_dev_project/pages/reminder/medicine.dart';
 import 'package:aap_dev_project/pages/account/authentication.dart';
 import 'package:aap_dev_project/firebase/firebase_options.dart';
@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'firebase/firebase_options.dart';
+import 'pages/account/register.dart';
 import 'pages/home/dashboard.dart';
 
 void main() async {
@@ -19,8 +20,15 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(
-    BlocProvider<AuthenticationBloc>(
-      create: (context) => AuthenticationBloc(AuthenticationRepository()),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<AlarmBloc>(
+          create: (context) => AlarmBloc(alarmRepository: AlarmRepository()),
+        ),
+        BlocProvider<UserBloc>( // Add your UserBloc provider here
+          create: (context) => UserBloc(userRepository: UserRepository()), // Replace with your UserBloc implementation
+        ),
+      ],
       child: const MyApp(),
     ),
   );
@@ -58,7 +66,9 @@ class MyApp extends StatelessWidget {
           backgroundColor: Colors.transparent,
         ),
       ),
+      // home:  DashboardApp(),
       home: const Authentication(),
+      // home:  RegistrationScreen(),
     );
   }
 }

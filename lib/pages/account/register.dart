@@ -1,7 +1,7 @@
 // ignore_for_file: file_names, unused_import, use_key_in_widget_constructors, library_private_types_in_public_api, use_build_context_synchronously, avoid_print, sized_box_for_whitespace, sort_child_properties_last, deprecated_member_use
 
-import 'package:aap_dev_project/bloc/authentication/authentication_bloc.dart';
-import 'package:aap_dev_project/bloc/authentication/authentication_event.dart';
+import 'dart:async';
+
 import 'package:aap_dev_project/bloc/user/user_block.dart';
 import 'package:aap_dev_project/bloc/user/user_event.dart';
 import 'package:aap_dev_project/core/repository/user_repo.dart';
@@ -16,12 +16,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:aap_dev_project/pages/home/dashboard.dart';
-import 'package:aap_dev_project/core/repository/authentication_repo.dart';
-import 'package:aap_dev_project/bloc/authentication/authentication_bloc.dart';
-import 'package:aap_dev_project/bloc/authentication/authentication_event.dart';
-import 'package:aap_dev_project/bloc/authentication/authentication_state.dart';
 
-
+import '../../bloc/user/user_state.dart';
 
 class RegistrationScreen extends StatefulWidget {
   @override
@@ -30,8 +26,8 @@ class RegistrationScreen extends StatefulWidget {
 
 class _RegistrationScreenState extends State<RegistrationScreen>
     with RouteAware {
-  final AuthenticationRepository authenticationRepository = AuthenticationRepository();
-  late AuthenticationBloc _authenticationBloc;
+  final UserRepository userRepository = UserRepository();
+  late UserBloc _userBloc;
 
   @override
   void didPopNext() {
@@ -42,7 +38,8 @@ class _RegistrationScreenState extends State<RegistrationScreen>
   @override
   void initState() {
     super.initState();
-    _authenticationBloc = AuthenticationBloc(authenticationRepository);
+    // _userBloc = UserBloc(userRepository: userRepository);
+    _userBloc = BlocProvider.of<UserBloc>(context);
   }
 
   Future<UserCredential?> signInWithGoogle() async {
@@ -87,121 +84,130 @@ class _RegistrationScreenState extends State<RegistrationScreen>
 
   @override
   Widget build(BuildContext context) {
- return BlocListener<AuthenticationBloc, AuthenticationState>(
+    return BlocConsumer<UserBloc, UserState>(
       listener: (context, state) {
-        if (state is RegistrationSuccess) {
-          // Navigator.of(context).pushReplacement(
-          //   MaterialPageRoute(builder: (_) => DashboardScreen()),
-          // );
-        } else if (state is RegistrationFailure) {
-          print(state);
-        }
+       if(state is UserSetSuccess){
+         ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("User successfully registered!")),
+      );
+
+      // Token generation successful (optional: access token from state)
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => DashboardApp()),
+      );
+
+     
+       }
       },
-    child :Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor:
-            Colors.white, // Set the app bar background color to white
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const Authentication()),
-            );
-          },
-        ),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  const SizedBox(height: 32),
-                  const Center(
-                    child: Text(
-                      'Hello! Register to get started',
-                      textAlign: TextAlign.center,
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  const SizedBox(height: 48),
-                  buildTextFormField(_nameController, 'Name'),
-                  const SizedBox(height: 16),
-                  buildTextFormField(_emailController, 'Email'),
-                  const SizedBox(height: 16),
-                  buildTextFormField(_mobileController, 'Mobile Number'),
-                  const SizedBox(height: 16),
-                  buildTextFormField(_passwordController, 'Password',
-                      isPassword: true),
-                  const SizedBox(height: 16),
-                  buildTextFormField(
-                      _confirmPasswordController, 'Confirm password',
-                      isPassword: true),
-                  const SizedBox(height: 24),
-                  Container(
-                    width: double
-                        .infinity, // This will make the button's width match its parent
-                    child: FloatingActionButton.extended(
-                      onPressed: _registerUser,
-                      label: const Text(
-                        'Register',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Urbanist',
+      builder: (context, state) {
+        return Scaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            backgroundColor:
+                Colors.white, // Set the app bar background color to white
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const Authentication()),
+                );
+              },
+            ),
+          ),
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      const SizedBox(height: 32),
+                      const Center(
+                        child: Text(
+                          'Hello! Register to get started',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.bold),
                         ),
                       ),
-                      icon: const Icon(Icons.app_registration_outlined),
-                      backgroundColor: const Color(0xFF01888B),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  const SizedBox(height: 24),
-                  const SizedBox(height: 24),
-                  Center(
-                    child: TextButton(
-                      onPressed: () {},
-                      child: Text.rich(
-                        TextSpan(
-                          text: 'Already have an account? ',
-                          style: const TextStyle(
-                            fontFamily: 'Urbanist',
+                      const SizedBox(height: 48),
+                      buildTextFormField(_nameController, 'Name'),
+                      const SizedBox(height: 16),
+                      buildTextFormField(_emailController, 'Email'),
+                      const SizedBox(height: 16),
+                      buildTextFormField(_mobileController, 'Mobile Number'),
+                      const SizedBox(height: 16),
+                      buildTextFormField(_passwordController, 'Password',
+                          isPassword: true),
+                      const SizedBox(height: 16),
+                      buildTextFormField(
+                          _confirmPasswordController, 'Confirm password',
+                          isPassword: true),
+                      const SizedBox(height: 24),
+                      Container(
+                        width: double
+                            .infinity, // This will make the button's width match its parent
+                        child: FloatingActionButton.extended(
+                          onPressed: _registerUser,
+                          label: const Text(
+                            'Register',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'Urbanist',
+                            ),
                           ),
-                          children: [
+                          icon: const Icon(Icons.app_registration_outlined),
+                          backgroundColor: const Color(0xFF01888B),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      const SizedBox(height: 24),
+                      const SizedBox(height: 24),
+                      Center(
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Text.rich(
                             TextSpan(
-                              text: 'Login Now',
+                              text: 'Already have an account? ',
                               style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.teal,
                                 fontFamily: 'Urbanist',
                               ),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const LoginScreen()),
-                                  );
-                                },
+                              children: [
+                                TextSpan(
+                                  text: 'Login Now',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.teal,
+                                    fontFamily: 'Urbanist',
+                                  ),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const LoginScreen()),
+                                      );
+                                    },
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
-        ),
-      ),
-    ),
+        );
+      },
     );
   }
 
@@ -244,55 +250,39 @@ class _RegistrationScreenState extends State<RegistrationScreen>
     );
   }
 
-    // try {
-    //   await _auth.createUserWithEmailAndPassword(
-    //     email: _emailController.text,
-    //     password: _passwordController.text,
-    //   );
-
-    //   // Registration successful
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     const SnackBar(content: Text("User successfully registered!")),
-    //   );
-
-    //   _userBloc.add(SetUser(
-    //       user: UserProfile(
-    //     name: _nameController.text,
-    //     age: 0,
-    //     email: _emailController.text,
-    //     mobile: _mobileController.text,
-    //     adress: '',
-    //     cnic: '',
-    //     medicalHistory: '',
-    //     image: '',
-    //   )));
-
-    //   Navigator.push(
-    //     context,
-    //     MaterialPageRoute(builder: (context) => DashboardApp()),
-    //   );
-
-    //   // You might want to navigate the user to a different screen after successful registration
-    // } on FirebaseAuthException catch (e) {
-    //   // Handle registration errors
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     SnackBar(content: Text("Failed to register: ${e.message}")),
-    //   );
-    // }
   void _registerUser() async {
-  if (_formKey.currentState!.validate()) {
-
-    try{
-      _authenticationBloc.add(
-        UserSignUpRequested(
-                  _nameController.text,
-                 _emailController.text,
-         _mobileController.text,
-             _passwordController.text,
-
+    try {
+      _userBloc.add(SetUser(
+        user: UserProfile(
+          name: _nameController.text,
+          age: 0,
+          email: _emailController.text,
+          mobile: _mobileController.text,
+          adress: '',
+          cnic: '',
+          medicalHistory: '',
+          image: '',
+        ),
+        pass: _passwordController.text,
       ));
-    }catch(e){
+
+      // Registration successful
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(content: Text("User successfully registered!")),
+      // );
+
+      // // Token generation successful (optional: access token from state)
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => DashboardApp()),
+      // );
+
+      // // You might want to navigate the user to a different screen after successful registration
+    } on FirebaseAuthException catch (e) {
+      // Handle registration errors
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Failed to register: ${e.message}")),
+      );
     }
-  }
   }
 }

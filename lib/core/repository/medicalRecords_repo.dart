@@ -1,58 +1,68 @@
+import 'dart:convert';
+
 import 'package:aap_dev_project/models/report.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
+import 'dart:html' as html;
+
+import '../../nodeBackend/jwtStorage.dart';
+import '../../nodeBackend/upload_medical_record.dart';
 
 class MedicalRecordsRepository {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<List<UserReport>> getUserRecords(String userid) async {
-    User? user = _auth.currentUser;
+  Future<List<MedicalRecord>> getUserRecords() async {
+    try {
+      // Retrieve the JWT token
+      String? token = await retrieveJwtToken();
 
-    DocumentSnapshot snapshot = await _firestore
-        .collection('medicalRecords')
-        .doc(userid != '' ? userid : user?.uid)
-        .get();
-    if (snapshot.exists) {
-     
-      List<dynamic>? reportData =
-          (snapshot.data() as Map<String, dynamic>?)?['records'];
-      if (reportData != null) {
-        List<UserReport> userReports = reportData
-            .map(
-                (report) => UserReport.fromJson(report as Map<String, dynamic>))
-            .toList();
-
-        return userReports;
+      if (token == null) {
+        print('JWT token not found');
+        return [];
       }
+
+      final response = await http.get(
+        Uri.parse('http://localhost:3000/api/medical-records/patient'),
+        headers: {'Authorization': 'Bearer $token'},
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        final List<MedicalRecord> records = [];
+        final List<UserReport> record2 = [];
+
+        for (final item in data) {
+           records.add(MedicalRecord.fromJson(item));
+        }
+        // html.File test;
+        // for (final item in records) {
+        //   final blob = html.Blob([data]);
+        //   test = html.File([blob], item.filename, {'type': item.contentType});
+        //   print(test);
+        //   record2.add(UserReport(type: item.filename, image: test));
+        // }
+
+        return records;
+      } else {
+        throw Exception('Failed to fetch medical records');
+      }
+    } catch (e) {
+      print('Error: $e');
+      return [];
     }
-    return [];
   }
 
-  Future<List<UserReport>> uploadUserRecords(UserReport uploadedReport) async {
-    User? user = _auth.currentUser;
+  Future<void> uploadUserRecords(UserReport uploadedReport) async {
+    await uploadMedicalRecord(uploadedReport);
+    
+  }
+}
 
-    DocumentSnapshot snapshot =
-        await _firestore.collection('medicalRecords').doc(user?.uid).get();
-    if (snapshot.exists) {
-      List<dynamic>? reportData =
-          (snapshot.data() as Map<String, dynamic>?)?['records'];
-      print(reportData?.length);
-      List<UserReport> userReports = reportData!
-          .map((report) => UserReport.fromJson(report as Map<String, dynamic>))
-          .toList();
-      userReports.add(uploadedReport);
-      print(userReports.length);
-      await _firestore
-          .collection('medicalRecords')
-          .doc(user?.uid)
-          .update({'records': userReports.map((e) => e.toJson()).toList()});
-      return userReports;
-    } else {
-      await _firestore.collection('medicalRecords').doc(user?.uid).set({
-        'records': [uploadedReport.toJson()]
-      });
-      return [uploadedReport];
-    }
+class UtilMedicalRecord {
+  final List<dynamic> records;
+
+  UtilMedicalRecord({required this.records});
+
+  factory UtilMedicalRecord.fromJson(Map<String, dynamic> json) {
+    return UtilMedicalRecord(records: json['records']);
   }
 }

@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import '../../models/report.dart';
 import '../navigation/bottomNavigationBar.dart';
 import '../navigation/appDrawer.dart';
-import 'dart:html' as html;
 import 'dart:async';
 
 

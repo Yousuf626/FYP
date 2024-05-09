@@ -2,17 +2,19 @@
 pragma solidity ^0.8.0;
 
 contract MedicalRecord {
-    mapping(address => string[]) private fileHashes;
-
+    mapping(string => address) private fileHashes;
+ 
     function storeFileHash(string memory fileHash, address wallet) public {
-        fileHashes[wallet].push(fileHash);
+        // Store the wallet address associated with the file hash
+        fileHashes[fileHash] = wallet;
     }
 
-    function updateFileHashes(string[] memory newHashes, address wallet) public {
-        fileHashes[wallet] = newHashes;
-    }
+    // function updateFileHashes(string[] memory newHashes, address wallet) public {
+    //     fileHashes[wallet] = newHashes;
+    // }
 
-    function getFileHashes(address wallet) public view returns (string[] memory) {
-        return fileHashes[wallet];
+     // Optional: Function to retrieve the wallet address associated with a file hash
+    function getFileHashOwner(string memory fileHash) public view returns (address) {
+        return fileHashes[fileHash];
     }
 }

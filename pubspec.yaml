@@ -49,7 +49,7 @@ dependencies:
   golden_toolkit: ^0.15.0
   bloc_test: ^9.1.5
   flutter_alarm_clock: ^0.1.1
-  http: 1.2.0
+  http:  ^1.2.1
   shared_preferences: ^2.2.3
   image_picker_web: ^3.1.1
   flutter_secure_storage: ^9.0.0
@@ -59,6 +59,8 @@ dependencies:
   pointycastle: ^3.9.0
   eosdart_ecc: ^0.4.4
   asn1lib: ^1.5.2
+  http_parser: ^4.0.2
+  path: ^1.9.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -7,6 +7,8 @@ import 'package:aap_dev_project/pages/home/dashboard.dart';
 import 'package:aap_dev_project/pages/medicalReports/reportDisplay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../bloc/user/user_block.dart';
+import '../../core/repository/user_repo.dart';
 import '../navigation/bottomNavigationBar.dart';
 import '../navigation/appDrawer.dart';
 
@@ -23,7 +25,7 @@ class ViewRecords extends StatefulWidget {
 class _ViewRecordsState extends State<ViewRecords> with RouteAware {
   final MedicalRecordsRepository recordsRepository = MedicalRecordsRepository();
   late MedicalRecordsBloc _recordsBloc;
-
+late UserBloc _userBloc;
   @override
   void didPopNext() {
     setState(() {});
@@ -34,7 +36,9 @@ class _ViewRecordsState extends State<ViewRecords> with RouteAware {
   void initState() {
     super.initState();
     _recordsBloc = MedicalRecordsBloc(recordsRepository: recordsRepository);
-    _recordsBloc.add(FetchRecord());
+    _recordsBloc.add(const FetchRecord());
+    _userBloc = BlocProvider.of<UserBloc>(context);
+    _userBloc.userProfile;
   }
 
   @override
@@ -70,10 +74,9 @@ class _ViewRecordsState extends State<ViewRecords> with RouteAware {
                             padding: EdgeInsets.symmetric(horizontal: 10),
                             child: Center(
                               child: Text(
-                                // widget.name != ''
-                                //     ? 'Medical Records of ${widget.name}'
-                                //     : 'Your Medical Records',
-                                "User Name",
+                                    _userBloc.userProfile?.name != null
+                                        ? 'Medical Records of ${_userBloc.userProfile!.name}'
+                                        : 'Your Medical Records',
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
                                   fontSize: 36.0,

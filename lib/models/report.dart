@@ -1,5 +1,5 @@
 
-import 'dart:html' as html;
+import 'dart:io';
 import 'dart:typed_data';
 class MedicalRecord {
   final String filename;
@@ -28,7 +28,7 @@ class MedicalRecord {
 
 class UserReport {
   final String type;
-   html.File image;
+   File image;
 
 
   UserReport({

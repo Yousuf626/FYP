@@ -45,11 +45,6 @@ class UserRepository {
 }
 
 
-  // Future<void> uploadUserRecords(UserProfile userp) async {
-  //   User? user = _auth.currentUser;
-
-  //   await _firestore.collection('users').doc(user?.uid).set(userp.toJson());
-  // }
   Future<void> uploadUserRecords(
       {required UserProfile userp, required String pass}) async {
     http.Response response = await signup(
@@ -61,8 +56,10 @@ class UserRepository {
      if (response.statusCode == 201) {
         var responseBody = jsonDecode(response.body);
         var wallet = responseBody['wallet'];
-        // var rsaKeyPair = responseBody['rsaKeyPair'];
-        
+            var rsaKeyPair = responseBody['rsaKeyPair'];
+    var publicKey = rsaKeyPair['publicKey'];
+
+
 const storage = FlutterSecureStorage();
 
 
@@ -70,14 +67,14 @@ const storage = FlutterSecureStorage();
 // To write
 await storage.write(key: 'wallet_privateKey', value: '${wallet['privateKey']}');
 await storage.write(key: 'wallet_address', value: '${wallet['address']}');
+await storage.write(key: 'rsa_publicKey', value: publicKey);
 
-// var publicKey = rsaKeyPair['publicKey'];
-// var privateKey = rsaKeyPair['privateKey'];
 
-// await storage.write(key: 'rsa_privateKey', value: '$privateKey');
-// await storage.write(key: 'rsa_publicKey', value: '$publicKey');
-await generateAndStoreAESKey();
-    } else {
+await generateAndStoreAESKey(pass);
+    print( await storage.read(key: 'rsa_publicKey'));
+
+    } 
+    else {
         print('Request failed with status: ${response.statusCode}.');
     }
 
@@ -86,6 +83,7 @@ await generateAndStoreAESKey();
       email: userp.email,
       password: pass,
     );
+    await sendEncryptedAESKey();
   }
 Future<void> LoginUser_repo(
       {required String user_email, required String user_pass}) async {

@@ -21,41 +21,64 @@ exports. uploadRecord = async (req, res) => {
         const userId = req.userId; // Access user ID attached by verifyToken
         const { originalname, mimetype, buffer } = req.file;
  // Calculate the hash of the file
+// Convert the originalname and mimetype to buffers
+const nameBuffer = Buffer.from(originalname);
+const typeBuffer = Buffer.from(mimetype);
+const lengthBuffer = Buffer.from(buffer.length);
+// Concatenate the buffers
+const totalBuffer = Buffer.concat([nameBuffer, typeBuffer,lengthBuffer]);
+
+
+
 const hash = crypto.createHash('sha256');
-hash.update(buffer);
+hash.update(totalBuffer);
 const fileHash = hash.digest('hex');
 
 
 
-        // Find existing MedicalRecord for the patient
-        let medicalRecord = await MedicalRecord.findOne({ patient: userId });
-        let PatientEmail = await Patient.findOne({_id: userId});
-        // console.log(PatientEmail);
-        // If no existing record found, create a new one
-        if (!medicalRecord) {
-            medicalRecord = new MedicalRecord({
-                patient: userId,
-                records: [],
-                files_hashes: [],
-            });
-        }
+        // // Find existing MedicalRecord for the patient
+        // let medicalRecord = await MedicalRecord.findOne({ patient: userId });
+        let Patient_wallet = await Patient.findOne({_id: userId});
+        // // console.log(PatientEmail);
+        // // If no existing record found, create a new one
+        // if (!medicalRecord) {
+        //     medicalRecord = new MedicalRecord({
+        //         patient: userId,
+        //         records: [],
+        //         files_hashes: [],
+        //     });
+        // }
 
-        // Push the new record details into the records array
-        medicalRecord.records.push({
-            filename: originalname,
-            contentType: mimetype,
-            length: buffer.length,
-            data: buffer,
-        });
-        medicalRecord.files_hashes.push({
-            hash: fileHash,
-        });
+        // // Push the new record details into the records array
+        // medicalRecord.records.push({
+        //     filename: originalname,
+        //     contentType: mimetype,
+        //     length: buffer.length,
+        //     data: buffer,
+        // });
+        // medicalRecord.files_hashes.push({
+        //     hash: fileHash,
+        // });
 
-        // Save the updated medical record to the database
-        const savedRecord = await medicalRecord.save();
+        // // Save the updated medical record to the database
+        // const savedRecord = await medicalRecord.save();
+
+// Create a new MedicalRecord
+const medicalRecord = new MedicalRecord({
+    patient: userId,
+    filename: originalname,
+    contentType: mimetype,
+    length: buffer.length,
+    data: buffer
+});
+
+// Save the Medical Record
+await medicalRecord.save();
+
+
 
  // Upload the record to the blockchain
- const tx = await uploadRecordToBlockchain(fileHash, buffer);
+  const tx = await uploadRecordToBlockchain(fileHash, Patient_wallet.wallet_address);
 
 
         res.status(201).json({ message: 'Medical record uploaded successfully', record: savedRecord, tx });
@@ -65,29 +88,32 @@ const fileHash = hash.digest('hex');
     }
 };
 
-// Modified getAllRecordsByPatient to be reusable
-exports.getAllRecordsByPatient = async (req, res) => {
-    try {
-        await verifyToken(req, res); 
+// // Modified getAllRecordsByPatient to be reusable
+// exports.getAllRecordsByPatient = async (req, res) => {
+//     try {
+//         await verifyToken(req, res); 
   
-        const userId = req.userId; // Access user ID attached by verifyToken
+//         const userId = req.userId; // Access user ID attached by verifyToken
 
-        // Find existing MedicalRecord for the patient
-        let medicalRecord = await MedicalRecord.findOne({ patient: userId });
+//         // Find existing MedicalRecord for the patient
+//         let medicalRecord = await MedicalRecord.findOne({ patient: userId });
     
-        // If no existing record found, return an error
-        if (!medicalRecord) {
-            return res.status(404).json({ message: 'Medical records not found for this patient' });
-        }
+//         // If no existing record found, return an error
+//         if (!medicalRecord) {
+//             return res.status(404).json({ message: 'Medical records not found for this patient' });
+//         }
 
-        // Convert the records map to an array of objects for the response
-        let recordsArray = Array.from(medicalRecord.records, ([hash, record]) => ({ hash, ...record }));
-        res.status(200).json(recordsArray);
-    } catch (error) {
-        console.error('Error in getAllRecordsByPatient:', error);
-        throw new Error(error.message);
-    }
+//         // Convert the records map to an array of objects for the response
+//         res.status(200).json(medicalRecord.records);
+
+//     } catch (error) {
+//         console.error('Error in getAllRecordsByPatient:', error);
+//         throw new Error(error.message);
+//     }
     
+
+// Modified getAllRecordsByPatient to be reusable
+
 exports.generateTemporaryLink = async (req, res) => {
     try {
         
@@ -174,12 +200,16 @@ exports.accessTemporaryLink = async (req, res) => {
 
 
 
+
+
 async function getAllRecordsByPatient_noToken(patientId, email) {
     try {
+        await verifyToken(req, res); 
   
+         const userId = req.userId; // Access user ID attached by verifyToken
   
       // Find the medical records for the given patient
-      const medicalRecord = await MedicalRecord.findOne({ patient: patientId });
+      const medicalRecord = await MedicalRecord.findOne({ patient: userId });
   
       if (!medicalRecord) {
         return [];
@@ -191,5 +221,32 @@ async function getAllRecordsByPatient_noToken(patientId, email) {
       throw error;
     }
   }
-}
+  exports.getAllRecordsByPatient = async (req, res) => {
+    try {
+
+        await verifyToken(req, res); 
+  
+         const userId = req.userId; // Access user ID attached by verifyToken
+  
+        const medicalRecords = await MedicalRecord.find({ patient: userId });
+        if (medicalRecords.length === 0) {
+            return [];
+        }
+
+        return medicalRecords.map(record => {
+            // const base64Data = record.data.toString('base64');
+
+            return {
+                _id: record._id,
+                filename: record.filename,
+                contentType: record.contentType,
+                data: record.data,
+            };
+        });
+    } catch (error) {
+        console.error('Error in getAllRecordsByPatient:', error);
+        throw new Error(error.message);
+    }
+  };
+
   

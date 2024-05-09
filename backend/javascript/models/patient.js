@@ -41,15 +41,25 @@ const patientSchema = new mongoose.Schema({
       },
     wallet_privateKey: {
         type: String,
-        required: true,
+        required: false,
       },
-    // credentials: {
-    //     certificate: { type: String },
-    //     privateKey: { type: String }
-    //   },
-    //   mspId: { type: String },
-    //   type: { type: String },
-    //   version: { type: Number },
+      rsa_prikey:{
+        type: String,
+        required: false,
+      },
+      rsa_pubkey:{
+        type: String,
+        required: false,
+      },
+      AESkey:{
+        type: String,
+        required: false,
+      },
+      iv:{
+        type: String,
+        required: false,
+      },
+
 });
 
 const Patient = mongoose.model('Patient', patientSchema);

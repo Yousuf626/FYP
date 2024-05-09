@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:aap_dev_project/models/report.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
-import 'dart:html' as html;
+
 
 import '../../nodeBackend/jwtStorage.dart';
 import '../../nodeBackend/upload_medical_record.dart';
@@ -28,8 +28,7 @@ class MedicalRecordsRepository {
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
         final List<MedicalRecord> records = [];
-        final List<UserReport> record2 = [];
-
+       
         for (final item in data) {
            records.add(MedicalRecord.fromJson(item));
         }

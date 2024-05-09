@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'dart:html' as html;
 import 'dart:typed_data';
 
 import '../../bloc/medicalRecords/medicalRecords_block.dart';
@@ -27,7 +26,7 @@ class AddReport extends StatefulWidget {
 }
 
 class _AddReportState extends State<AddReport> with RouteAware {
-  late html.File _selectedImage;
+  late File _selectedImage;
 
   @override
   void didPopNext() {
@@ -37,56 +36,56 @@ class _AddReportState extends State<AddReport> with RouteAware {
 
 
 
-Future<void> _getImageFromDevice() async {
-  final html.FileUploadInputElement input = html.FileUploadInputElement()..accept = 'image/*';
-  input.click();
-      print(input);
-  await input.onChange.first;
+// Future<void> _getImageFromDevice() async {
+//   final html.FileUploadInputElement input = html.FileUploadInputElement()..accept = 'image/*';
+//   input.click();
+//       print(input);
+//   await input.onChange.first;
 
-  final  file = input.files!.first;
-  print(file.name);
-  // final reader = html.FileReader();
+//   final  file = input.files!.first;
+//   print(file.name);
+//   // final reader = html.FileReader();
 
-  // reader.readAsDataUrl(file);
-  // await reader.onLoad.first;
+//   // reader.readAsDataUrl(file);
+//   // await reader.onLoad.first;
 
-  // final imageData = reader.result as String;
+//   // final imageData = reader.result as String;
 
-  setState(() {
-    _selectedImage = file;
-      // ..writeAsBytesSync(base64Decode(imageData.replaceFirst(RegExp(r'data:image/[^;]+;base64,'), '')));
-      print(_selectedImage);
-  });
+//   setState(() {
+//     _selectedImage = file;
+//       // ..writeAsBytesSync(base64Decode(imageData.replaceFirst(RegExp(r'data:image/[^;]+;base64,'), '')));
+//       print(_selectedImage);
+//   });
 
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) =>
-          DisplaySelectedImage(selectedImage: _selectedImage!),
-    ),
-  );
-}
+//   Navigator.push(
+//     context,
+//     MaterialPageRoute(
+//       builder: (context) =>
+//           DisplaySelectedImage(selectedImage: _selectedImage!),
+//     ),
+//   );
+// }
 
 
 
-  // Future<void> _getImage(ImageSource source) async {
-  //   final picker = ImagePicker();
-  //   final pickedImage = await picker.getImage(source: source);
+  Future<void> _getImage(ImageSource source) async {
+    final picker = ImagePicker();
+    final pickedImage = await picker.getImage(source: source);
 
-  //   if (pickedImage != null) {
-  //     setState(() {
-  //       _selectedImage = File(pickedImage.path);
-  //     });
+    if (pickedImage != null) {
+      setState(() {
+        _selectedImage = File(pickedImage.path);
+      });
 
-  //     Navigator.push(
-  //       context,
-  //       MaterialPageRoute(
-  //         builder: (context) =>
-  //             DisplaySelectedImage(selectedImage: _selectedImage!),
-  //       ),
-  //     );
-  //   }
-  // }
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              DisplaySelectedImage(selectedImage: _selectedImage!),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -154,8 +153,8 @@ Future<void> _getImageFromDevice() async {
                       ),
                       child: GestureDetector(
                           onTap: () {
-                            // _getImage(ImageSource.camera);
-                            _getImageFromDevice();
+                             _getImage(ImageSource.camera);
+                            // _getImageFromDevice();
                           },
                           child: Column(
                             children: [
@@ -182,8 +181,8 @@ Future<void> _getImageFromDevice() async {
                       ),
                       child: GestureDetector(
                           onTap: () {
-                            // _getImage(ImageSource.gallery);
-                            _getImageFromDevice();
+                           _getImage(ImageSource.gallery);
+                            // _getImageFromDevice();
                           },
                           child: Column(children: [
                             Image.asset(
@@ -205,7 +204,7 @@ Future<void> _getImageFromDevice() async {
 
 class DisplaySelectedImage extends StatelessWidget {
   final TextEditingController reportTypeController = TextEditingController();
-  final html.File selectedImage;
+  final File selectedImage;
   final MedicalRecordsRepository recordsRepository = MedicalRecordsRepository();
   late final MedicalRecordsBloc _recordsBloc =
       MedicalRecordsBloc(recordsRepository: recordsRepository);
@@ -330,8 +329,8 @@ class DisplaySelectedImage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 50.0),
-                // Image.file(selectedImage), 
-                Image.network(html.Url.createObjectUrlFromBlob(selectedImage)),
+                 Image.file(selectedImage), 
+                // Image.network(html.Url.createObjectUrlFromBlob(selectedImage)),
                 const SizedBox(height: 40.0),
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8,

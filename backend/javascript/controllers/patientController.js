@@ -41,6 +41,8 @@ exports.signup = async (req, res) => {
            
             wallet_address: wallet.address,
             wallet_privateKey: wallet.privateKey,
+            rsa_prikey: privateKey,
+            rsa_pubkey: publicKey,
         });
         console.log(publicKey);
         console.log(privateKey);
@@ -53,7 +55,6 @@ exports.signup = async (req, res) => {
             wallet: wallet,
             rsaKeyPair: {
                 publicKey: publicKey,
-                privateKey: privateKey
             }
         });
 
@@ -185,4 +186,37 @@ exports.UserInfo = async (req, res) => {
       res.status(500).json({ error: 'Failed to fetch user details' });
     }
   };
+  exports.storeAESkey = async (req, res) => {
+    try {
+      // Call verifyToken middleware to authenticate the request
+      await verifyToken(req, res); 
   
+      const userId = req.userId; // Access user ID attached by verifyToken
+      const patient = await Patient.findById(userId);
+      if (!patient) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      const privateKey = patient.rsa_prikey;
+      const { encryptedAesKey , iv } = req.body;
+  
+      const decryptedAesKey = crypto.privateDecrypt(
+        {
+          key: privateKey,
+          padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+          oaepHash: "sha256",
+        },
+        Buffer.from(encryptedAesKey, 'base64') // Assuming the encrypted AES key is base64 encoded
+      );
+    // Convert the decrypted AES key to a string
+    const decryptedAesKeyString = decryptedAesKey.toString('base64');
+
+    // Update the patient document with the decrypted AES key
+    patient.AESkey = decryptedAesKeyString;
+    patient.iv = iv;
+    await patient.save();
+    res.status(200).json({ message: 'AES key stored successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'An error occurred' });
+  }
+};

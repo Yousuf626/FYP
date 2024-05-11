@@ -70,11 +70,12 @@ class _AddReportState extends State<AddReport> with RouteAware {
 
   Future<void> _getImage(ImageSource source) async {
     final picker = ImagePicker();
-    final pickedImage = await picker.getImage(source: source);
+    final pickedImage = await picker.pickImage(source: source);
 
     if (pickedImage != null) {
       setState(() {
         _selectedImage = File(pickedImage.path);
+        print(_selectedImage);
       });
 
       Navigator.push(

@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
- const String baseUrl = 'http://localhost:3000/api/patients'; // Replace with your actual API endpoint
+ const String baseUrl = 'http://192.168.100.84:3001/api/patients'; // Replace with your actual API endpoint
 
 Future<http.Response> login({
   required String email,

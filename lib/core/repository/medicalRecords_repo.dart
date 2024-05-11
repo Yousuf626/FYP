@@ -21,7 +21,7 @@ class MedicalRecordsRepository {
       }
 
       final response = await http.get(
-        Uri.parse('http://localhost:3000/api/medical-records/patient'),
+        Uri.parse('http://192.168.100.84:3001/api/medical-records/patient'),
         headers: {'Authorization': 'Bearer $token'},
       );
 

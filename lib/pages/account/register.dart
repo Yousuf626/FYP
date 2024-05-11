@@ -235,7 +235,7 @@ class _RegistrationScreenState extends State<RegistrationScreen>
         if (value == null || value.isEmpty) {
           return 'Please enter some text';
         }
-        if (isPassword && value.length < 6) {
+        if (isPassword && value.length < 2) {
           return 'Password must be at least 6 characters long';
         }
         return null;
